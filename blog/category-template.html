@@ -166,7 +166,7 @@
         <span></span><span></span><span></span>
       </button>
       <ul id="navLinks">
-        <li><a href="../blog.html">همه‌ی موضوعات</a></li>
+        <li><a href="../index.html">همه‌ی موضوعات</a></li>
         <li><a href="https://mdabagh.github.io" class="nav-cta">مشاهده رزومه</a></li>
       </ul>
     </nav>
@@ -176,7 +176,7 @@
 <!-- ================= CATEGORY INTRO ================= -->
 <section id="intro">
   <div class="wrap">
-    <a class="back-link reveal" href="../blog.html">→ بازگشت به بلاگ</a>
+    <a class="back-link reveal" href="../index.html">→ بازگشت به بلاگ</a>
     <h1 id="categoryTitle" class="reveal">در حال بارگذاری...</h1>
     <p id="categorySummary" class="reveal"></p>
     <div class="intro-meta reveal">
@@ -216,6 +216,15 @@ class CategoryManager {
   constructor() {
     this.posts = [];
     this.info = null;
+    this.categorySlug = this.detectCategorySlug();
+  }
+
+  // اسم پوشه‌ی جاری رو از آدرس صفحه تشخیص می‌ده
+  // مثلاً برای .../blog/design-system/index.html مقدار "design-system" برمی‌گرده
+  detectCategorySlug() {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    if (parts[parts.length - 1] === 'index.html') parts.pop();
+    return parts[parts.length - 1] || '';
   }
 
   toPersianNumber(num) {
@@ -273,7 +282,7 @@ class CategoryManager {
           summary: postData.summary || '...',
           content,
           date: postData.date || new Date().toISOString().split('T')[0],
-          url: `${slug}.html`
+          url: `../post.html?cat=${this.categorySlug}&slug=${slug}`
         });
       } catch (e) {
         console.error(`Error loading post ${file}:`, e);
