@@ -22,10 +22,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/14.1.0/markdown-it.min.js"></script> -->
-<script type="module">
-import markdownIt from 'https://cdn.jsdelivr.net/npm/markdown-it@14.3.0/+esm'
-</script>
 <style>
   :root{
     --navy-deep:#0E2A47;
@@ -220,7 +216,17 @@ import markdownIt from 'https://cdn.jsdelivr.net/npm/markdown-it@14.3.0/+esm'
   © ۲۰۲۶ محمدسجاد دباغ — <span>ساخته شده با عشق</span> · تهران
 </footer>
 
-<script>
+<script type="importmap">
+{
+  "imports": {
+    "markdown-it": "https://cdn.jsdelivr.net/npm/markdown-it@14.3.0/+esm"
+  }
+}
+</script>
+
+<script type="module">
+import markdownIt from 'markdown-it';
+
 const SITE_BASE = 'https://mdabagh.github.io';
 
 function setMeta(id, content) {
@@ -250,7 +256,7 @@ function injectSchema(data) {
 
 class PostViewer {
   constructor() {
-    this.md = window.markdownit({
+    this.md = markdownIt({
       html: false,       // اجازه‌ی HTML خام نده (امنیت)
       linkify: true,      // آدرس‌های خام رو خودکار لینک کن
       typographer: false, // برای متن فارسی خاموش بمونه بهتره
