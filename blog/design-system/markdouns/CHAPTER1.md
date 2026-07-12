@@ -40,72 +40,15 @@
 
 ## متن کتاب
 
->1. Users access websites through domain names, such as api.mysite.com. Usually, the
-Domain Name System (DNS) is a paid service provided by 3rd parties and not hosted by
-our servers.
-2. Internet Protocol (IP) address is returned to the browser or mobile app. In the example,
-IP address 15.125.23.214 is returned.
-3. Once the IP address is obtained, Hypertext Transfer Protocol (HTTP) [1] requests are
-sent directly to your web server.
-4. The web server returns HTML pages or JSON response for rendering.
-Next, let us examine the traffic source. The traffic to your web server comes from two
-sources: web application and mobile application.
-• Web application: it uses a combination of server-side languages (Java, Python, etc.) to
-handle business logic, storage, etc., and client-side languages (HTML and JavaScript) for
-presentation.
-• Mobile application: HTTP protocol is the communication protocol between the mobile
-app and the web server. JavaScript Object Notation (JSON) is commonly used API
-response format to transfer data due to its simplicity. An example of the API response in
-JSON format is shown below:
-GET/users/12 - Retrieve user object for id = 12
-
-{
-
-"id": 12,
-
-"firstName": "John",
-
-"lastName": "Smith",
-
-"address": {
-
-"streetAddress": "21 2nd Street",
-
-"city": "New York",
-
-"state": "NY",
-
-"postalCode": 10021
-
-},
-
-"phoneNumbers": [
-
-"212 555-1234",
-
-"646 555-4567"
-
-1
-
-}
-
----
-
-# ترجمه
-
-۱. کاربران از طریق نام دامنه (domain name)، مانند api.mysite.com، به وب‌سایت‌ها دسترسی پیدا می‌کنند. معمولاً سیستم نام دامنه (DNS) یک سرویس پولی است که توسط شرکت‌های شخص ثالث ارائه می‌شود و روی سرورهای خودمان میزبانی نمی‌شود.
-
-۲. آدرس IP (Internet Protocol) به مرورگر یا اپلیکیشن موبایل بازگردانده می‌شود. در این مثال، آدرس IP برابر با 15.125.23.214 بازگردانده شده است.
-
-۳. پس از دریافت آدرس IP، درخواست‌های HTTP مستقیماً به سرور وب شما ارسال می‌شوند.
-
-۴. سرور وب صفحات HTML یا پاسخ JSON را برای رندر شدن بازمی‌گرداند.
-
-در ادامه، به بررسی منبع ترافیک می‌پردازیم. ترافیک ورودی به سرور وب شما از دو منبع می‌آید: اپلیکیشن وب و اپلیکیشن موبایل.
-
-• **اپلیکیشن وب:** ترکیبی از زبان‌های سمت سرور (مانند Java، Python و غیره) برای مدیریت منطق تجاری (business logic)، ذخیره‌سازی و غیره، و زبان‌های سمت کلاینت (HTML و JavaScript) برای نمایش (presentation) استفاده می‌کند.
-
-• **اپلیکیشن موبایل:** پروتکل HTTP، پروتکل ارتباطی بین اپلیکیشن موبایل و سرور وب است. فرمت JSON (JavaScript Object Notation) به دلیل سادگی‌اش، متداول‌ترین فرمت پاسخ API برای انتقال داده است. نمونه‌ای از پاسخ API با فرمت JSON در زیر نشان داده شده است:
+> 1. Users access websites through domain names, such as api.mysite.com. Usually, the Domain Name System (DNS) is a paid service provided by 3rd parties and not hosted by our servers.
+> 2. Internet Protocol (IP) address is returned to the browser or mobile app. In the example, IP address 15.125.23.214 is returned.
+> 3. Once the IP address is obtained, Hypertext Transfer Protocol (HTTP) [1] requests are sent directly to your web server.
+> 4. The web server returns HTML pages or JSON response for rendering.
+>
+> Next, let us examine the traffic source. The traffic to your web server comes from two sources: web application and mobile application.
+>
+> - **Web application:** it uses a combination of server-side languages (Java, Python, etc.) to handle business logic, storage, etc., and client-side languages (HTML and JavaScript) for presentation.
+> - **Mobile application:** HTTP protocol is the communication protocol between the mobile app and the web server. JavaScript Object Notation (JSON) is commonly used API response format to transfer data due to its simplicity. An example of the API response in JSON format is shown below:
 
 ```
 GET /users/12 - Retrieve user object for id = 12
@@ -127,11 +70,26 @@ GET /users/12 - Retrieve user object for id = 12
 }
 ```
 
+---
+
+# ترجمه
+
+۱. کاربران از طریق نام دامنه (domain name)، مانند api.mysite.com، به وب‌سایت‌ها دسترسی پیدا می‌کنند. معمولاً سیستم نام دامنه (DNS) یک سرویس پولی است که توسط شرکت‌های شخص ثالث ارائه می‌شود و روی سرورهای خودمان میزبانی نمی‌شود.
+
+۲. آدرس IP (Internet Protocol) به مرورگر یا اپلیکیشن موبایل بازگردانده می‌شود. در این مثال، آدرس IP برابر با 15.125.23.214 بازگردانده شده است.
+
+۳. پس از دریافت آدرس IP، درخواست‌های HTTP مستقیماً به سرور وب شما ارسال می‌شوند.
+
+۴. سرور وب صفحات HTML یا پاسخ JSON را برای رندر شدن بازمی‌گرداند.
+
+در ادامه، به بررسی منبع ترافیک می‌پردازیم. ترافیک ورودی به سرور وب شما از دو منبع می‌آید: اپلیکیشن وب و اپلیکیشن موبایل.
+
+- **اپلیکیشن وب:** ترکیبی از زبان‌های سمت سرور (مانند Java، Python و غیره) برای مدیریت منطق تجاری (business logic)، ذخیره‌سازی و غیره، و زبان‌های سمت کلاینت (HTML و JavaScript) برای نمایش (presentation) استفاده می‌کند.
+- **اپلیکیشن موبایل:** پروتکل HTTP، پروتکل ارتباطی بین اپلیکیشن موبایل و سرور وب است. فرمت JSON (JavaScript Object Notation) به دلیل سادگی‌اش، متداول‌ترین فرمت پاسخ API برای انتقال داده است. نمونه‌ای از پاسخ API با فرمت JSON در بالا نشان داده شده است.
+
 ## متن کتاب
 
-> **Database:** With the growth of the user base, one server is not enough, and we need multiple servers: one
-for web/mobile traffic, the other for the database (Figure 1-3). Separating web/mobile traffic
-(web tier) and database (data tier) servers allows them to be scaled independently.
+> **Database:** With the growth of the user base, one server is not enough, and we need multiple servers: one for web/mobile traffic, the other for the database (Figure 1-3). Separating web/mobile traffic (web tier) and database (data tier) servers allows them to be scaled independently.
 
 ---
 
@@ -139,7 +97,7 @@ for web/mobile traffic, the other for the database (Figure 1-3). Separating web/
 
 **پایگاه داده:** با رشد پایگاه کاربران، یک سرور دیگر کافی نیست و به چند سرور نیاز داریم: یکی برای ترافیک وب/موبایل و دیگری برای پایگاه داده (شکل ۱-۳). جدا کردن سرورهای ترافیک وب/موبایل (لایه‌ی وب یا web tier) از سرور پایگاه داده (لایه‌ی داده یا data tier) این امکان را فراهم می‌کند که هر کدام به‌طور مستقل مقیاس‌پذیر (scale) شوند.
 
-![Figure 1-3](design-system/images/System-Design-Interview-page7-image1.jpg)
+![Figure 1-3](design-system/images/System-Design-Interview-page8-image1.jpg)
 
 ## متن کتاب
 
@@ -150,10 +108,11 @@ for web/mobile traffic, the other for the database (Figure 1-3). Separating web/
 > Non-Relational databases are also called NoSQL databases. Popular ones are CouchDB, Neo4j, Cassandra, HBase, Amazon DynamoDB, etc. [2]. These databases are grouped into four categories: key-value stores, graph stores, column stores, and document stores. Join operations are generally not supported in non-relational databases.
 >
 > For most developers, relational databases are the best option because they have been around for over 40 years and historically, they have worked well. However, if relational databases are not suitable for your specific use cases, it is critical to explore beyond relational databases. Non-relational databases might be the right choice if:
-> • Your application requires super-low latency.
-> • Your data are unstructured, or you do not have any relational data.
-> • You only need to serialize and deserialize data (JSON, XML, YAML, etc.).
-> • You need to store a massive amount of data.
+>
+> - Your application requires super-low latency.
+> - Your data are unstructured, or you do not have any relational data.
+> - You only need to serialize and deserialize data (JSON, XML, YAML, etc.).
+> - You need to store a massive amount of data.
 
 ---
 
@@ -167,18 +126,19 @@ for web/mobile traffic, the other for the database (Figure 1-3). Separating web/
 
 برای اکثر توسعه‌دهندگان، پایگاه‌های داده‌ی رابطه‌ای بهترین گزینه هستند، زیرا بیش از ۴۰ سال است که وجود دارند و از نظر تاریخی عملکرد خوبی داشته‌اند. اما اگر پایگاه‌های داده‌ی رابطه‌ای برای موارد استفاده‌ی خاص شما مناسب نیستند، بررسی گزینه‌های فراتر از پایگاه‌های داده‌ی رابطه‌ای ضروری است. پایگاه‌های داده‌ی غیررابطه‌ای ممکن است در موارد زیر انتخاب مناسبی باشند:
 
-• اپلیکیشن شما به تأخیر (latency) بسیار پایینی نیاز دارد.
-• داده‌های شما ساختارنیافته (unstructured) هستند یا هیچ داده‌ی رابطه‌ای ندارید.
-• فقط نیاز به سریالایز و دیسریالایز کردن داده (JSON، XML، YAML و غیره) دارید.
-• نیاز به ذخیره‌ی حجم عظیمی از داده دارید.
+- اپلیکیشن شما به تأخیر (latency) بسیار پایینی نیاز دارد.
+- داده‌های شما ساختارنیافته (unstructured) هستند یا هیچ داده‌ی رابطه‌ای ندارید.
+- فقط نیاز به سریالایز و دیسریالایز کردن داده (JSON، XML، YAML و غیره) دارید.
+- نیاز به ذخیره‌ی حجم عظیمی از داده دارید.
 
 ## متن کتاب
 
 > **Vertical scaling vs horizontal scaling:** Vertical scaling, referred to as "scale up", means the process of adding more power (CPU, RAM, etc.) to your servers. Horizontal scaling, referred to as "scale-out", allows you to scale by adding more servers into your pool of resources.
 >
 > When traffic is low, vertical scaling is a great option, and the simplicity of vertical scaling is its main advantage. Unfortunately, it comes with serious limitations.
-> • Vertical scaling has a hard limit. It is impossible to add unlimited CPU and memory to a single server.
-> • Vertical scaling does not have failover and redundancy. If one server goes down, the website/app goes down with it completely.
+>
+> - Vertical scaling has a hard limit. It is impossible to add unlimited CPU and memory to a single server.
+> - Vertical scaling does not have failover and redundancy. If one server goes down, the website/app goes down with it completely.
 >
 > Horizontal scaling is more desirable for large scale applications due to the limitations of vertical scaling.
 >
@@ -192,8 +152,8 @@ for web/mobile traffic, the other for the database (Figure 1-3). Separating web/
 
 هنگامی که ترافیک کم است، مقیاس‌پذیری عمودی گزینه‌ی بسیار خوبی است و سادگی آن مزیت اصلی‌اش محسوب می‌شود. اما متأسفانه این روش با محدودیت‌های جدی همراه است:
 
-• مقیاس‌پذیری عمودی یک محدودیت سخت‌افزاری دارد. افزودن CPU و حافظه‌ی نامحدود به یک سرور واحد غیرممکن است.
-• مقیاس‌پذیری عمودی فاقد قابلیت failover و افزونگی (redundancy) است. اگر یک سرور از کار بیفتد، کل وب‌سایت/اپلیکیشن به‌طور کامل از دسترس خارج می‌شود.
+- مقیاس‌پذیری عمودی یک محدودیت سخت‌افزاری دارد. افزودن CPU و حافظه‌ی نامحدود به یک سرور واحد غیرممکن است.
+- مقیاس‌پذیری عمودی فاقد قابلیت failover و افزونگی (redundancy) است. اگر یک سرور از کار بیفتد، کل وب‌سایت/اپلیکیشن به‌طور کامل از دسترس خارج می‌شود.
 
 به دلیل محدودیت‌های مقیاس‌پذیری عمودی، مقیاس‌پذیری افقی برای اپلیکیشن‌های بزرگ‌مقیاس مطلوب‌تر است.
 
