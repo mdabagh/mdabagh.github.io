@@ -617,6 +617,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const viewer = new PostViewer();
   await viewer.load();
+
+
+  document.querySelectorAll('blockquote').forEach(blockquote => {
+    const text = blockquote.textContent.trim();
+    if (!/[آ-ی]/.test(text)) {
+        blockquote.style.direction = 'ltr';
+    }
+  });
+
 });
 </script>
 
