@@ -157,6 +157,50 @@
   .prose th,.prose td{border:1px solid #D8DED6; padding:9px 12px; text-align:right;}
   .prose th{background:var(--paper-alt); font-weight:700;}
 
+  /* ================= READING PROGRESS ================= */
+  #readingProgressBar{
+    position:fixed; top:0; right:0; left:0; height:3px; background:var(--amber);
+    width:0%; z-index:200; transition:width .15s ease;
+  }
+  .resume-toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--navy-deep); color:#EDF1F5; padding:12px 20px; border-radius:8px;
+    display:flex; align-items:center; gap:14px; font-size:13.5px; z-index:150;
+    box-shadow:0 8px 24px rgba(14,42,71,0.35); opacity:0; pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease; border:1px solid var(--navy-line);
+  }
+  .resume-toast.show{opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto;}
+  .resume-toast button{
+    font-family:'Vazirmatn', sans-serif; font-size:12.5px; font-weight:700; cursor:pointer;
+    border:0; border-radius:5px; padding:6px 12px;
+  }
+  .resume-toast .btn-go{background:var(--amber); color:var(--navy-deep);}
+  .resume-toast .btn-dismiss{background:transparent; color:#9FB0C3;}
+
+  /* چیپ دائمی گوشه صفحه: وضعیت ذخیره‌سازی زنده + دکمه‌ی همیشگی برای ادامه‌ی مطالعه */
+  .progress-chip{
+    position:fixed; bottom:22px; left:22px; z-index:180;
+    display:flex; align-items:center; gap:10px;
+    background:#EDF1F5; color:var(--ink); border:1px solid #C9D0C2;
+    padding:10px 14px; border-radius:10px; max-width:280px;
+    font-size:12px; line-height:1.6; cursor:pointer;
+    box-shadow:0 6px 18px rgba(14,42,71,0.14);
+    opacity:0; transform:translateY(12px); pointer-events:none;
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .progress-chip.show{opacity:1; transform:translateY(0); pointer-events:auto;}
+  .progress-chip:hover{border-color:var(--amber-dark);}
+  .progress-chip-dot{
+    width:9px; height:9px; border-radius:50%; background:var(--amber-dark); flex-shrink:0;
+    animation:chipPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes chipPulse{0%,100%{opacity:1;} 50%{opacity:.35;}}
+  .progress-chip.done .progress-chip-dot{background:#2e8b57; animation:none;}
+  .progress-chip-close{
+    background:none; border:0; color:var(--ink-soft); cursor:pointer; font-size:14px;
+    padding:0 0 0 4px; line-height:1; flex-shrink:0;
+  }
+
   .loading, .empty, .error{text-align:center; padding:60px 0; color:var(--ink-soft);}
   .loading::after{content:''; animation:dots 1.4s steps(4) infinite;}
   @keyframes dots{0%{content:'';} 25%{content:'.';} 50%{content:'..';} 75%{content:'...';}}
@@ -168,6 +212,18 @@
 </style>
 </head>
 <body>
+
+<div id="readingProgressBar"></div>
+<div id="resumeToast" class="resume-toast">
+  <span id="resumeToastText">تا ۰٪ این یادداشت رو خونده بودی</span>
+  <button class="btn-go" id="resumeGoBtn">ادامه بده</button>
+  <button class="btn-dismiss" id="resumeDismissBtn">بستن</button>
+</div>
+<div id="progressChip" class="progress-chip" title="برای بازگشت به آخرین نقطه‌ی مطالعه کلیک کن">
+  <span class="progress-chip-dot"></span>
+  <span id="progressChipText">در حال ردیابی پیشرفت مطالعه…</span>
+  <button class="progress-chip-close" id="progressChipClose" title="بستن" aria-label="بستن">✕</button>
+</div>
 
 <header>
   <div class="wrap nav-inner">
@@ -250,6 +306,47 @@ function injectSchema(data) {
 }
 
 // ============================================
+// سیستم ذخیره پیشرفت مطالعه (localStorage)
+// همون منطق index.html — اینجا کاربر ادامه می‌ده
+// ============================================
+
+class ReadingProgressStore {
+  constructor(prefix = 'readingProgress') { this.prefix = prefix; }
+  key(categoryId, slug) { return `${this.prefix}:${categoryId}:${slug}`; }
+
+  save(categoryId, slug, { percent, scrollY, title }) {
+    try {
+      const data = {
+        percent: Math.max(0, Math.min(100, Math.round(percent))),
+        scrollY: scrollY || 0,
+        title: title || '',
+        updatedAt: Date.now()
+      };
+      localStorage.setItem(this.key(categoryId, slug), JSON.stringify(data));
+      return data;
+    } catch (e) {
+      console.error('Error saving reading progress:', e);
+      return null;
+    }
+  }
+
+  get(categoryId, slug) {
+    try {
+      const raw = localStorage.getItem(this.key(categoryId, slug));
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      console.error('Error reading progress:', e);
+      return null;
+    }
+  }
+
+  clear(categoryId, slug) {
+    try { localStorage.removeItem(this.key(categoryId, slug)); }
+    catch (e) { console.error('Error clearing progress:', e); }
+  }
+}
+
+// ============================================
 // نمایش یک پست — تک صفحه‌ی generic برای همه‌ی دسته‌ها
 // آدرس: blog/post.html?cat=design-system&slug=FORWARD
 // ============================================
@@ -265,6 +362,8 @@ class PostViewer {
     const params = new URLSearchParams(window.location.search);
     this.cat = params.get('cat');
     this.slug = params.get('slug');
+    this.progressStore = new ReadingProgressStore();
+    this._saveTimeout = null;
   }
 
   formatDate(dateStr) {
@@ -387,10 +486,119 @@ class PostViewer {
     contentEl.innerHTML = `<article class="prose">${html}</article>`;
 
     this.revealAll();
+    this.setupReadingProgress();
   }
 
   revealAll() {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  }
+
+  // ============================================
+  // نشانه‌گذاری و ادامه‌ی مطالعه
+  // ============================================
+  toPersianNumber(num) {
+    const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    return num.toString().replace(/\d/g, d => persian[parseInt(d)]);
+  }
+
+  calcScrollPercent() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return 100;
+    return Math.max(0, Math.min(100, (scrollTop / docHeight) * 100));
+  }
+
+  setupReadingProgress() {
+    const progressBarEl = document.getElementById('readingProgressBar');
+    const toastEl = document.getElementById('resumeToast');
+    const toastTextEl = document.getElementById('resumeToastText');
+    const goBtn = document.getElementById('resumeGoBtn');
+    const dismissBtn = document.getElementById('resumeDismissBtn');
+    const chipEl = document.getElementById('progressChip');
+    const chipTextEl = document.getElementById('progressChipText');
+    const chipCloseBtn = document.getElementById('progressChipClose');
+
+    let lastSavedScrollY = 0;
+    let chipDismissedByUser = false;
+
+    const scrollToSaved = (y) => window.scrollTo({ top: y, behavior: 'smooth' });
+
+    // چیپ گوشه صفحه رو با متن تازه نشون بده (مگر اینکه خود کاربر بسته باشدش)
+    const updateChip = (percent, { done = false } = {}) => {
+      if (chipDismissedByUser) return;
+      chipEl.classList.toggle('done', done);
+      chipTextEl.textContent = done
+        ? 'این یادداشت رو کامل مطالعه کردی ✓'
+        : `${this.toPersianNumber(percent)}٪ پیشرفت مطالعه ذخیره شد — دفعه بعد از همینجا ادامه می‌تونی بدی`;
+      chipEl.classList.add('show');
+    };
+
+    // ---- ۱) اگه پیشرفت قبلی (از جلسه‌ی قبل) وجود داره، toast رو نشون بده ----
+    const saved = this.progressStore.get(this.cat, this.slug);
+    if (saved && saved.scrollY > 0 && saved.percent < 95) {
+      lastSavedScrollY = saved.scrollY;
+      toastTextEl.textContent = `تا ${this.toPersianNumber(saved.percent)}٪ این یادداشت رو خونده بودی`;
+      // کمی صبر می‌کنیم تا محتوا کامل render و layout بشه، بعد toast رو نشون بده
+      setTimeout(() => toastEl.classList.add('show'), 500);
+
+      const hideToast = () => toastEl.classList.remove('show');
+
+      goBtn.addEventListener('click', () => {
+        scrollToSaved(saved.scrollY);
+        hideToast();
+      });
+      dismissBtn.addEventListener('click', hideToast);
+
+      // toast مدت زیادی (۱۲ ثانیه) روی صفحه می‌مونه؛ فقط با کلیک کاربر یا این تایمر بسته می‌شه،
+      // نه با اولین حرکت جزئی اسکرول (که قبلاً باعث می‌شد خیلی زود ناپدید بشه)
+      setTimeout(hideToast, 12000);
+
+      // اگه toast بسته/ناپدید شد ولی هنوز کامل مطالعه نکرده، چیپ گوشه صفحه
+      // همیشه در دسترس می‌مونه تا بشه از همونجا ادامه داد
+      updateChip(saved.percent);
+      chipEl.onclick = (e) => {
+        if (e.target === chipCloseBtn) return;
+        scrollToSaved(lastSavedScrollY);
+      };
+    }
+
+    chipCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      chipDismissedByUser = true;
+      chipEl.classList.remove('show');
+    });
+
+    // ---- ۲) ردیابی و ذخیره‌ی پیشرفت مطالعه هنگام اسکرول (throttle شده) ----
+    const onScroll = () => {
+      const percent = this.calcScrollPercent();
+      if (progressBarEl) progressBarEl.style.width = percent + '%';
+
+      if (this._saveTimeout) return;
+      this._saveTimeout = setTimeout(() => {
+        this._saveTimeout = null;
+        const currentPercent = this.calcScrollPercent();
+        lastSavedScrollY = window.scrollY;
+        const result = this.progressStore.save(this.cat, this.slug, {
+          percent: currentPercent,
+          scrollY: lastSavedScrollY,
+          title: document.title
+        });
+
+        if (result && result.percent >= 95) {
+          // وقتی مقاله تقریباً تمام خونده شد، دیگه لازم نیست چیزی ذخیره بمونه
+          this.progressStore.clear(this.cat, this.slug);
+          updateChip(100, { done: true });
+          // چیپ «کامل شد» رو بعد از چند ثانیه خودش محو کن
+          setTimeout(() => chipEl.classList.remove('show'), 4000);
+        } else if (result && result.percent >= 3) {
+          // به کاربر همیشه (نه فقط لحظه‌ی ورود) نشون بده که پیشرفتش داره ذخیره می‌شه
+          updateChip(result.percent);
+        }
+      }, 700);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // مقدار اولیه‌ی نوار پیشرفت
   }
 }
 
