@@ -71,7 +71,7 @@
 | | |
 |---|---|
 | **ایمیل** | m3dabagh@gmail.com |
-| **تلفن** | ۰۹۱۰ ۴۱۲ ۳۸۰۸ |
+| **تلفن** | ۰۹۱۰۴۱۲۳۸۰۸ |
 | **LinkedIn** | [linkedin.com/in/msdabbagh](https://linkedin.com/in/msdabbagh) |
 | **GitHub** | [github.com/mdabagh](https://github.com/mdabagh) |
 
