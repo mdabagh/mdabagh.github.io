@@ -194,32 +194,24 @@ GET /users/12 - Retrieve user object for id = 12
 
 
 
+###### 📄 صفحه ۱۰
 
-
-## متن کتاب
-Load balancer
-A load balancer evenly distributes incoming traffic among web servers that are defined in a load-balanced set. Figure 1-4 shows how a load balancer works
-
-# ترجمه
-
-### بالانسر بار (Load Balancer) — صفحه ۱۰
+> **Load balancer** A load balancer evenly distributes incoming traffic among web servers that are defined in a load-balanced set. Figure 1-4 shows how a load balancer works
 
 یک **بالانسر بار (Load Balancer)** ترافیک ورودی را به‌طور یکنواخت بین سرورهای وبی که در یک مجموعه‌ی بالانس‌شده (load-balanced set) تعریف شده‌اند، توزیع می‌کند. شکل ۱-۴ نحوه‌ی عملکرد یک بالانسر بار را نشان می‌دهد.
 
 ![Figure 1-4](design-system/images/System-Design-Interview-page10-image1.jpg)
 
-## متن کتاب
+---
 
-As shown in Figure 1-4, users connect to the public IP of the load balancer directly. With this setup, web servers are unreachable directly by clients anymore. For better security, private IPs are used for communication between servers. A private IP is an IP address reachable only between servers in the same network; however, it is unreachable over the internet. The load balancer communicates with web servers through private IPs.
-In Figure 1-4, after a load balancer and a second web server are added, we successfully solved no failover issue and improved the availability of the web tier. Details are explained below:
-• If server 1 goes offline, all the traffic will be routed to server 2. This prevents the website from going offline. We will also add a new healthy web server to the server pool to balance the load.
-• If the website traffic grows rapidly, and two servers are not enough to handle the traffic, the load balancer can handle this problem gracefully. You only need to add more servers to the web server pool, and the load balancer automatically starts to send requests to them.
-Now the web tier looks good, what about the data tier? The current design has one database, so it does not support failover and redundancy. Database replication is a common technique to address those problems. Let us take a look.
+>  As shown in Figure 1-4, users connect to the public IP of the load balancer directly. With this setup, web servers are unreachable directly by clients anymore. For better   security, private IPs are used for communication between servers. A private IP is an IP address reachable only between servers in the same network; however, it is unreachable >  over the internet. The load balancer communicates with web servers through private IPs.
+>  In Figure 1-4, after a load balancer and a second web server are added, we successfully solved no failover issue and improved the availability of the web tier. Details are >  explained below:
+>  • If server 1 goes offline, all the traffic will be routed to server 2. This prevents the website from going offline. We will also add a new healthy web server to the server >  pool to balance the load.
+>  • If the website traffic grows rapidly, and two servers are not enough to handle the traffic, the load balancer can handle this problem gracefully. You only need to add more >  servers to the web server pool, and the load balancer automatically starts to send requests to them.
+>  Now the web tier looks good, what about the data tier? The current design has one database, so it does not support failover and redundancy. Database replication is a common >  technique to address those problems. Let us take a look.
 
-# ترجمه
 
-### نحوه‌ی عملکرد بالانسر بار — صفحه ۱۰
-
+### نحوه‌ی عملکرد بالانسر بار
 همان‌طور که در شکل ۱-۴ نشان داده شده، کاربران مستقیماً به IP عمومی (public IP) بالانسر بار متصل می‌شوند. با این ساختار، سرورهای وب دیگر به‌طور مستقیم توسط کلاینت‌ها قابل دسترسی نیستند. برای امنیت بیشتر، از IPهای خصوصی (private IP) برای ارتباط بین سرورها استفاده می‌شود. IP خصوصی، آدرسی است که فقط بین سرورهای داخل یک شبکه‌ی یکسان قابل دسترسی است و از طریق اینترنت قابل‌دسترس نیست. بالانسر بار از طریق IPهای خصوصی با سرورهای وب ارتباط برقرار می‌کند.
 
 در شکل ۱-۴، پس از اضافه شدن یک بالانسر بار و یک سرور وب دوم، مشکل نبود failover برطرف شده و در دسترس‌بودن (availability) لایه‌ی وب بهبود یافته است. جزئیات آن به شرح زیر است:
@@ -229,23 +221,26 @@ Now the web tier looks good, what about the data tier? The current design has on
 
 حالا که لایه‌ی وب وضعیت خوبی دارد، وضعیت لایه‌ی داده چطور است؟ طراحی فعلی تنها یک پایگاه داده دارد، پس از failover و افزونگی (redundancy) پشتیبانی نمی‌کند. **همانندسازی پایگاه داده (Database Replication)** تکنیکی رایج برای رفع این مشکلات است. در ادامه به بررسی آن می‌پردازیم.
 
-## متن کتاب
 
-Database replication
-Quoted from Wikipedia: "Database replication can be used in many database management systems, usually with a master/slave relationship between the original (master) and the copies (slaves)" [3].
-A master database generally only supports write operations. A slave database gets copies of the data from the master database and only supports read operations. All the data-modifying commands like insert, delete, or update must be sent to the master database. Most applications require a much higher ratio of reads to writes; thus, the number of slave databases in a system is usually larger than the number of master databases. Figure 1-5 shows a master database with multiple slave databases.
+---
 
-![Figure 1-5](design-system/images/System-Design-Interview-page12-image1.jpg)
+###### 📄 صفحه ۱۲
 
-# ترجمه
 
-### همانندسازی پایگاه داده (Database Replication) — صفحه ۱۲
+>  **Database replication**
+>  Quoted from Wikipedia: "Database replication can be used in many database management systems, usually with a master/slave relationship between the original (master) and the >  copies (slaves)" [3].
+>  A master database generally only supports write operations. A slave database gets copies of the data from the master database and only supports read operations. All the   data-modifying commands like insert, delete, or update must be sent to the master database. Most applications require a much higher ratio of reads to writes; thus, the number >  of slave databases in a system is usually larger than the number of master databases. Figure 1-5 shows a master database with multiple slave databases.
+
+
+
+### همانندسازی پایگاه داده (Database Replication)
 
 به‌نقل از ویکی‌پدیا: "همانندسازی پایگاه داده می‌تواند در بسیاری از سیستم‌های مدیریت پایگاه داده استفاده شود، معمولاً با یک رابطه‌ی مستر/اسلیو بین نسخه‌ی اصلی (master) و کپی‌ها (slave)".
 
 یک پایگاه داده‌ی master معمولاً فقط از عملیات نوشتن (write) پشتیبانی می‌کند. یک پایگاه داده‌ی slave، کپی‌هایی از داده را از پایگاه داده‌ی master دریافت می‌کند و فقط از عملیات خواندن (read) پشتیبانی می‌کند. تمام دستورات تغییردهنده‌ی داده مانند insert، delete یا update باید به پایگاه داده‌ی master ارسال شوند. اکثر اپلیکیشن‌ها به نسبت بسیار بالاتری از عملیات خواندن نسبت به نوشتن نیاز دارند؛ به همین دلیل، تعداد پایگاه‌های داده‌ی slave در یک سیستم معمولاً بیشتر از تعداد پایگاه‌های داده‌ی master است. شکل ۱-۵ یک پایگاه داده‌ی master به همراه چند پایگاه داده‌ی slave را نشان می‌دهد.
 
 
+![Figure 1-5](design-system/images/System-Design-Interview-page12-image1.jpg)
 
 
 
@@ -254,29 +249,23 @@ A master database generally only supports write operations. A slave database get
 
 
 
+---
 
 
+###### 📄 صفحه ۱۴
+
+>  Advantages of database replication:
+>  • Better performance: In the master-slave model, all writes and updates happen in master nodes; whereas, read operations are distributed across slave nodes. This model improves   performance because it allows more queries to be processed in parallel.
+>  • Reliability: If one of your database servers is destroyed by a natural disaster, such as a typhoon or an earthquake, data is still preserved. You do not need to worry about >  data loss because data is replicated across multiple locations.
+>  • High availability: By replicating data across different locations, your website remains in operation even if a database is offline as you can access data stored in another >  database server.
+>  In the previous section, we discussed how a load balancer helped to improve system availability. We ask the same question here: what if one of the databases goes offline? The >  architectural design discussed in Figure 1-5 can handle this case:
+>  • If only one slave database is available and it goes offline, read operations will be directed to the master database temporarily. As soon as the issue is found, a new slave >  database will replace the old one. In case multiple slave databases are available, read operations are redirected to other healthy slave databases. A new database server will   replace the old one.
+>  • If the master database goes offline, a slave database will be promoted to be the new master. All the database operations will be temporarily executed on the new master   database. A new slave database will replace the old one for data replication immediately.
+>  In production systems, promoting a new master is more complicated as the data in a slave database might not be up to date. The missing data needs to be updated by running data   recovery scripts. Although some other replication methods like multi-masters and circular replication could help, those setups are more complicated; and their discussions are   beyond the scope of this book. Interested readers should refer to the listed reference materials [4] [5].
+>  Figure 1-6 shows the system design after adding the load balancer and database replication.
 
 
-
-
-## متن کتاب
-
-Advantages of database replication:
-• Better performance: In the master-slave model, all writes and updates happen in master nodes; whereas, read operations are distributed across slave nodes. This model improves performance because it allows more queries to be processed in parallel.
-• Reliability: If one of your database servers is destroyed by a natural disaster, such as a typhoon or an earthquake, data is still preserved. You do not need to worry about data loss because data is replicated across multiple locations.
-• High availability: By replicating data across different locations, your website remains in operation even if a database is offline as you can access data stored in another database server.
-In the previous section, we discussed how a load balancer helped to improve system availability. We ask the same question here: what if one of the databases goes offline? The architectural design discussed in Figure 1-5 can handle this case:
-• If only one slave database is available and it goes offline, read operations will be directed to the master database temporarily. As soon as the issue is found, a new slave database will replace the old one. In case multiple slave databases are available, read operations are redirected to other healthy slave databases. A new database server will replace the old one.
-• If the master database goes offline, a slave database will be promoted to be the new master. All the database operations will be temporarily executed on the new master database. A new slave database will replace the old one for data replication immediately.
-In production systems, promoting a new master is more complicated as the data in a slave database might not be up to date. The missing data needs to be updated by running data recovery scripts. Although some other replication methods like multi-masters and circular replication could help, those setups are more complicated; and their discussions are beyond the scope of this book. Interested readers should refer to the listed reference materials [4] [5].
-Figure 1-6 shows the system design after adding the load balancer and database replication.
-
-![Figure 1-6](design-system/images/System-Design-Interview-page14-image1.jpg)
-
-# ترجمه
-
-### مزایای همانندسازی پایگاه داده — صفحه ۱۲ تا ۱۴
+### مزایای همانندسازی پایگاه داده
 
 - **عملکرد بهتر:** در مدل master-slave، تمام عملیات نوشتن و به‌روزرسانی روی گره‌های master انجام می‌شود؛ در حالی که عملیات خواندن بین گره‌های slave توزیع می‌شود. این مدل عملکرد را بهبود می‌بخشد، چون امکان پردازش موازی تعداد بیشتری کوئری را فراهم می‌کند.
 - **قابلیت‌اطمینان (Reliability):** اگر یکی از سرورهای پایگاه داده‌ی شما در اثر یک بلای طبیعی مانند طوفان یا زلزله از بین برود، داده‌ها همچنان حفظ می‌شوند. نیازی نیست نگران از دست رفتن داده باشید، زیرا داده در چند مکان مختلف همانندسازی شده است.
@@ -291,19 +280,23 @@ Figure 1-6 shows the system design after adding the load balancer and database r
 
 شکل ۱-۶ طراحی سیستم پس از افزودن بالانسر بار و همانندسازی پایگاه داده را نشان می‌دهد (صفحه ۱۴).
 
-## متن کتاب
+![Figure 1-6](design-system/images/System-Design-Interview-page14-image1.jpg)
 
-Let us take a look at the design:
-• A user gets the IP address of the load balancer from DNS.
-• A user connects the load balancer with this IP address.
-• The HTTP request is routed to either Server 1 or Server 2.
-• A web server reads user data from a slave database.
-• A web server routes any data-modifying operations to the master database. This includes write, update, and delete operations.
-Now, you have a solid understanding of the web and data tiers, it is time to improve the load/response time. This can be done by adding a cache layer and shifting static content (JavaScript/CSS/image/video files) to the content delivery network (CDN).
 
-# ترجمه
 
-### بررسی طراحی نهایی — صفحه ۱۴
+
+---
+
+>  **Let us take a look at the design:**
+>  • A user gets the IP address of the load balancer from DNS.
+>  • A user connects the load balancer with this IP address.
+>  • The HTTP request is routed to either Server 1 or Server 2.
+>  • A web server reads user data from a slave database.
+>  • A web server routes any data-modifying operations to the master database. This includes write, update, and delete operations.
+>  Now, you have a solid understanding of the web and data tiers, it is time to improve the load/response time. This can be done by adding a cache layer and shifting static   content (JavaScript/CSS/image/video files) to the content delivery network (CDN).
+
+
+### بررسی طراحی نهایی
 
 بیایید نگاهی به این طراحی بیندازیم:
 
@@ -315,16 +308,16 @@ Now, you have a solid understanding of the web and data tiers, it is time to imp
 
 اکنون که درک خوبی از لایه‌های وب و داده به دست آورده‌اید، وقت آن رسیده که زمان بارگذاری/پاسخ (load/response time) را بهبود دهیم. این کار با افزودن یک لایه‌ی کش (cache) و انتقال محتوای استاتیک (فایل‌های JavaScript/CSS/تصویر/ویدیو) به شبکه‌ی توزیع محتوا (CDN) امکان‌پذیر است.
 
-## متن کتاب
 
-Cache
-A cache is a temporary storage area that stores the result of expensive responses or frequently accessed data in memory so that subsequent requests are served more quickly. As illustrated in Figure 1-6, every time a new web page loads, one or more database calls are executed to fetch data. The application performance is greatly affected by calling the database repeatedly. The cache can mitigate this problem.
-Cache tier
-The cache tier is a temporary data store layer, much faster than the database. The benefits of having a separate cache tier include better system performance, ability to reduce database workloads, and the ability to scale the cache tier independently. Figure 1-7 shows a possible setup of a cache server:
+---
 
-![Figure 1-7](design-system/images/System-Design-Interview-page15-image1.jpg)
+###### 📄 صفحه ۱۵
 
-# ترجمه
+> **Cache**
+> A cache is a temporary storage area that stores the result of expensive responses or frequently accessed data in memory so that subsequent requests are served more quickly. As illustrated in Figure 1-6, every time a new web page loads, one or more database calls are executed to fetch data. The application performance is greatly affected by calling the database repeatedly. The cache can mitigate this problem.
+> ***Cache tier***
+> The cache tier is a temporary data store layer, much faster than the database. The benefits of having a separate cache tier include better system performance, ability to reduce database workloads, and the ability to scale the cache tier independently. Figure 1-7 shows a possible setup of a cache server:
+
 
 ### کش (Cache) — صفحه ۱۵
 
@@ -334,12 +327,15 @@ The cache tier is a temporary data store layer, much faster than the database. T
 
 لایه‌ی کش، یک لایه‌ی ذخیره‌سازی موقت داده است که بسیار سریع‌تر از پایگاه داده عمل می‌کند. مزایای داشتن یک لایه‌ی کش جداگانه شامل بهبود عملکرد سیستم، کاهش بار روی پایگاه داده، و امکان مقیاس‌پذیری مستقل لایه‌ی کش است. شکل ۱-۷ نمونه‌ای از راه‌اندازی یک سرور کش را نشان می‌دهد.
 
-## متن کتاب
+![Figure 1-7](design-system/images/System-Design-Interview-page15-image1.jpg)
 
-After receiving a request, a web server first checks if the cache has the available response. If it has, it sends data back to the client. If not, it queries the database, stores the response in cache, and sends it back to the client. This caching strategy is called a read-through cache. Other caching strategies are available depending on the data type, size, and access patterns. A previous study explains how different caching strategies work [6].
-Interacting with cache servers is simple because most cache servers provide APIs for common programming languages. The following code snippet shows typical Memcached APIs:
 
-![Memcached API example](design-system/images/System-Design-Interview-page15-image2.jpg)
+
+---
+
+> After receiving a request, a web server first checks if the cache has the available response. If it has, it sends data back to the client. If not, it queries the database, stores the response in cache, and sends it back to the client. This caching strategy is called a read-through cache. Other caching strategies are available depending on the data type, size, and access patterns. A previous study explains how different caching strategies work [6].
+> Interacting with cache servers is simple because most cache servers provide APIs for common programming languages. The following code snippet shows typical Memcached APIs:
+
 
 # ترجمه
 
@@ -349,20 +345,25 @@ Interacting with cache servers is simple because most cache servers provide APIs
 
 تعامل با سرورهای کش ساده است، زیرا اکثر سرورهای کش برای زبان‌های برنامه‌نویسی رایج، APIهایی ارائه می‌دهند. قطعه‌کد زیر نمونه‌ای از APIهای متداول Memcached را نشان می‌دهد.
 
-## متن کتاب
 
-Considerations for using cache
-Here are a few considerations for using a cache system:
-• Decide when to use cache. Consider using cache when data is read frequently but modified infrequently. Since cached data is stored in volatile memory, a cache server is not ideal for persisting data. For instance, if a cache server restarts, all the data in memory is lost. Thus, important data should be saved in persistent data stores.
-• Expiration policy. It is a good practice to implement an expiration policy. Once cached data is expired, it is removed from the cache. When there is no expiration policy, cached data will be stored in the memory permanently. It is advisable not to make the expiration date too short as this will cause the system to reload data from the database too frequently. Meanwhile, it is advisable not to make the expiration date too long as the data can become stale.
-• Consistency: This involves keeping the data store and the cache in sync. Inconsistency can happen because data-modifying operations on the data store and cache are not in a single transaction. When scaling across multiple regions, maintaining consistency between the data store and cache is challenging. For further details, refer to the paper titled "Scaling Memcache at Facebook" published by Facebook [7].
-• Mitigating failures: A single cache server represents a potential single point of failure (SPOF), defined in Wikipedia as follows: "A single point of failure (SPOF) is a part of a system that, if it fails, will stop the entire system from working" [8]. As a result, multiple cache servers across different data centers are recommended to avoid SPOF. Another recommended approach is to overprovision the required memory by certain percentages. This provides a buffer as the memory usage increases
+![Memcached API example](design-system/images/System-Design-Interview-page15-image2.jpg)
 
-![Considerations for using cache](design-system/images/System-Design-Interview-page16-image1.jpg)
 
-# ترجمه
 
-### ملاحظات استفاده از کش — صفحه ۱۶
+---
+
+###### 📄 صفحه ۱۶
+
+
+> *Considerations for using cache*
+> **Here are a few considerations for using a cache system:**
+> • Decide when to use cache. Consider using cache when data is read frequently but modified infrequently. Since cached data is stored in volatile memory, a cache server is not ideal for persisting data. For instance, if a cache server restarts, all the data in memory is lost. Thus, important data should be saved in persistent data stores.
+> • Expiration policy. It is a good practice to implement an expiration policy. Once cached data is expired, it is removed from the cache. When there is no expiration policy, cached data will be stored in the memory permanently. It is advisable not to make the expiration date too short as this will cause the system to reload data from the database too frequently. Meanwhile, it is advisable not to make the expiration date too long as the data can become stale.
+> • Consistency: This involves keeping the data store and the cache in sync. Inconsistency can happen because data-modifying operations on the data store and cache are not in a single transaction. When scaling across multiple regions, maintaining consistency between the data store and cache is challenging. For further details, refer to the paper titled "Scaling Memcache at Facebook" published by Facebook [7].
+> • Mitigating failures: A single cache server represents a potential single point of failure (SPOF), defined in Wikipedia as follows: "A single point of failure (SPOF) is a part of a system that, if it fails, will stop the entire system from working" [8]. As a result, multiple cache servers across different data centers are recommended to avoid SPOF. Another recommended approach is to overprovision the required memory by certain percentages. This provides a buffer as the memory usage increases
+
+
+### ملاحظات استفاده از کش
 
 در ادامه چند نکته درباره‌ی استفاده از سیستم کش آورده شده است:
 
@@ -371,12 +372,18 @@ Here are a few considerations for using a cache system:
 - **سازگاری (Consistency):** این موضوع به معنای هماهنگ نگه‌داشتن فضای ذخیره‌سازی داده و کش است. ناسازگاری می‌تواند رخ دهد چون عملیات تغییردهنده‌ی داده روی پایگاه داده و کش در یک تراکنش واحد انجام نمی‌شوند. هنگام مقیاس‌پذیری بین چند منطقه‌ی جغرافیایی، حفظ سازگاری بین پایگاه داده و کش چالش‌برانگیز است. برای جزئیات بیشتر، به مقاله‌ی «Scaling Memcache at Facebook» منتشرشده توسط فیسبوک مراجعه کنید [۷].
 - **کاهش اثر خرابی‌ها (Mitigating Failures):** یک سرور کش تنها، می‌تواند به‌عنوان یک نقطه‌ی شکست واحد (Single Point of Failure یا SPOF) عمل کند. طبق تعریف ویکی‌پدیا، "نقطه‌ی شکست واحد بخشی از یک سیستم است که اگر از کار بیفتد، کل سیستم را متوقف می‌کند" [۸]. به همین دلیل، استفاده از چند سرور کش در مراکز داده‌ی مختلف برای جلوگیری از SPOF توصیه می‌شود. رویکرد توصیه‌شده‌ی دیگر، اختصاص‌دادن حافظه‌ی بیشتر از میزان موردنیاز (overprovisioning) به میزان درصد مشخصی است. این کار در صورت افزایش مصرف حافظه، یک حاشیه‌ی اطمینان (buffer) ایجاد می‌کند.
 
-## متن کتاب
+![Considerations for using cache](design-system/images/System-Design-Interview-page16-image1.jpg)
 
-Eviction Policy: Once the cache is full, any requests to add items to the cache might cause existing items to be removed. This is called cache eviction. Least-recently-used (LRU) is the most popular cache eviction policy. Other eviction policies, such as the Least Frequently Used (LFU) or First in First Out (FIFO), can be adopted to satisfy different use cases.
 
-# ترجمه
+---
 
-### سیاست حذف داده از کش (Eviction Policy) — صفحه ۱۶
+
+> Eviction Policy: Once the cache is full, any requests to add items to the cache might cause existing items to be removed. This is called cache eviction. Least-recently-used (LRU) is the most popular cache eviction policy. Other eviction policies, such as the Least Frequently Used (LFU) or First in First Out (FIFO), can be adopted to satisfy different use cases.
+
+### سیاست حذف داده از کش (Eviction Policy)
 
 **سیاست حذف (Eviction Policy):** زمانی که کش پر می‌شود، هر درخواستی برای افزودن آیتم جدید به کش ممکن است باعث حذف آیتم‌های موجود شود. این فرایند **حذف از کش (Cache Eviction)** نامیده می‌شود. **کمترین استفاده‌ی اخیر (Least Recently Used یا LRU)** محبوب‌ترین سیاست حذف کش است. سیاست‌های دیگری مانند **کمترین دفعات استفاده (Least Frequently Used یا LFU)** یا **اولین ورودی، اولین خروجی (First In First Out یا FIFO)** نیز می‌توانند برای برآورده‌کردن نیازهای مختلف مورد استفاده قرار گیرند.
+
+
+
+---
