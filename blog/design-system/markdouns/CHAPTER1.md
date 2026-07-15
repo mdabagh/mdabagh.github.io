@@ -279,7 +279,9 @@ GET /users/12 - Retrieve user object for id = 12
 در سیستم‌های واقعی (production)، ترفیع یک master جدید پیچیده‌تر است، زیرا ممکن است داده‌ی موجود در پایگاه داده‌ی slave به‌روز نباشد. داده‌های ازدست‌رفته باید با اجرای اسکریپت‌های بازیابی داده (data recovery scripts) به‌روزرسانی شوند. اگرچه روش‌های همانندسازی دیگری مانند multi-master و circular replication نیز می‌توانند کمک‌کننده باشند، اما راه‌اندازی آن‌ها پیچیده‌تر است و بررسی آن‌ها خارج از محدوده‌ی این کتاب است. خوانندگان علاقه‌مند می‌توانند به منابع مرجع ذکرشده مراجعه کنند [۴][۵].
 
 >  ***یاداشت شخصی***
+>
 >  سرچ در مورد Replication: Synchronous Replication , Asynchronous Replication و نحوه پیاده سازی کنید
+> [Replication galera cluster](https://mariadb.com/docs/galera-cluster/readme/about-galera-replication)
 
 شکل ۱-۶ طراحی سیستم پس از افزودن بالانسر بار و همانندسازی پایگاه داده را نشان می‌دهد (صفحه ۱۴).
 
