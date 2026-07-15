@@ -281,7 +281,8 @@ GET /users/12 - Retrieve user object for id = 12
 >  ***یاداشت شخصی***
 >
 >  سرچ در مورد Replication: Synchronous Replication , Asynchronous Replication و نحوه پیاده سازی کنید
-> [Replication galera cluster](https://mariadb.com/docs/galera-cluster/readme/about-galera-replication)
+> [Replication galera cluster Doc](https://mariadb.com/docs/galera-cluster/readme/about-galera-replication)
+> [راهنمای جامع کلاسترینگ Galera در MariaDB](https://mdabagh.github.io/blog/post.html?cat=design-system&slug=GaleraReplication)
 
 شکل ۱-۶ طراحی سیستم پس از افزودن بالانسر بار و همانندسازی پایگاه داده را نشان می‌دهد (صفحه ۱۴).
 
