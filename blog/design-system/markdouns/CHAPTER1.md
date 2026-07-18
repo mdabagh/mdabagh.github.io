@@ -284,7 +284,7 @@ GET /users/12 - Retrieve user object for id = 12
 >
 > [مستندات رسمی Replication در Galera Cluster](https://mariadb.com/docs/galera-cluster/readme/about-galera-replication)
 >
-> [راهنمای جامع کلاسترینگ Galera در MariaDB](https://mdabagh.github.io/blog/post.html?cat=design-system&slug=GaleraReplication)
+> [راهنمای جامع کلاسترینگ Galera در MariaDB](https://mdabagh.github.io/blog/post.html?cat=TIL&slug=GaleraReplication)
 
 شکل ۱-۶ طراحی سیستم پس از افزودن بالانسر بار و همانندسازی پایگاه داده را نشان می‌دهد (صفحه ۱۴).
 
@@ -395,3 +395,56 @@ GET /users/12 - Retrieve user object for id = 12
 
 
 ---
+
+
+
+>  **Content delivery network (CDN)**
+> A CDN is a network of geographically dispersed servers used to deliver static content. CDN servers cache static content like images, videos, CSS, JavaScript files, etc.Dynamic content caching is a relatively new concept and beyond the scope of this book. It enables the caching of HTML pages that are based on request path, query strings, cookies, and request headers. Refer to the article mentioned in reference material [9] for more about this. This book focuses on how to use CDN to cache static content. Here is how CDN works at the high-level: when a user visits a website, a CDN server closest to the user will deliver static content. Intuitively, the further users are from CDN servers, the slower the website loads. For example, if CDN servers are in San Francisco, users in Los Angeles will get content faster than users in Europe. Figure 1-9 is a great example that shows how CDN improves load time.
+
+
+
+### شبکه توزیع محتوا (CDN)
+
+CDN شبکه‌ای از سرورهای پراکنده در نقاط مختلف جغرافیایی است که برای تحویل محتوای استاتیک استفاده می‌شود. سرورهای CDN محتوای استاتیک مانند تصاویر، ویدیوها، فایل‌های CSS، جاوااسکریپت و غیره را کش (ذخیره موقت) می‌کنند. کش کردن محتوای داینامیک مفهومی نسبتاً جدید است و خارج از محدوده این کتاب قرار دارد. این روش امکان کش کردن صفحات HTML را بر اساس مسیر درخواست، رشته‌های کوئری، کوکی‌ها و هدرهای درخواست فراهم می‌کند. برای اطلاعات بیشتر در این زمینه به مرجع شماره [۹] مراجعه کنید. تمرکز این کتاب بر نحوه استفاده از CDN برای کش کردن محتوای استاتیک است.
+
+در سطح بالا، عملکرد CDN به این صورت است: وقتی کاربری از یک وب‌سایت دیدن می‌کند، نزدیک‌ترین سرور CDN به آن کاربر، محتوای استاتیک را تحویل می‌دهد. به‌طور طبیعی، هرچه فاصله کاربران از سرورهای CDN بیشتر باشد، بارگذاری وب‌سایت کندتر خواهد بود. برای مثال، اگر سرورهای CDN در سان‌فرانسیسکو باشند، کاربران در لس‌آنجلس محتوا را سریع‌تر از کاربران در اروپا دریافت می‌کنند. شکل ۱-۹ نمونه‌ی خوبی است که نشان می‌دهد CDN چگونه زمان بارگذاری را بهبود می‌بخشد.
+
+![Content delivery network](design-system/images/System-Design-Interview-page17-image1.jpg)
+
+
+---
+
+> Figure 1-10 demonstrates the CDN workflow.
+
+شکل ۱-۱۰ روند کار CDN را نشان می‌دهد.
+
+![Content delivery network](design-system/images/System-Design-Interview-page17-image2.jpg)
+
+
+---
+
+
+
+> 1. User A tries to get image.png by using an image URL. The URL’s domain is provided by the CDN provider. The following two image URLs are samples used to demonstrate what image URLs look like on Amazon and Akamai CDNs: 
+>  • https://mysite.cloudfront.net/logo.jpg
+>  • https://mysite.akamai.com/image-manager/img/logo.jpg
+>  2. If the CDN server does not have image.png in the cache, the CDN server requests the file from the origin, which can be a web server or online storage like Amazon S3.
+>  3. The origin returns image.png to the CDN server, which includes optional HTTP header Time-to-Live (TTL) which describes how long the image is cached.
+> 4. The CDN caches the image and returns it to User A. The image remains cached in the CDN until the TTL expires.
+>  5. User B sends a request to get the same image.
+>  6. The image is returned from the cache as long as the TTL has not expired.
+
+
+۱. کاربر A سعی می‌کند تصویر image.png را با استفاده از یک URL تصویر دریافت کند. دامنه‌ی این URL توسط ارائه‌دهنده CDN مشخص شده است. دو نمونه URL زیر برای نشان دادن ظاهر URLهای تصویر در CDNهای آمازون و آکامای آورده شده‌اند:
+ • https://mysite.cloudfront.net/logo.jpg
+ • https://mysite.akamai.com/image-manager/img/logo.jpg
+
+۲. اگر سرور CDN فایل image.png را در کش نداشته باشد، سرور CDN این فایل را از سرور اصلی (origin) درخواست می‌کند که می‌تواند یک وب‌سرور یا فضای ذخیره‌سازی آنلاین مانند Amazon S3 باشد.
+
+۳. سرور اصلی فایل image.png را به سرور CDN برمی‌گرداند، همراه با هدر HTTP اختیاری Time-to-Live (TTL) که مشخص می‌کند تصویر چه مدت باید کش شود.
+
+۴. سرور CDN تصویر را کش می‌کند و آن را به کاربر A برمی‌گرداند. تصویر تا زمانی که TTL منقضی نشود، در CDN باقی می‌ماند.
+
+۵. کاربر B درخواستی برای دریافت همان تصویر ارسال می‌کند.
+
+۶. تا زمانی که TTL منقضی نشده باشد، تصویر از کش برگردانده می‌شود.
