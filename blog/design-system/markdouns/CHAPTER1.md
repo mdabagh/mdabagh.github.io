@@ -645,4 +645,174 @@ image.png?v=2
 از آنجا که اطلاعات Session دیگر داخل وب‌سرورها ذخیره نمی‌شوند، اضافه یا حذف کردن سرورها بدون نگرانی از دست رفتن Session کاربران امکان‌پذیر خواهد بود.
 
 در ادامه، با رشد سریع وب‌سایت و افزایش کاربران از نقاط مختلف جهان، برای افزایش **Availability** و بهبود **User Experience** در مناطق جغرافیایی مختلف، استفاده از **Multiple Data Centers** ضروری خواهد بود.
-````
+
+---
+
+
+###### 📄 صفحه 21
+
+# Data Centers
+
+> Figure 1-15 shows an example setup with two data centers. In normal operation, users are geoDNS-routed, also known as geo-routed, to the closest data center, with a split traffic of x% in US-East and (100 – x)% in US-West. geoDNS is a DNS service that allows domain names to be resolved to IP addresses based on the location of a user.
+
+
+شکل ۱-۱۵ نمونه‌ای از معماری شامل **دو مرکز داده (Data Center)** را نشان می‌دهد.
+
+در حالت عادی، کاربران با استفاده از **GeoDNS** (که با نام **Geo Routing** نیز شناخته می‌شود) به نزدیک‌ترین مرکز داده هدایت می‌شوند.
+
+فرض کنید درصدی از کاربران (**x%**) به مرکز داده **US-East** و باقی کاربران (**100−x%**) به مرکز داده **US-West** هدایت شوند.
+
+**GeoDNS** نوعی سرویس DNS است که آدرس دامنه را بر اساس موقعیت جغرافیایی کاربر به مناسب‌ترین آدرس IP تبدیل می‌کند.
+
+---
+
+![Two Data Centers](design-system/images/System-Design-Interview-page21-image1.jpg)
+
+---
+
+> Figure 1-15 shows an example setup with two data centers.
+
+شکل ۱-۱۵ نمونه‌ای از استقرار سیستم با دو مرکز داده را نمایش می‌دهد.
+
+---
+
+> In the event of any significant data center outage, we direct all traffic to a healthy data center. In Figure 1-16, data center 2 (US-West) is offline, and 100% of the traffic is routed to data center 1 (US-East).
+
+
+در صورت بروز اختلال جدی در یکی از مراکز داده، تمام ترافیک به نزدیک‌ترین **مرکز داده سالم** هدایت می‌شود.
+
+در شکل ۱-۱۶، مرکز داده شماره ۲ (**US-West**) از دسترس خارج شده است؛ بنابراین **۱۰۰٪ ترافیک** به مرکز داده شماره ۱ (**US-East**) منتقل می‌شود.
+
+---
+
+![Data Center Failover](design-system/images/System-Design-Interview-page21-image2.jpg)
+
+---
+
+# Challenges of Multi-Data Center Architecture
+
+> Several technical challenges must be resolved to achieve multi-data center setup:
+
+
+برای پیاده‌سازی معماری **چند مرکز داده (Multi-Data Center)** باید چند چالش مهم برطرف شود.
+
+---
+
+> • Traffic redirection: Effective tools are needed to direct traffic to the correct data center. GeoDNS can be used to direct traffic to the nearest data center depending on where a user is located.
+
+
+### ۱. هدایت ترافیک (Traffic Redirection)
+
+برای ارسال کاربران به مناسب‌ترین مرکز داده، به ابزارهایی نیاز است که بتوانند درخواست‌ها را به مقصد صحیح هدایت کنند.
+
+یکی از رایج‌ترین راهکارها **GeoDNS** است که با توجه به موقعیت جغرافیایی کاربر، نزدیک‌ترین Data Center را انتخاب می‌کند.
+
+---
+
+> • Data synchronization: Users from different regions could use different local databases or caches. In failover cases, traffic might be routed to a data center where data is unavailable. A common strategy is to replicate data across multiple data centers. A previous study shows how Netflix implements asynchronous multi-data center replication [11].
+
+
+### ۲. همگام‌سازی داده‌ها (Data Synchronization)
+
+کاربران مناطق مختلف ممکن است به پایگاه داده یا کش محلی متفاوتی متصل باشند.
+
+در شرایط **Failover**، ممکن است کاربر به مرکز داده‌ای هدایت شود که اطلاعات مورد نیاز او هنوز در آن وجود ندارد.
+
+برای حل این مشکل معمولاً داده‌ها بین مراکز داده مختلف **Replication** می‌شوند.
+
+یکی از نمونه‌های معروف، معماری **Netflix** است که از **Asynchronous Multi-Data Center Replication** استفاده می‌کند.
+
+---
+
+> • Test and deployment: With multi-data center setup, it is important to test your website/application at different locations. Automated deployment tools are vital to keep services consistent through all the data centers [11].
+
+
+### ۳. تست و استقرار (Test & Deployment)
+
+در معماری چند مرکز داده، باید وب‌سایت یا اپلیکیشن از نقاط جغرافیایی مختلف مورد آزمایش قرار گیرد.
+
+همچنین استفاده از ابزارهای **استقرار خودکار (Automated Deployment)** اهمیت زیادی دارد تا تمامی مراکز داده نسخه‌ای یکسان از سرویس را اجرا کنند.
+
+---
+
+> To further scale our system, we need to decouple different components of the system so they can be scaled independently. Messaging queue is a key strategy employed by many real-world distributed systems to solve this problem.
+
+
+برای اینکه سیستم را بیش از این مقیاس‌پذیر کنیم، لازم است اجزای مختلف آن را از یکدیگر **Decouple** کنیم تا هر بخش بتواند به‌صورت مستقل مقیاس‌پذیر باشد.
+
+یکی از مهم‌ترین راهکارهایی که در سیستم‌های توزیع‌شده واقعی برای رسیدن به این هدف استفاده می‌شود، **Message Queue** است.
+
+---
+###### 📄 صفحه 22
+
+# Message Queue
+
+> A message queue is a durable component, stored in memory, that supports asynchronous communication. It serves as a buffer and distributes asynchronous requests. The basic architecture of a message queue is simple. Input services, called producers/publishers, create messages, and publish them to a message queue. Other services or servers, called consumers/subscribers, connect to the queue, and perform actions defined by the messages. The model is shown in Figure 1-17.
+
+
+**Message Queue** یک مؤلفه پایدار برای برقراری ارتباط **Asynchronous** بین سرویس‌ها است.
+
+این مؤلفه مانند یک **Buffer** عمل می‌کند و درخواست‌ها را به صورت غیرهمزمان بین سرویس‌های مختلف توزیع می‌کند.
+
+معماری Message Queue بسیار ساده است.
+
+در این معماری:
+
+- سرویس‌هایی که پیام تولید می‌کنند **Producer** یا **Publisher** نام دارند.
+- این سرویس‌ها پیام‌های خود را داخل Message Queue قرار می‌دهند.
+- سرویس‌های دیگر که **Consumer** یا **Subscriber** نام دارند، پیام‌ها را از صف دریافت کرده و عملیات مربوط به آن‌ها را اجرا می‌کنند.
+
+---
+
+![Message Queue Architecture](design-system/images/System-Design-Interview-page22-image1.jpg)
+
+---
+
+> Figure 1-17 shows the basic architecture of a message queue.
+
+شکل ۱-۱۷ معماری پایه یک **Message Queue** را نمایش می‌دهد.
+
+---
+
+> Decoupling makes the message queue a preferred architecture for building a scalable and reliable application. With the message queue, the producer can post a message to the queue when the consumer is unavailable to process it. The consumer can read messages from the queue even when the producer is unavailable.
+
+
+جدا کردن وابستگی بین سرویس‌ها (**Decoupling**) باعث شده است که **Message Queue** یکی از محبوب‌ترین معماری‌ها برای ساخت سیستم‌های **Scalable** و **Reliable** باشد.
+
+در این معماری:
+
+- اگر **Consumer** در دسترس نباشد، **Producer** همچنان می‌تواند پیام خود را داخل صف قرار دهد.
+- اگر **Producer** از دسترس خارج شود، **Consumer** همچنان می‌تواند پیام‌های موجود در صف را پردازش کند.
+
+به همین دلیل، وابستگی مستقیم بین سرویس‌ها از بین می‌رود و تحمل خطا (Fault Tolerance) سیستم افزایش می‌یابد.
+
+---
+
+> Consider the following use case: your application supports photo customization, including cropping, sharpening, blurring, etc. Those customization tasks take time to complete. In Figure 1-18, web servers publish photo processing jobs to the message queue. Photo processing workers pick up jobs from the message queue and asynchronously perform photo customization tasks. The producer and the consumer can be scaled independently. When the size of the queue becomes large, more workers are added to reduce the processing time. However, if the queue is empty most of the time, the number of workers can be reduced.
+
+
+فرض کنید اپلیکیشن شما امکان ویرایش تصاویر را فراهم می‌کند؛ مانند:
+
+- Crop
+- Sharpen
+- Blur
+- و سایر پردازش‌های تصویری
+
+این عملیات معمولاً زمان‌بر هستند و مناسب نیست کاربران تا پایان پردازش منتظر بمانند.
+
+در شکل ۱-۱۸:
+
+- وب‌سرورها درخواست‌های پردازش تصویر را داخل **Message Queue** قرار می‌دهند.
+- Workerها این درخواست‌ها را از صف دریافت می‌کنند.
+- پردازش تصویر به‌صورت **Asynchronous** انجام می‌شود.
+
+مزیت مهم این معماری این است که **Producer** و **Consumer** می‌توانند کاملاً مستقل از یکدیگر مقیاس‌پذیر باشند.
+
+اگر تعداد پیام‌های موجود در صف زیاد شود، می‌توان Workerهای بیشتری اضافه کرد تا سرعت پردازش افزایش پیدا کند.
+
+در مقابل، اگر صف تقریباً همیشه خالی باشد، تعداد Workerها کاهش پیدا می‌کند تا منابع سیستم هدر نرود.
+
+---
+
+![Photo Processing with Message Queue](design-system/images/System-Design-Interview-page22-image2.jpg)
+
