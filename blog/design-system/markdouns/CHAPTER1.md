@@ -395,6 +395,7 @@ GET /users/12 - Retrieve user object for id = 12
 
 
 ---
+###### 📄 صفحه 17
 
 
 
@@ -423,9 +424,8 @@ CDN شبکه‌ای از سرورهای پراکنده در نقاط مختلف 
 
 ---
 
-
-
 > 1. User A tries to get image.png by using an image URL. The URL’s domain is provided by the CDN provider. The following two image URLs are samples used to demonstrate what image URLs look like on Amazon and Akamai CDNs: 
+>  
 >  • https://mysite.cloudfront.net/logo.jpg
 >  • https://mysite.akamai.com/image-manager/img/logo.jpg
 >  2. If the CDN server does not have image.png in the cache, the CDN server requests the file from the origin, which can be a web server or online storage like Amazon S3.
@@ -448,3 +448,201 @@ CDN شبکه‌ای از سرورهای پراکنده در نقاط مختلف 
 ۵. کاربر B درخواستی برای دریافت همان تصویر ارسال می‌کند.
 
 ۶. تا زمانی که TTL منقضی نشده باشد، تصویر از کش برگردانده می‌شود.
+
+
+---
+## Considerations of using a CDN
+
+> • Cost: CDNs are run by third-party providers, and you are charged for data transfers in and out of the CDN. Caching infrequently used assets provides no significant benefits so you should consider moving them out of the CDN.
+>
+> • Setting an appropriate cache expiry: For time-sensitive content, setting a cache expiry time is important. The cache expiry time should neither be too long nor too short. If it is too long, the content might no longer be fresh. If it is too short, it can cause repeat reloading of content from origin servers to the CDN.
+>
+> • CDN fallback: You should consider how your website/application copes with CDN failure. If there is a temporary CDN outage, clients should be able to detect the problem and request resources from the origin.
+>
+> • Invalidating files: You can remove a file from the CDN before it expires by performing one of the following operations:
+>
+> • Invalidate the CDN object using APIs provided by CDN vendors.
+>
+> • Use object versioning to serve a different version of the object. To version an object, you can add a parameter to the URL, such as a version number. For example, version number 2 is added to the query string: image.png?v=2.
+
+
+### نکات مهم هنگام استفاده از CDN
+
+- **هزینه (Cost):** سرویس‌های CDN توسط شرکت‌های شخص ثالث ارائه می‌شوند و هزینه‌ی انتقال داده به داخل و خارج از CDN از شما دریافت می‌شود. کش کردن فایل‌هایی که به‌ندرت مورد استفاده قرار می‌گیرند، مزیت قابل توجهی ندارد؛ بنابراین بهتر است این نوع فایل‌ها را از CDN خارج کنید.
+
+- **تنظیم مناسب زمان انقضای کش (Cache Expiry):** برای محتوایی که به‌صورت مداوم تغییر می‌کند، انتخاب زمان مناسب برای انقضای کش اهمیت زیادی دارد. این زمان نباید بیش از حد طولانی باشد، زیرا ممکن است کاربران محتوای قدیمی دریافت کنند. همچنین نباید بیش از حد کوتاه باشد، چون باعث می‌شود فایل‌ها مکرراً از سرور اصلی دریافت شده و بار اضافی روی سیستم ایجاد شود.
+
+- **مکانیزم جایگزین در صورت خرابی CDN (CDN Fallback):** باید از قبل مشخص کنید که در صورت از دسترس خارج شدن موقت CDN، وب‌سایت یا اپلیکیشن چگونه رفتار خواهد کرد. در چنین شرایطی، کلاینت‌ها باید بتوانند خرابی CDN را تشخیص داده و فایل‌ها را مستقیماً از سرور اصلی (Origin) دریافت کنند.
+
+- **باطل کردن فایل‌های کش‌شده (Invalidating Files):** در صورت نیاز می‌توانید قبل از پایان یافتن TTL، فایل‌ها را از CDN حذف یا جایگزین کنید. این کار معمولاً به یکی از روش‌های زیر انجام می‌شود:
+
+  - استفاده از APIهای ارائه‌شده توسط سرویس‌دهنده CDN برای **Invalidate** کردن فایل.
+  - استفاده از **Object Versioning** و ارائه نسخه جدید فایل. برای این کار معمولاً شماره نسخه به URL اضافه می‌شود. برای مثال:
+
+```text
+image.png?v=2
+```
+
+---
+
+###### 📄 صفحه 18
+
+
+> Figure 1-11 shows the design after the CDN and cache are added.
+
+شکل ۱-۱۱ معماری سیستم را پس از اضافه شدن **CDN** و **Cache** نمایش می‌دهد.
+
+---
+
+![Design after CDN and Cache](design-system/images/System-Design-Interview-page18-image1.jpg)
+
+---
+
+> 1. Static assets (JS, CSS, images, etc.,) are no longer served by web servers. They are fetched from the CDN for better performance.
+>
+> 2. The database load is lightened by caching data.
+
+۱. فایل‌های استاتیک مانند **JavaScript، CSS، تصاویر و سایر Assetها** دیگر مستقیماً توسط وب‌سرورها ارائه نمی‌شوند، بلکه از طریق **CDN** در اختیار کاربران قرار می‌گیرند تا سرعت بارگذاری افزایش یابد.
+
+۲. بار وارد شده به پایگاه داده با استفاده از **Cache** کاهش پیدا می‌کند؛ زیرا داده‌هایی که زیاد درخواست می‌شوند مستقیماً از کش پاسخ داده می‌شوند.
+
+---
+
+# Stateless Web Tier
+
+> Now it is time to consider scaling the web tier horizontally. For this, we need to move state (for instance user session data) out of the web tier. A good practice is to store session data in the persistent storage such as relational database or NoSQL. Each web server in the cluster can access state data from databases. This is called stateless web tier.
+
+اکنون زمان آن رسیده است که **لایه وب (Web Tier)** را به صورت **Horizontal Scaling** گسترش دهیم.
+
+برای انجام این کار، باید **State** (برای مثال اطلاعات Session کاربران) را از داخل وب‌سرورها خارج کنیم.
+
+یکی از بهترین روش‌ها این است که اطلاعات Session در یک فضای ذخیره‌سازی دائمی مانند:
+
+- پایگاه داده رابطه‌ای (Relational Database)
+- پایگاه داده NoSQL
+
+نگهداری شوند.
+
+در این حالت، تمامی وب‌سرورهای موجود در کلاستر می‌توانند اطلاعات Session را از این فضای ذخیره‌سازی مشترک دریافت کنند.
+
+به چنین معماری **Stateless Web Tier** گفته می‌شود.
+
+---
+###### 📄 صفحه 19
+
+# Stateful Architecture
+
+> A stateful server and stateless server has some key differences. A stateful server remembers client data (state) from one request to the next. A stateless server keeps no state information. Figure 1-12 shows an example of a stateful architecture.
+
+بین **Stateful Server** و **Stateless Server** تفاوت‌های اساسی وجود دارد.
+
+در یک **Stateful Server**، اطلاعات مربوط به کاربر (State) بین درخواست‌های مختلف نگهداری می‌شود؛ یعنی سرور وضعیت قبلی کاربر را به خاطر می‌سپارد.
+
+در مقابل، **Stateless Server** هیچ اطلاعاتی از وضعیت قبلی کاربران ذخیره نمی‌کند و هر درخواست را کاملاً مستقل پردازش می‌کند.
+
+---
+
+![Stateful Architecture](design-system/images/System-Design-Interview-page19-image1.jpg)
+
+---
+
+> Figure 1-12 shows an example of a stateful architecture.
+
+شکل ۱-۱۲ نمونه‌ای از یک معماری **Stateful** را نمایش می‌دهد.
+
+---
+
+> In Figure 1-12, user A’s session data and profile image are stored in Server 1. To authenticate User A, HTTP requests must be routed to Server 1. If a request is sent to other servers like Server 2, authentication would fail because Server 2 does not contain User A’s session data.
+>
+> Similarly, all HTTP requests from User B must be routed to Server 2; all requests from User C must be sent to Server 3.
+>
+> The issue is that every request from the same client must be routed to the same server. This can be done with sticky sessions in most load balancers [10]; however, this adds the overhead. Adding or removing servers is much more difficult with this approach. It is also challenging to handle server failures.
+
+
+در شکل ۱-۱۲، اطلاعات Session و تصویر پروفایل **User A** روی **Server 1** ذخیره شده‌اند.
+
+بنابراین، برای احراز هویت User A، تمامی درخواست‌های HTTP او باید به **Server 1** ارسال شوند.
+
+اگر درخواست به **Server 2** ارسال شود، عملیات احراز هویت شکست می‌خورد؛ زیرا اطلاعات Session کاربر در آن سرور وجود ندارد.
+
+به همین ترتیب:
+
+- تمامی درخواست‌های User B باید به Server 2 ارسال شوند.
+- تمامی درخواست‌های User C باید به Server 3 ارسال شوند.
+
+مشکل اصلی این معماری این است که تمام درخواست‌های یک کاربر باید همیشه به همان سرور قبلی هدایت شوند.
+
+این کار معمولاً با استفاده از **Sticky Session** در Load Balancer انجام می‌شود، اما این روش معایبی دارد:
+
+- سربار (Overhead) بیشتری ایجاد می‌کند.
+- اضافه یا حذف کردن سرورها دشوارتر می‌شود.
+- مدیریت خرابی سرورها پیچیده‌تر خواهد بود.
+
+---
+###### 📄 صفحه 20
+
+# Stateless Architecture
+
+> Figure 1-13 shows the stateless architecture.
+
+
+شکل ۱-۱۳ معماری **Stateless** را نمایش می‌دهد.
+
+---
+
+![Stateless Architecture](design-system/images/System-Design-Interview-page20-image1.jpg)
+
+---
+
+> In this stateless architecture, HTTP requests from users can be sent to any web servers, which fetch state data from a shared data store. State data is stored in a shared data store and kept out of web servers. A stateless system is simpler, more robust, and scalable.
+
+
+در معماری **Stateless**، درخواست‌های HTTP کاربران می‌توانند به هر وب‌سروری ارسال شوند.
+
+وب‌سرور در صورت نیاز اطلاعات Session یا سایر داده‌های مربوط به وضعیت کاربر را از یک **Shared Data Store** دریافت می‌کند.
+
+بنابراین:
+
+- اطلاعات State داخل وب‌سرورها نگهداری نمی‌شود.
+- همه سرورها از یک منبع داده مشترک استفاده می‌کنند.
+
+مزایای این معماری عبارت‌اند از:
+
+- سادگی بیشتر
+- مقاومت بالاتر در برابر خرابی
+- مقیاس‌پذیری بسیار بهتر
+
+---
+
+> Figure 1-14 shows the updated design with a stateless web tier.
+
+شکل ۱-۱۴ نسخه به‌روزشده معماری را با استفاده از **Stateless Web Tier** نمایش می‌دهد.
+
+---
+
+![Stateless Web Tier](design-system/images/System-Design-Interview-page20-image2.jpg)
+
+---
+
+> In Figure 1-14, we move the session data out of the web tier and store them in the persistent data store. The shared data store could be a relational database, Memcached/Redis, NoSQL, etc. The NoSQL data store is chosen as it is easy to scale. Autoscaling means adding or removing web servers automatically based on the traffic load. After the state data is removed out of web servers, auto-scaling of the web tier is easily achieved by adding or removing servers based on traffic load.
+>
+> Your website grows rapidly and attracts a significant number of users internationally. To improve availability and provide a better user experience across wider geographical areas, supporting multiple data centers is crucial.
+
+
+در شکل ۱-۱۴ اطلاعات Session از وب‌سرورها خارج شده و در یک فضای ذخیره‌سازی دائمی قرار گرفته‌اند.
+
+این فضای ذخیره‌سازی مشترک می‌تواند یکی از گزینه‌های زیر باشد:
+
+- Relational Database
+- Redis
+- Memcached
+- NoSQL Database
+
+در این مثال، **NoSQL** انتخاب شده است؛ زیرا توسعه و مقیاس‌پذیری آن ساده‌تر است.
+
+مفهوم **Auto Scaling** به این معناست که سیستم بر اساس میزان ترافیک، به‌صورت خودکار وب‌سرورها را اضافه یا حذف می‌کند.
+
+از آنجا که اطلاعات Session دیگر داخل وب‌سرورها ذخیره نمی‌شوند، اضافه یا حذف کردن سرورها بدون نگرانی از دست رفتن Session کاربران امکان‌پذیر خواهد بود.
+
+در ادامه، با رشد سریع وب‌سایت و افزایش کاربران از نقاط مختلف جهان، برای افزایش **Availability** و بهبود **User Experience** در مناطق جغرافیایی مختلف، استفاده از **Multiple Data Centers** ضروری خواهد بود.
+````
