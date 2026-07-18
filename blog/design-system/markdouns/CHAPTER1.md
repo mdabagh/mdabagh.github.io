@@ -494,7 +494,7 @@ image.png?v=2
 
 ---
 
-![Design after CDN and Cache](design-system/images/System-Design-Interview-page18-image1.jpg)
+![Design after CDN and Cache](design-system/images/System-Design-Interview-page19-image1.jpg)
 
 ---
 
@@ -542,7 +542,7 @@ image.png?v=2
 
 ---
 
-![Stateful Architecture](design-system/images/System-Design-Interview-page19-image1.jpg)
+![Stateful Architecture](design-system/images/System-Design-Interview-page20-image1.jpg)
 
 ---
 
@@ -590,7 +590,7 @@ image.png?v=2
 
 ---
 
-![Stateless Architecture](design-system/images/System-Design-Interview-page20-image1.jpg)
+![Stateless Architecture](design-system/images/System-Design-Interview-page21-image1.jpg)
 
 ---
 
@@ -620,7 +620,7 @@ image.png?v=2
 
 ---
 
-![Stateless Web Tier](design-system/images/System-Design-Interview-page20-image2.jpg)
+![Stateless Web Tier](design-system/images/System-Design-Interview-page22-image1.jpg)
 
 ---
 
@@ -666,7 +666,7 @@ image.png?v=2
 
 ---
 
-![Two Data Centers](design-system/images/System-Design-Interview-page21-image1.jpg)
+![Two Data Centers](design-system/images/System-Design-Interview-page23-image1.jpg)
 
 ---
 
@@ -685,7 +685,7 @@ image.png?v=2
 
 ---
 
-![Data Center Failover](design-system/images/System-Design-Interview-page21-image2.jpg)
+![Data Center Failover](design-system/images/System-Design-Interview-page24-image1.jpg)
 
 ---
 
@@ -743,7 +743,7 @@ image.png?v=2
 یکی از مهم‌ترین راهکارهایی که در سیستم‌های توزیع‌شده واقعی برای رسیدن به این هدف استفاده می‌شود، **Message Queue** است.
 
 ---
-###### 📄 صفحه 22
+###### 📄 صفحه 25
 
 # Message Queue
 
@@ -764,7 +764,7 @@ image.png?v=2
 
 ---
 
-![Message Queue Architecture](design-system/images/System-Design-Interview-page22-image1.jpg)
+![Message Queue Architecture](design-system/images/System-Design-Interview-page25-image1.jpg)
 
 ---
 
@@ -814,5 +814,9 @@ image.png?v=2
 
 ---
 
-![Photo Processing with Message Queue](design-system/images/System-Design-Interview-page22-image2.jpg)
+![Photo Processing with Message Queue](design-system/images/System-Design-Interview-page25-image2.jpg)
 
+
+---
+
+# Logging, metrics, automation
