@@ -380,11 +380,14 @@ class PostViewer {
     return num.toString().replace(/\d/g, d => persian[parseInt(d)]);
   }
 
-  estimateReadTime(text) {
-    const words = text.trim().split(/\s+/).length;
+ estimateReadTime(text) {
+    const persianWords = text.match(/[\u0600-\u06FF]+/g) || [];
+
+    const words = persianWords.length;
     const minutes = Math.max(1, Math.round(words / 180));
+
     return `${this.toPersianNumber(minutes)} دقیقه مطالعه`;
-  }
+}
 
   showError(message) {
     document.getElementById('articleTitle').textContent = 'یادداشت پیدا نشد';
