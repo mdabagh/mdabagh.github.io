@@ -46,6 +46,8 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 
 کش پرس‌وجو: ما برای کاهش بار خواندن روی پایگاه‌داده‌هایمان به memcache متکی هستیم. به طور خاص، memcache را به عنوان کش نگاه‌جانبی پرتقاضا استفاده می‌کنیم همان‌طور که در شکل ۱ نشان داده شده است. وقتی وب‌سرور به داده نیاز دارد، ابتدا مقدار را با کلید رشته‌ای از memcache درخواست می‌کند. اگر آیتم مورد نظر با آن کلید در کش نباشد، وب‌سرور داده را از پایگاه‌داده یا سرویس پشتیبان دیگر بازیابی کرده و جفت کلید-مقدار را در کش ذخیره می‌کند. برای درخواست‌های نوشتن، وب‌سرور ابتدا دستورات SQL را به پایگاه‌داده ارسال می‌کند و سپس یک درخواست delete به memcache می‌فرستد تا هر داده‌ی قدیمی نامعتبر شود. ما به جای به‌روزرسانی داده‌ی کش شده، آن را حذف می‌کنیم چون حذف‌ها یکتا هستند. memcache منبع مقتدر داده نیست و بنابراین اجازه دارد داده‌ی کش شده را خارج کند.
 
+![Figure 1](TIL/books/Scaling-Memcache-at-Facebook/Figure1.png)
+
 > While there are several ways to address excessive read traffic on MySQL databases, we chose to use memcache. It was the best choice given limited engineering resources and time. Additionally, separating our caching layer from our persistence layer allows us to adjust each layer independently as our workload changes.
 
 در حالی که روش‌های متعددی برای مقابله با ترافیک خواندن بیش از حد روی پایگاه‌داده‌های MySQL وجود دارد، ما استفاده از memcache را انتخاب کردیم. این بهترین انتخاب با توجه به منابع مهندسی محدود و زمان بود. علاوه بر این، جدا کردن لایه‌ی کش از لایه‌ی دوام داده به ما اجازه می‌دهد هر لایه را به طور مستقل با تغییر بار کاری تنظیم کنیم.
@@ -61,6 +63,8 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 > We structure our paper to emphasize the themes that emerge at three different deployment scales. Our read-heavy workload and wide fan-out is the primary concern when we have one cluster of servers. As it becomes necessary to scale to multiple frontend clusters, we address data replication between these clusters. Finally, we describe mechanisms to provide a consistent user experience as we spread clusters around the world. Operational complexity and fault tolerance is important at all scales. We present salient data that supports our design decisions and refer the reader to work by Atikoglu et al. [8] for a more detailed analysis of our workload. At a high level, Figure 2 illustrates this final architecture in which we organize co-located clusters into a region and designate a master region that provides a data stream to keep non-master regions up-to-date.
 
 ما مقاله را طوری ساختار می‌دهیم که به موضوعاتی که در سه مقیاس استقرار مختلف پدید می‌آیند تأکید کند. بار کاری خواندنی سنگین و فن‌آوت گسترده ما در زمانی که تنها یک خوشه سرور داریم، نگرانی اصلی است. هنگامی که لازم می‌شود به چندین خوشه‌ی فرانت‌اند مقیاس دهیم، به تکثیر داده بین این خوشه‌ها می‌پردازیم. در نهایت، مکانیزم‌هایی را شرح می‌دهیم که تجربه‌ی کاربری سازگار را هنگام پخش خوشه‌ها در جهان فراهم می‌کنند. پیچیدگی عملیاتی و تحمل خطا در همه‌ی مقیاس‌ها مهم است. ما داده‌های برجسته‌ای ارائه می‌دهیم که تصمیمات طراحی ما را پشتیبانی می‌کنند و خواننده را به کار آتیکوگلو و همکاران [8] برای تحلیل دقیق‌تر بار کاری ارجاع می‌دهیم. در سطح بالا، شکل ۲ این معماری نهایی را نشان می‌دهد که در آن خوشه‌های هم‌مکان را درون یک منطقه سازمان‌دهی می‌کنیم و یک منطقه‌ی اصلی را تعیین می‌کنیم که جریان داده‌ای برای به‌روز نگه داشتن مناطق غیر اصلی فراهم می‌کند.
+
+![Figure 2](TIL/books/Scaling-Memcache-at-Facebook/Figure2.png)
 
 > While evolving our system we prioritize two major design goals. (1) Any change must impact a user-facing or operational issue. Optimizations that have limited scope are rarely considered. (2) We treat the probability of reading transient stale data as a parameter to be tuned, similar to responsiveness. We are willing to expose slightly stale data in exchange for insulating a backend storage service from excessive load.
 
@@ -110,6 +114,9 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 
 شکل ۳ تأخیر میانگین، میانه و صدک ۹۵ را برای وب‌سرورهای تولیدی در دریافت کلیدها از طریق UDP و از طریق mcrouter با TCP نشان می‌دهد. در همه‌ی موارد، انحراف معیار از این میانگین‌ها کمتر از ۱٪ بود. همان‌طور که داده‌ها نشان می‌دهند، تکیه بر UDP می‌تواند منجر به کاهش ۲۰٪ در تأخیر پاسخ‌دهی شود.
 
+![Figure 3](TIL/books/Scaling-Memcache-at-Facebook/Figure3.png)
+
+
 > Incast congestion: Memcache clients implement flow-control mechanisms to limit incast congestion. When a client requests a large number of keys, the responses can overwhelm components such as rack and cluster switches if those responses arrive all at once. Clients therefore use a sliding window mechanism [11] to control the number of outstanding requests. When the client receives a response, the next request can be sent. Similar to TCP’s congestion control, the size of this sliding window grows slowly upon a successful request and shrinks when a request goes unanswered. The window applies to all memcache requests independently of destination; whereas TCP windows apply only to a single stream.
 
 ازدحام incast: کلاینت‌های Memcache مکانیزم‌های کنترل جریان را پیاده‌سازی می‌کنند تا ازدحام incast را محدود کنند. زمانی که یک کلاینت تعداد زیادی کلید درخواست می‌کند، پاسخ‌ها می‌توانند اجزایی مانند سوئیچ‌های رک و خوشه را در صورتی که همه‌ی پاسخ‌ها همزمان برسند، تحت تأثیر قرار دهند. بنابراین، کلاینت‌ها از یک مکانیزم پنجره‌ی لغزنده [11] برای کنترل تعداد درخواست‌های معلق استفاده می‌کنند. وقتی کلاینت یک پاسخ دریافت می‌کند، درخواست بعدی می‌تواند ارسال شود. مشابه کنترل تراکم TCP، اندازه‌ی این پنجره‌ی لغزنده در صورت دریافت پاسخ موفق به آرامی افزایش می‌یابد و هنگامی که پاسخ نمی‌آید کوچک می‌شود. پنجره به همه‌ی درخواست‌های memcache مستقل از مقصد اعمال می‌شود؛ در حالی که پنجره‌های TCP فقط به یک جریان اختصاصی اعمال می‌شوند.
@@ -117,6 +124,9 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 > Figure 4 shows the impact of the window size on the amount of time user requests are in the runnable state but are waiting to be scheduled inside the web server. The data was gathered from multiple racks in one frontend cluster. User requests exhibit a Poisson arrival process at each web server. According to Little’s Law [26], L = λW, the number of requests queued in the server (L) is directly proportional to the average time a request takes to process (W), assuming that the input request rate is constant (which it was for our experiment). The time web requests are waiting to be scheduled is a direct indication of the number of web requests in the system. With lower window sizes, the application will have to dispatch more groups of memcache requests serially, increasing the duration of the web request. As the window size gets too large, the number of simultaneous memcache requests causes incast congestion. The result will be memcache errors and the application falling back to the persistent storage for the data, which will result in slower processing of web requests. There is a balance between these extremes where unnecessary latency can be avoided and incast congestion can be minimized.
 
 شکل ۴ تأثیر اندازه‌ی پنجره را بر مقدار زمان‌هایی که درخواست‌های کاربر در حالت runnable هستند اما منتظر زمان‌بندی داخل وب‌سرور می‌مانند نشان می‌دهد. داده‌ها از چندین رک در یک خوشه‌ی فرانت‌اند جمع‌آوری شدند. درخواست‌های کاربر فرآیند ورود پواسون را در هر وب‌سرور نمایش می‌دهند. طبق قانون لیتل [26]، L = λW، تعداد درخواست‌های صف شده در سرور (L) مستقیماً متناسب با زمان متوسط پردازش یک درخواست (W) است، با فرض اینکه نرخ ورودی درخواست ثابت باشد (که در آزمایش ما چنین بود). زمان منتظر ماندن درخواست‌های وب برای زمان‌بندی نشانه‌ای مستقیم از تعداد درخواست‌های وب در سیستم است. با اندازه‌ی پنجره‌ی کمتر، برنامه باید گروه‌های بیشتری از درخواست‌های memcache را به صورت سریالی ارسال کند که مدت زمان درخواست وب را افزایش می‌دهد. وقتی اندازه‌ی پنجره خیلی بزرگ شود، تعداد درخواست‌های همزمان memcache باعث ازدحام incast می‌شود. نتیجه خطاهای memcache و بازگشت برنامه به ذخیره‌سازی پایدار برای داده‌ها خواهد بود، که منجر به پردازش کندتر درخواست‌های وب می‌شود. بین این دو حد تعادلی وجود دارد که در آن می‌توان از تأخیر غیرضروری جلوگیری کرد و ازدحام incast را به حداقل رساند.
+
+![Figure 4](TIL/books/Scaling-Memcache-at-Facebook/Figure4.png)
+
 
 ### 3.2 Reducing Load
 
@@ -159,6 +169,9 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 > Figure 5 shows the working set of two different sets of items, one that is low-churn and another that is high-churn. The working set is approximated by sampling all operations on one out of every one million items. For each of these items, we collect the minimum, average, and maximum item size. These sizes are summed and multiplied by one million to approximate the working set. The difference between the daily and weekly working sets indicates the amount of churn. Items with different churn characteristics interact in an unfortunate way: low-churn keys that are still valuable are evicted before high-churn keys that are no longer being accessed. Placing these keys in different pools prevents this kind of negative interference, and allows us to size high-churn pools appropriate to their cache miss cost. Section 7 provides further analysis.
 
 شکل ۵ مجموعه کاری دو مجموعه‌ی متفاوت از آیتم‌ها را نشان می‌دهد، یکی با churn پایین و دیگری با churn بالا. مجموعه کاری با نمونه‌برداری از همه‌ی عملیات بر روی یکی از هر یک میلیون آیتم تقریب زده می‌شود. برای هر یک از این آیتم‌ها، حداقل، متوسط و حداکثر اندازه‌ی آیتم را جمع‌آوری می‌کنیم. این اندازه‌ها جمع و در یک میلیون ضرب می‌شوند تا مجموعه کاری تقریب زده شود. تفاوت بین مجموعه‌های کاری روزانه و هفتگی نشان‌دهنده‌ی میزان churn است. آیتم‌هایی با ویژگی‌های churn متفاوت به شکلی ناخوشایند با هم تعامل می‌کنند: کلیدهای چرخش‌پایین که هنوز ارزشمند هستند قبل از کلیدهای چرخش‌بالا که دیگر دسترسی ندارند اخراج می‌شوند. قرار دادن این کلیدها در پشته‌های مختلف از این نوع تداخل منفی جلوگیری می‌کند و به ما اجازه می‌دهد پشته‌های چرخش‌بالا را مطابق با هزینه‌ی miss در کش اندازه‌گذاری کنیم. بخش ۷ تحلیل بیشتری ارائه می‌دهد.
+
+![Figure 5](TIL/books/Scaling-Memcache-at-Facebook/Figure5.png)
+
 
 #### 3.2.3 Replication Within Pools
 
@@ -212,6 +225,10 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 
 دستورات SQL که وضعیت معتبر را تغییر می‌دهند اصلاح می‌شوند تا کلیدهای memcache را شامل شوند که باید پس از تعهد تراکنش نامعتبر شوند [7]. ما داِمون‌های نامعتبرسازی (با نام mcsqueal) را روی هر پایگاه‌داده مستقر می‌کنیم. هر داِمون دستورات SQL را که پایگاه‌داده‌ی خودش تعهد می‌کند بررسی می‌کند، هر delete را استخراج می‌کند و این deleteها را در همه‌ی استقرار memcache در هر خوشه‌ی فرانت‌اند در آن منطقه پخش می‌کند. شکل ۶ این رویکرد را نشان می‌دهد. ما تشخیص می‌دهیم که بیشتر نامعتبرسازی‌ها داده را حذف نمی‌کنند؛ در حقیقت تنها ۴٪ از تمام deleteهای صادرشده منجر به نامعتبرسازی واقعی داده‌ی کش شده می‌شوند.
 
+
+![Figure 6](TIL/books/Scaling-Memcache-at-Facebook/Figure6.png)
+
+
 > Reducing packet rates: While mcsqueal could contact memcached servers directly, the resulting rate of packets sent from a backend cluster to frontend clusters would be unacceptably high. This packet rate problem is a consequence of having many databases and many memcached servers communicating across a cluster boundary. Invalidation daemons batch deletes into fewer packets and send them to a set of dedicated servers running mcrouter instances in each frontend cluster. These mcrouters then unpack individual deletes from each batch and route those invalidations to the right memcached server co-located within the frontend cluster. The batching results in an 18× improvement in the median number of deletes per packet.
 
 کاهش نرخ بسته‌ها: در حالی که mcsqueal می‌توانست مستقیماً با سرورهای memcached تماس بگیرد، نرخ بسته‌های حاصل از یک خوشه‌ی پشتی به خوشه‌های فرانت‌اند بسیار بالا می‌شد. این مشکل نرخ بسته ناشی از داشتن پایگاه‌داده‌های زیاد و سرورهای memcached زیاد است که از مرز خوشه عبور می‌کنند. داِمون‌های نامعتبرسازی deleteها را در بسته‌های کمتری گروه‌بندی می‌کنند و آن‌ها را به مجموعه‌ای از سرورهای اختصاصی می‌فرستند که نمونه‌های mcrouter را در هر خوشه‌ی فرانت‌اند اجرا می‌کنند. سپس این mcrouterها deleteهای جداگانه را از هر بسته باز می‌کنند و آن نامعتبرسازی‌ها را به سرور memcached مناسب درون همان خوشه‌ی فرانت‌اند هدایت می‌کنند. این گروه‌بندی منجر به بهبود ۱۸ برابر در میانه‌ی تعداد deleteها به ازای هر بسته می‌شود.
@@ -233,6 +250,9 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 > Table 1 summarizes two kinds of items in our application that have large values. We have moved one kind (B) to a regional pool while leaving the other (A) untouched. Notice that clients access items falling into category B an order of magnitude less than those in category A. Category B’s low access rate makes it a prime candidate for a regional pool since it does not adversely impact inter-cluster bandwidth. Category B would also occupy 25% of each cluster’s wildcard pool so regionalization provides significant storage efficiencies. Items in category A, however, are twice as large and accessed much more frequently, disqualifying themselves from regional consideration. The decision to migrate data into regional pools is currently based on a set of manual heuristics based on access rates, data set size, and number of unique users accessing particular items.
 
 جدول ۱ خلاصه‌ای از دو نوع آیتم در برنامه‌ی ما را که مقادیر بزرگی دارند نشان می‌دهد. ما یک نوع (B) را به یک regional pool منتقل کرده‌ایم و نوع دیگر (A) را بدون تغییر گذاشته‌ایم. توجه کنید که کلاینت‌ها آیتم‌های دسته‌ی B را به ترتیب بزرگی کمتر از آیتم‌های دسته‌ی A دسترسی دارند. نرخ دسترسی پایین دسته‌ی B آن را به یک کاندید اصلی برای regional pool تبدیل می‌کند چون به طور نامطلوب به پهنای باند بین خوشه‌ها تأثیر نمی‌گذارد. دسته‌ی B همچنین ۲۵٪ از wildcard pool هر خوشه را اشغال می‌کرد، بنابراین منطقه‌بندی صرفه‌جویی قابل توجهی در ذخیره‌سازی ایجاد می‌کند. آیتم‌های دسته‌ی A اما دو برابر بزرگ‌تر هستند و بسیار بیشتر دسترسی می‌شوند، که آن‌ها را از نظر منطقه‌بندی نامناسب می‌کند. تصمیم برای مهاجرت داده به regional poolها در حال حاضر مبتنی بر مجموعه‌ای از هورستیک‌های دستی است که بر اساس نرخ دسترسی، اندازه‌ی مجموعه‌ی داده و تعداد کاربران منحصر به فردی که به آیتم‌های خاص دسترسی دارند، اتخاذ می‌شود.
+
+![Table 1](TIL/books/Scaling-Memcache-at-Facebook/Table1.png)
+
 
 ### 4.3 Cold Cluster Warmup
 
@@ -298,6 +318,9 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 
 عملکرد get: ابتدا اثر جایگزینی پیاده‌سازی چندرشته‌ای اولیه‌ی یک-قفل خود با قفل‌بندی ریزدانه را بررسی می‌کنیم. ما مقدار hit را با پرکردن کش از قبل با مقادیر ۳۲ بایتی پیش از صدور درخواست‌های memcached با ۱۰ کلید برای هر درخواست اندازه‌گیری کردیم. شکل ۷ بیشینه‌ی نرخ درخواست‌هایی را نشان می‌دهد که می‌توانند با زمان پاسخ میانگین زیر میلی‌ثانیه برای نسخه‌های مختلف memcached حفظ شوند. مجموعه‌ی اول میله‌ها memcached ما قبل از قفل‌بندی ریزدانه است، مجموعه‌ی دوم memcached فعلی ما است، و مجموعه‌ی نهایی نسخه‌ی متن‌باز 1.4.10 است که به طور مستقل نسخه‌ای درشت‌تر از استراتژی قفل‌بندی ما را پیاده‌سازی می‌کند.
 
+![Figure 7](TIL/books/Scaling-Memcache-at-Facebook/Figure7.png)
+
+
 > Employing fine-grained locking triples the peak get rate for hits from 600k to 1.8M items per second. Performance for misses also increased from 2.7M to 4.5M items per second. Hits are more expensive because the return value has to be constructed and transmitted, while misses require a single static response (END) for the entire multiget indicating that all keys missed.
 
 استفاده از قفل‌بندی ریزدانه نرخ اوج get برای hit را از ۶۰۰ هزار به ۱.۸ میلیون آیتم در ثانیه سه برابر می‌کند. عملکرد برای miss نیز از ۲.۷ میلیون به ۴.۵ میلیون آیتم در ثانیه افزایش یافت. hitها گران‌تر هستند زیرا مقدار بازگردانده شده باید ساخته و منتقل شود، در حالی که missها تنها نیاز به یک پاسخ ثابت (END) برای تمام multiget دارند که نشان می‌دهد همه‌ی کلیدها miss شده‌اند.
@@ -305,6 +328,9 @@ Memcached مجموعه‌ای ساده از عملیات (set، get و delete) �
 > We also investigated the performance effects of using UDP instead of TCP. Figure 8 shows the peak request rate we can sustain with average latencies of less than one millisecond for single gets and multigets of 10 keys. We found that our UDP implementation outperforms our TCP implementation by 13% for single gets and 8% for 10-key multigets.
 
 ما همچنین اثرات عملکردی استفاده از UDP به جای TCP را بررسی کردیم. شکل ۸ بیشینه‌ی نرخ درخواست‌هایی را نشان می‌دهد که می‌توانیم با تاخیر متوسط کمتر از یک میلی‌ثانیه برای getهای تکی و multigetهای ۱۰ کلیدی حفظ کنیم. ما دریافتیم که پیاده‌سازی UDP ما ۱۳٪ بهتر از پیاده‌سازی TCP برای getهای تکی و ۸٪ برای multigetهای ۱۰ کلیدی عمل می‌کند.
+
+![Figure 8](TIL/books/Scaling-Memcache-at-Facebook/Figure8.png)
+
 
 > Because multigets pack more data into each request than single gets, they use fewer packets to do the same work. Figure 8 shows an approximately four-fold improvement for 10-key multigets over single gets.
 
@@ -352,9 +378,16 @@ Memcached از یک تخصیص‌دهنده‌ی slab برای مدیریت حا
 
 Fanout: شکل ۹ توزیع سرورهای memcached متمایزی را که یک وب‌سرور ممکن است هنگام پاسخ به یک درخواست صفحه نیاز داشته باشد با آن‌ها تماس بگیرد نشان می‌دهد. همان‌طور که نشان داده شده، ۵۶٪ از تمام درخواست‌های صفحه با کمتر از ۲۰ سرور memcached تماس می‌گیرند. از نظر حجم، درخواست‌های کاربران تمایل دارند داده‌های کش شده‌ی کمی را بخواهند. با این حال، دنباله‌ی طولانی در این توزیع وجود دارد. شکل همچنین توزیع برای یکی از صفحات محبوب‌تر ما را نشان می‌دهد که الگوی ارتباط همه‌به‌همه را بهتر نمایش می‌دهد. بیشتر درخواست‌های این نوع بیش از ۱۰۰ سرور متمایز را دسترسی می‌دهند؛ دسترسی به چند صد سرور memcached نادر نیست.
 
+![Figure 9](TIL/books/Scaling-Memcache-at-Facebook/Figure9.png)
+
+
 > Response size: Figure 10 shows the response sizes from memcache requests. The difference between the median (135 bytes) and the mean (954 bytes) implies that there is a very large variation in the sizes of the cached items. In addition there appear to be three distinct peaks at approximately 200 bytes, 600 bytes, and larger values. Larger items tend to store lists of data while smaller items tend to store single pieces of content.
 
 اندازه‌ی پاسخ: شکل ۱۰ اندازه‌ی پاسخ‌ها از درخواست‌های memcache را نشان می‌دهد. تفاوت بین میانه (۱۳۵ بایت) و میانگین (۹۵۴ بایت) نشان می‌دهد که تنوع بسیار زیادی در اندازه‌ی آیتم‌های کش شده وجود دارد. علاوه بر این، سه قله‌ی متمایز در حدود ۲۰۰ بایت، ۶۰۰ بایت و مقادیر بزرگ‌تر مشاهده می‌شود. آیتم‌های بزرگ‌تر تمایل دارند لیست‌های داده را ذخیره کنند در حالی که آیتم‌های کوچک‌تر اغلب قطعه‌های تکی محتوا را نگه می‌دارند.
+
+
+![Figure 10](TIL/books/Scaling-Memcache-at-Facebook/Figure10.png)
+
 
 > Latency: We measure the round-trip latency to request data from memcache, which includes the cost of routing the request and receiving the reply, network transfer time, and the cost of deserialization and decompression. Over 7 days the median request latency is 333 microseconds while the 75th and 95th percentiles (p75 and p95) are 475μs and 1.135ms respectively. Our median end-to-end latency from an idle web server is 178μs while the p75 and p95 are 219μs and 374μs, respectively. The wide variance between the p95 latencies arises from handling large responses and waiting for the runnable thread to be scheduled as discussed in Section 3.1.
 
@@ -379,6 +412,9 @@ Fanout: شکل ۹ توزیع سرورهای memcached متمایزی را که �
 > In Figure 11, we use this monitoring mechanism to report our invalidation latencies across a 30 day span. We break this data into two different components: (1) the delete originated from a web server in the master region and was destined to a memcached server in the master region, and (2) the delete originated from a replica region and was destined to another replica region. As the data show, when the source and destination of the delete are co-located with the master our success rates are much higher and achieve four 9s of reliability within 1 second and five 9s after one hour. However when the deletes originate and head to locations outside of the master region our reliability drops to three 9s within a second and four 9s within 10 minutes. In our experience, we find that if an invalidation is missing after only a few seconds the most common reason is that the first attempt failed and subsequent retrials will resolve the problem.
 
 در شکل ۱۱، از این مکانیزم نظارتی برای گزارش تأخیر نامعتبرسازی‌ها در طول ۳۰ روز استفاده می‌کنیم. این داده را به دو جزء مختلف تقسیم می‌کنیم: ۱) delete از یک وب‌سرور در منطقه‌ی اصلی آغاز شده و به یک سرور memcached در منطقه‌ی اصلی مقصد بوده، و ۲) delete از یک منطقه‌ی replica آغاز شده و به منطقه‌ی replica دیگری مقصد بوده است. همان‌طور که داده‌ها نشان می‌دهند، وقتی منبع و مقصد delete با اصلی هم‌مکان هستند، نرخ موفقیت ما بسیار بالاتر است و در ظرف ۱ ثانیه چهار نُه اعتمادپذیری و پس از یک ساعت پنج نُه را به دست می‌آورد. با این حال، وقتی deleteها از خارج منطقه‌ی اصلی آغاز و به آنجا می‌روند، اعتمادپذیری ما در یک ثانیه به سه نُه و در ۱۰ دقیقه به چهار نُه کاهش می‌یابد. در تجربه‌ی ما، اگر یک نامعتبرسازی فقط پس از چند ثانیه مفقود باشد، شایع‌ترین دلیل این است که تلاش اول شکست خورده و تلاش‌های بعدی مشکل را حل خواهند کرد.
+
+![Figure 11](TIL/books/Scaling-Memcache-at-Facebook/Figure11.png)
+
 
 ## 8 Related Work
 
@@ -417,6 +453,10 @@ TAO [37] یک سیستم دیگر فیسبوک است که به شدت به کش
 > We would like to thank Philippe Ajoux, Nathan Bronson, Mark Drayton, David Fetterman, Alex Gartrell, Andrii Grynenko, Robert Johnson, Sanjeev Kumar, Anton Likhtarov, Mark Marchukov, Scott Marlette, Ben Maurer, David Meisner, Konrad Michels, Andrew Pope, Jeff Rothschild, Jason Sobel, and Yee Jiun Song for their contributions. We would also like to thank the anonymous reviewers, our shepherd Michael Piatek, Tor M. Aamodt, Remzi H. Arpaci-Dusseau, and Tayler Hetherington for their valuable feedback on earlier drafts of the paper. Finally we would like to thank our fellow engineers at Facebook for their suggestions, bug-reports, and support which makes memcache what it is today.
 
 ما می‌خواهیم از فیلیپ آجود، ناتان برونسون، مارک درایتون، دیوید فتِرمن، الکس گارتریل، آندری گری نینکو، رابرت جانسون، سانجیو کومار، آنتون لیختاروف، مارک مارچوکوف، اسکات مارلت، بن مائر، دیوید مِیزنر، کنراد میشلز، اندرو پاپ، جف روتشیلد، جیسون سوبل و یی جیون سانگ برای مشارکت‌هایشان تشکر کنیم. همچنین می‌خواهیم از داوران ناشناس، راهنمای ما مایکل پیاتک، تور ایم. آمودت، رمزی اچ. آراپاتسی-دوسئو و تایلر هتینگتون برای بازخورد ارزشمندشان در پیش‌نویس‌های قبلی مقاله تشکر کنیم. در نهایت می‌خواهیم از همکاران مهندس خود در فیسبوک برای پیشنهادها، گزارش‌های باگ و حمایتی که memcache را به آنچه امروز هست تبدیل می‌کند، تشکر کنیم.
+
+
+![Table 2](TIL/books/Scaling-Memcache-at-Facebook/Table2-3.png)
+
 
 ## References
 
