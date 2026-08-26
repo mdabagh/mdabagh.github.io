@@ -1,0 +1,30 @@
+{
+    "files": [
+        "0-foreword-preface",
+        "1-what-is-swe",
+        "2-work-well-on-teams",
+        "3-knowledge-sharing",
+        "4-engineering-for-equity",
+        "5-how-to-lead-team",
+        "6-leading-at-scale",
+        "7-measuring-productivity",
+        "8-style-guides",
+        "9-code-review",
+        "10-documentation",
+        "11-testing-overview",
+        "12-unit-testing",
+        "13-test-doubles",
+        "14-larger-testing",
+        "15-deprecation",
+        "16-version-control",
+        "17-code-search",
+        "18-build-systems",
+        "19-critique",
+        "20-static-analysis",
+        "21-dependency-management",
+        "22-large-scale-changes",
+        "23-continuous-integration",
+        "24-continuous-delivery",
+        "25-compute-as-service"
+    ]
+}

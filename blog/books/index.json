@@ -11,6 +11,9 @@
         "galera-replication",
         "rate-limit-iptables",
         "scaling-memcache-at-facebook",
-        "stripe-rate-limiters"
+        "stripe-rate-limiters",
+        "pragmatic-programmer",
+        "software-engineering-at-google",
+        "refactoring"
     ]
 }

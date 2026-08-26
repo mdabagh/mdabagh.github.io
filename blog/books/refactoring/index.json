@@ -1,0 +1,17 @@
+{
+    "files": [
+        "0-introduction",
+        "1-first-example",
+        "2-principles",
+        "3-bad-smells",
+        "4-building-tests",
+        "5-catalog-intro",
+        "6-first-set",
+        "7-encapsulation",
+        "8-moving-features",
+        "9-organizing-data",
+        "10-simplifying-conditionals",
+        "11-refactoring-apis",
+        "12-dealing-inheritance"
+    ]
+}
