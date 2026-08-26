@@ -260,7 +260,7 @@ class BlogManager {
   async findCategories() {
     try {
       // لیست دسته‌بندی‌های پیش‌فرض
-      const possibleCategories = ['design-system', 'TIL'];
+      const possibleCategories = ['books', 'article', 'TIL'];
       const categories = [];
 
       for (const cat of possibleCategories) {
@@ -288,52 +288,60 @@ class BlogManager {
     }
   }
 
-  // بارگذاری پست‌های یک دسته‌بندی
-  async loadCategoryPosts(category) {
+  // جمع‌آوری پست‌ها از یک مسیر (با پشتیبانی از تو در تو)
+  async collectPosts(basePath, categoryPath, categoryId, categoryName) {
     const posts = [];
     try {
-      // خواندن لیست فایل‌ها
-      const files = await this.scanDirectory(`${category.path}/markdouns`);
+      const files = await this.scanDirectory(basePath);
       
       for (const file of files) {
+        if (file === 'index.json' || file === 'detals.json') continue;
+        
         if (file.endsWith('.json')) {
+          // فایل JSON پست
           try {
-            const response = await fetch(`${category.path}/markdouns/${file}`);
+            const response = await fetch(`${basePath}/${file}`);
             if (response.ok) {
               const postData = await response.json();
               const slug = file.replace('.json', '');
+              const relativePath = basePath.replace(categoryPath, '').replace(/^\//, '');
+              const fullSlug = relativePath ? `${relativePath}/${slug}` : slug;
               
-              // تلاش برای خواندن فایل Markdown
               let content = '';
               try {
-                const mdResponse = await fetch(`${category.path}/markdouns/${slug}.md`);
-                if (mdResponse.ok) {
-                  content = await mdResponse.text();
-                }
-              } catch (e) {
-                // فایل Markdown وجود ندارد
-              }
+                const mdResponse = await fetch(`${basePath}/${slug}.md`);
+                if (mdResponse.ok) content = await mdResponse.text();
+              } catch (e) {}
               
               posts.push({
-                id: slug,
-                category: category.id,
-                categoryName: category.name,
+                id: fullSlug,
+                category: categoryId,
+                categoryName: categoryName,
                 title: postData.title || 'بدون عنوان',
                 summary: postData.summary || '...',
                 content: content,
                 date: postData.date || new Date().toISOString().split('T')[0],
-                url: `post.html?cat=${category.id}&slug=${slug}`
+                url: `post.html?cat=${categoryId}&slug=${fullSlug}`
               });
             }
           } catch (e) {
-            console.error(`Error loading post ${file}:`, e);
+            console.error(`Error loading post ${basePath}/${file}:`, e);
           }
+        } else if (!file.includes('.')) {
+          // پوشه - جستجوی بازگشتی
+          const subPosts = await this.collectPosts(`${basePath}/${file}`, categoryPath, categoryId, categoryName);
+          posts.push(...subPosts);
         }
       }
     } catch (error) {
-      console.error(`Error loading posts for category ${category.id}:`, error);
+      console.error(`Error collecting posts from ${basePath}:`, error);
     }
     return posts;
+  }
+
+  // بارگذاری پست‌های یک دسته‌بندی
+  async loadCategoryPosts(category) {
+    return await this.collectPosts(category.path, category.path, category.id, category.name);
   }
 
   // بارگذاری همه پست‌ها
@@ -359,7 +367,7 @@ class BlogManager {
       grid.innerHTML = `
         <div class="error" style="grid-column:1/-1;">
           <p>هیچ دسته‌بندی یافت نشد</p>
-          <small>لطفاً حداقل یک دایرکتوری با فایل detals.json ایجاد کنید</small>
+          <small>لطفاً حداقل یک دایرکتوری با فایل detals.json در پوشه books یا article ایجاد کنید</small>
         </div>
       `;
       return;
@@ -387,7 +395,7 @@ class BlogManager {
       grid.innerHTML = `
         <div class="error" style="grid-column:1/-1;">
           <p>هیچ یادداشتی یافت نشد</p>
-          <small>لطفاً حداقل یک فایل JSON در پوشه markdouns ایجاد کنید</small>
+          <small>لطفاً حداقل یک فایل JSON در پوشه مربوطه ایجاد کنید</small>
         </div>
       `;
       if (count) count.textContent = '۰ مورد';

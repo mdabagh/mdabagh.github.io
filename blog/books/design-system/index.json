@@ -1,0 +1,10 @@
+{
+    "files": [
+        "0-preface",
+        "1-system-design-interview",
+        "2-back-of-the-envelope-estimation",
+        "3-framework-for-interview",
+        "4-design-rate-limiter",
+        "5-design-consistent-hashing"
+    ]
+}

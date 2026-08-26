@@ -1,0 +1,16 @@
+{
+    "files": [
+        "design-system",
+        "dynamo-paper",
+        "maglev-paper",
+        "cassandra-paper",
+        "discord-scaling",
+        "better-rate-limiting-redis",
+        "cloudflare-rate-limiting",
+        "consistent-hashing-tom-white",
+        "galera-replication",
+        "rate-limit-iptables",
+        "scaling-memcache-at-facebook",
+        "stripe-rate-limiters"
+    ]
+}

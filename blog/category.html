@@ -276,32 +276,47 @@ class CategoryManager {
     }
   }
 
-  async loadPosts() {
+  async collectPosts(basePath) {
     const posts = [];
-    if (!this.categorySlug) return posts;
+    try {
+      const files = await this.scanDirectory(basePath);
+      
+      for (const file of files) {
+        if (file === 'index.json' || file === 'detals.json') continue;
+        
+        if (file.endsWith('.json')) {
+          try {
+            const res = await fetch(`${basePath}/${file}`);
+            if (!res.ok) continue;
+            const postData = await res.json();
+            const slug = file.replace('.json', '');
+            const relativePath = basePath.replace(this.categorySlug, '').replace(/^\//, '');
+            const fullSlug = relativePath ? `${relativePath}/${slug}` : slug;
 
-    const files = await this.scanDirectory(`${this.categorySlug}/markdouns`);
-
-    for (const file of files) {
-      if (!file.endsWith('.json')) continue;
-      try {
-        const res = await fetch(`${this.categorySlug}/markdouns/${file}`);
-        if (!res.ok) continue;
-        const postData = await res.json();
-        const slug = file.replace('.json', '');
-
-        posts.push({
-          id: slug,
-          title: postData.title || 'بدون عنوان',
-          summary: postData.summary || '...',
-          date: postData.date || new Date().toISOString().split('T')[0],
-          url: `post.html?cat=${this.categorySlug}&slug=${slug}`
-        });
-      } catch (e) {
-        console.error(`Error loading post ${file}:`, e);
+            posts.push({
+              id: fullSlug,
+              title: postData.title || 'بدون عنوان',
+              summary: postData.summary || '...',
+              date: postData.date || new Date().toISOString().split('T')[0],
+              url: `post.html?cat=${this.categorySlug}&slug=${fullSlug}`
+            });
+          } catch (e) {
+            console.error(`Error loading post ${basePath}/${file}:`, e);
+          }
+        } else if (!file.includes('.')) {
+          const subPosts = await this.collectPosts(`${basePath}/${file}`);
+          posts.push(...subPosts);
+        }
       }
+    } catch (e) {
+      console.error(`Error collecting posts from ${basePath}:`, e);
     }
+    return posts;
+  }
 
+  async loadPosts() {
+    if (!this.categorySlug) return [];
+    const posts = await this.collectPosts(this.categorySlug);
     posts.sort((a, b) => new Date(b.date) - new Date(a.date));
     this.posts = posts;
     return posts;
@@ -383,7 +398,7 @@ class CategoryManager {
       grid.innerHTML = `
         <div class="empty">
           هنوز یادداشتی در این دسته منتشر نشده
-          <small>یک فایل JSON در پوشه‌ی markdouns این دسته اضافه کنید</small>
+          <small>یک فایل JSON در پوشه books یا article اضافه کنید</small>
         </div>
       `;
       return;

@@ -397,7 +397,7 @@ class PostViewer {
     document.getElementById('articleContent').innerHTML = `
       <div class="error">
         <p>${message}</p>
-        <small>مسیر مورد انتظار: blog/${this.cat || '{cat}'}/markdouns/${this.slug || '{slug}'}.json</small>
+        <small>cat: ${this.cat}, slug: ${this.slug}</small>
       </div>
     `;
   }
@@ -423,20 +423,36 @@ class PostViewer {
     } catch (e) { console.error('Error loading category info:', e); }
 
     let postData;
+    let mdContent = '';
     try {
-      const res = await fetch(`${this.cat}/markdouns/${this.slug}.json`);
-      if (!res.ok) throw new Error('فایل متادیتای پست پیدا نشد');
+      // تشخیص مسیر فایل بر اساس slug
+      const slugParts = this.slug.split('/');
+      let basePath;
+      let fileName;
+      if (slugParts.length > 1) {
+        basePath = `${this.cat}/${slugParts[0]}/${slugParts[1]}`;
+        fileName = slugParts[1];
+      } else {
+        basePath = `${this.cat}/${this.slug}`;
+        fileName = this.slug;
+      }
+      
+      const fetchPath = `${basePath}/${fileName}.json`;
+      console.log('Fetching:', fetchPath);
+      const res = await fetch(fetchPath);
+      if (!res.ok) throw new Error(`فایل متادیتای پست پیدا نشد (${res.status})`);
       postData = await res.json();
+      
+      try {
+        const mdPath = `${basePath}/${fileName}.md`;
+        console.log('Fetching MD:', mdPath);
+        const mdRes = await fetch(mdPath);
+        if (mdRes.ok) mdContent = await mdRes.text();
+      } catch (e) { console.error('Error loading markdown file:', e); }
     } catch (e) {
       this.showError('این یادداشت پیدا نشد یا هنوز منتشر نشده.');
       return;
     }
-
-    let mdContent = '';
-    try {
-      const mdRes = await fetch(`${this.cat}/markdouns/${this.slug}.md`);
-      if (mdRes.ok) mdContent = await mdRes.text();
-    } catch (e) { console.error('Error loading markdown file:', e); }
 
     const pageUrl = `${SITE_BASE}/blog/post.html?cat=${this.cat}&slug=${this.slug}`;
     const title = `${postData.title || 'یادداشت'} — بلاگ محمدسجاد دباغ`;
@@ -484,7 +500,26 @@ class PostViewer {
     }
 
     const html = this.md.render(mdContent);
-    contentEl.innerHTML = `<article class="prose">${html}</article>`;
+    
+    // اصلاح مسیر تصاویر نسبی
+    const slugParts = this.slug.split('/');
+    let imageBase = '';
+    if (slugParts.length > 1) {
+      // تو در تو مثلاً design-system/0-preface → books/design-system/0-preface
+      imageBase = `${this.cat}/${slugParts[0]}/${slugParts[1]}`;
+    } else {
+      imageBase = `${this.cat}/${this.slug}`;
+    }
+    
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    tempDiv.querySelectorAll('img').forEach(img => {
+      const src = img.getAttribute('src');
+      if (src && !src.startsWith('http') && !src.startsWith('/') && !src.startsWith('data:')) {
+        img.setAttribute('src', `${imageBase}/${src}`);
+      }
+    });
+    contentEl.innerHTML = `<article class="prose">${tempDiv.innerHTML}</article>`;
 
     this.revealAll();
     this.setupReadingProgress();
