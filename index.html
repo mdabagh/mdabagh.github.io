@@ -368,12 +368,14 @@
   #blog .sheet-meta{color:#9FB0C3;}
   .blog-box{display:grid; grid-template-columns:1.1fr .9fr; gap:50px; align-items:center;}
   .blog-box p{color:#C6D2DE; font-size:15.5px; margin-bottom:14px; max-width:58ch;}
-  .blog-topics{display:flex; flex-direction:column; gap:12px;}
+  .blog-topics{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
   .blog-topics li{
     display:flex; align-items:center; gap:12px; font-size:13.5px; color:#DCE5EE;
-    border:1px solid var(--navy-line); padding:14px 16px;
+    border:1px solid var(--navy-line); padding:14px 16px; height:100%;
   }
   .blog-topics li .idx{font-family:'JetBrains Mono', monospace; color:var(--amber); font-size:12px;}
+  .blog-topics a{color:inherit;}
+  .blog-topics a:hover li{border-color:var(--amber); background:rgba(242,165,65,0.08);}
   @media (max-width:900px){.blog-box{grid-template-columns:1fr;}}
 
   /* ================= CONTACT ================= */
@@ -668,8 +670,10 @@
       </div>
 
       <ul class="blog-topics reveal">
-        <li><span class="idx mono">01</span> یادداشت‌های کتاب Design System</li>
-        <li><span class="idx mono">04</span> روزمره و چالش‌های یک بک‌اند دولوپر</li>
+        <a href="blog/book.html?cat=books&slug=pragmatic-programmer" style="display:block;"><li><span class="idx mono">01</span> Pragmatic Programmer</li></a>
+        <a href="blog/book.html?cat=books&slug=refactoring" style="display:block;"><li><span class="idx mono">02</span> Refactoring</li></a>
+        <a href="blog/book.html?cat=books&slug=software-engineering-at-google" style="display:block;"><li><span class="idx mono">03</span> Software Engineering</li></a>
+        <a href="blog/book.html?cat=books&slug=design-system" style="display:block;"><li><span class="idx mono">04</span> System Design Interview</li></a>
       </ul>
     </div>
   </div>

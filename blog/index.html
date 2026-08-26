@@ -115,56 +115,51 @@
   /* ---------- SECTION HEAD ---------- */
   .section-head{
     display:flex; justify-content:space-between; align-items:flex-end;
-    border-bottom:2px solid var(--ink); padding-bottom:14px; margin-bottom:48px; gap:20px; flex-wrap:wrap;
+    border-bottom:2px solid var(--ink); padding-bottom:14px; margin-bottom:40px; gap:20px; flex-wrap:wrap;
   }
   .section-title{font-weight:800; font-size:clamp(1.5rem, 3.4vw, 2.15rem); color:var(--ink);}
   .sheet-meta{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--ink-soft); white-space:nowrap;}
-  section .wrap{padding-top:70px; padding-bottom:70px;}
+  section .wrap{padding-top:60px; padding-bottom:60px;}
   section:first-of-type .wrap{padding-top:130px;}
 
   .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
   .reveal.in{opacity:1; transform:none;}
 
-  /* ================= CATEGORY ================= */
-  #category{background:var(--navy-deep); color:#EDF1F5;}
-  #category .section-head{border-bottom-color:var(--navy-line);}
-  #category .section-title{color:#EDF1F5;}
-  #category .sheet-meta{color:#9FB0C3;}
-  #category .proj-card{background:transparent; border:1px solid var(--navy-line);}
-  #category .proj-card:hover{border-color:var(--amber);}
-  #category .proj-card h3{color:#EDF1F5;}
-  #category .proj-card p{color:#B9C6D4;}
-  #category .read-link{color:var(--amber);}
-
-  /* ================= CARDS (shared) ================= */
+  /* ---------- CARDS ---------- */
   .proj-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
   .proj-card{
-    display:block; background:var(--paper); border:1px solid #C9D0C2; padding:26px;
-    transition:border-color .2s, transform .2s;
+    display:flex; flex-direction:column; height:100%;
+    background:var(--paper); border:1px solid #C9D0C2; padding:26px;
+    transition:border-color .2s, transform .2s; cursor:pointer;
   }
   .proj-card:hover{border-color:var(--amber-dark); transform:translateY(-3px);}
   .proj-num{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--amber-dark); margin-bottom:12px; display:block;}
   .proj-card h3{font-size:17px; font-weight:700; margin-bottom:8px;}
-  .proj-card p{font-size:13.5px; color:var(--ink-soft); margin-bottom:14px;}
+  .proj-card p{font-size:13.5px; color:var(--ink-soft); margin-bottom:14px; flex-grow:1;}
   .badge{
     display:inline-block; font-family:'JetBrains Mono', monospace; font-size:10.5px;
     padding:4px 10px; border:1px solid var(--amber-dark); color:var(--amber-dark); margin-bottom:12px;
-    border-radius:3px;
+    border-radius:3px; align-self:flex-start;
   }
-  .read-link{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber-dark); display:inline-block; width:100%; text-align:left;}
-  #category .read-link{color:var(--amber);}
+  .read-link{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber-dark); display:block; text-align:left; width:100%;}
   
   @media (max-width:820px){.proj-grid{grid-template-columns:1fr;}}
 
-  /* ================= POSTS ================= */
-  #posts{background:var(--paper-alt);}
-  
-  /* ================= LOADING ================= */
+  /* ---------- SECTIONS ---------- */
+  #hero{background:var(--navy-deep); color:#EDF1F5;}
+  #hero .section-head{border-bottom-color:var(--navy-line);}
+  #hero .section-title{color:#EDF1F5;}
+  #hero .sheet-meta{color:#9FB0C3;}
+  #hero p{font-size:15.5px; color:#C6D2DE; max-width:60ch; margin-top:16px;}
+
+  #books-section{background:var(--paper-alt);}
+  #articles-section{background:var(--paper);}
+  #til-section{background:var(--paper-alt);}
+
   .loading{text-align:center; padding:40px 0; color:var(--ink-soft);}
   .loading::after{content:'...'; animation:dots 1.5s steps(4) infinite;}
   @keyframes dots{0%{content:'';} 25%{content:'.';} 50%{content:'..';} 75%{content:'...';}}
 
-  /* ================= ERROR ================= */
   .error{color:#e74c3c; text-align:center; padding:20px; background:#fde8e8; border-radius:8px; margin:20px 0;}
 
   footer{background:var(--navy-deep); color:#9FB0C3; padding:34px 0; text-align:center; font-size:13px; font-family:'JetBrains Mono', monospace;}
@@ -193,26 +188,58 @@
   </div>
 </header>
 
-<!-- ================= CATEGORY ================= -->
-<section id="category">
+<!-- ================= HERO ================= -->
+<section id="hero">
   <div class="wrap">
-    <div class="proj-grid" id="categoryGrid">
-      <div class="loading">بارگذاری دسته‌بندی‌ها</div>
+    <div class="section-head reveal">
+      <div>
+        <h1 class="section-title">بلاگ محمدسجاد دباغ</h1>
+      </div>
+    </div>
+    <p class="reveal">در این بخش تجربه‌ها، آموخته‌ها و نکاتی را که در مسیر توسعه نرم‌افزار، طراحی سیستم و کار روی پروژه‌های واقعی به دست آورده‌ام با شما به اشتراک می‌گذارم؛ مطالبی کاربردی که می‌توانند برای برنامه‌نویسان و علاقه‌مندان به دنیای فناوری مفید باشند.</p>
+  </div>
+</section>
+
+<!-- ================= BOOKS ================= -->
+<section id="books-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="section-title">کتاب‌ها</h2>
+      </div>
+      <div class="sheet-meta" id="booksCount">۰ مورد</div>
+    </div>
+    <div class="proj-grid" id="booksGrid">
+      <div class="loading">بارگذاری کتاب‌ها</div>
     </div>
   </div>
 </section>
 
-<!-- ================= POSTS ================= -->
-<section id="posts">
+<!-- ================= ARTICLES ================= -->
+<section id="articles-section">
   <div class="wrap">
     <div class="section-head reveal">
       <div>
-        <h2 class="section-title">آخرین یادداشت‌ها</h2>
+        <h2 class="section-title">مقالات</h2>
       </div>
-      <div class="sheet-meta" id="postCount">۰ مورد</div>
+      <div class="sheet-meta" id="articlesCount">۰ مورد</div>
     </div>
+    <div class="proj-grid" id="articlesGrid">
+      <div class="loading">بارگذاری مقالات</div>
+    </div>
+  </div>
+</section>
 
-    <div class="proj-grid" id="postsGrid">
+<!-- ================= TIL ================= -->
+<section id="til-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="section-title">روزمره و چالش‌های یک بک‌اند دولوپر</h2>
+      </div>
+      <div class="sheet-meta" id="tilCount">۰ مورد</div>
+    </div>
+    <div class="proj-grid" id="tilGrid">
       <div class="loading">بارگذاری یادداشت‌ها</div>
     </div>
   </div>
@@ -223,27 +250,21 @@
 </footer>
 
 <script>
-// ============================================
-// سیستم کامل مدیریت دیتاهای بلاگ
-// ============================================
-
 class BlogManager {
   constructor() {
     this.categories = [];
-    this.posts = [];
-    this.basePath = '';
+    this.books = [];
+    this.articles = [];
+    this.til = [];
   }
 
-  // تبدیل عدد به فارسی
   toPersianNumber(num) {
     const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
     return num.toString().replace(/\d/g, d => persian[parseInt(d)]);
   }
 
-  // اسکن دایرکتوری‌ها با استفاده از fetch
   async scanDirectory(path) {
     try {
-      // تلاش برای دریافت لیست فایل‌ها از سرور
       const response = await fetch(`${path}/index.json`);
       if (response.ok) {
         const data = await response.json();
@@ -251,235 +272,214 @@ class BlogManager {
       }
       return [];
     } catch (error) {
-      console.error(`Error scanning directory ${path}:`, error);
       return [];
     }
   }
 
-  // پیدا کردن تمام دایرکتوری‌های دسته‌بندی
-  async findCategories() {
+  async loadDetals(path) {
     try {
-      // لیست دسته‌بندی‌های پیش‌فرض
-      const possibleCategories = ['books', 'article', 'TIL'];
-      const categories = [];
-
-      for (const cat of possibleCategories) {
-        try {
-          // بررسی وجود detals.json
-          const response = await fetch(`${cat}/detals.json`);
-          if (response.ok) {
-            const details = await response.json();
-            categories.push({
-              id: cat,
-              name: details.name || cat,
-              summary: details.summary || '',
-              path: cat
-            });
-          }
-        } catch (e) {
-          // دایرکتوری وجود ندارد
-        }
-      }
-
-      return categories;
-    } catch (error) {
-      console.error('Error finding categories:', error);
-      return [];
-    }
+      const res = await fetch(`${path}/detals.json`);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return null;
   }
 
-  // جمع‌آوری پست‌ها از یک مسیر (با پشتیبانی از تو در تو)
-  async collectPosts(basePath, categoryPath, categoryId, categoryName) {
-    const posts = [];
+  async loadJson(path) {
     try {
-      const files = await this.scanDirectory(basePath);
-      
-      for (const file of files) {
-        if (file === 'index.json' || file === 'detals.json') continue;
-        
-        if (file.endsWith('.json')) {
-          // فایل JSON پست
-          try {
-            const response = await fetch(`${basePath}/${file}`);
-            if (response.ok) {
-              const postData = await response.json();
-              const slug = file.replace('.json', '');
-              const relativePath = basePath.replace(categoryPath, '').replace(/^\//, '');
-              const fullSlug = relativePath ? `${relativePath}/${slug}` : slug;
-              
-              let content = '';
-              try {
-                const mdResponse = await fetch(`${basePath}/${slug}.md`);
-                if (mdResponse.ok) content = await mdResponse.text();
-              } catch (e) {}
-              
-              posts.push({
-                id: fullSlug,
-                category: categoryId,
-                categoryName: categoryName,
-                title: postData.title || 'بدون عنوان',
-                summary: postData.summary || '...',
-                content: content,
-                date: postData.date || new Date().toISOString().split('T')[0],
-                url: `post.html?cat=${categoryId}&slug=${fullSlug}`
-              });
-            }
-          } catch (e) {
-            console.error(`Error loading post ${basePath}/${file}:`, e);
-          }
-        } else if (!file.includes('.')) {
-          // پوشه - جستجوی بازگشتی
-          const subPosts = await this.collectPosts(`${basePath}/${file}`, categoryPath, categoryId, categoryName);
-          posts.push(...subPosts);
-        }
-      }
-    } catch (error) {
-      console.error(`Error collecting posts from ${basePath}:`, error);
+      const res = await fetch(path);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return null;
+  }
+
+  // Load books
+  async loadBooks() {
+    const files = await this.scanDirectory('books');
+    const books = [];
+
+    for (const slug of files) {
+      if (slug.includes('.')) continue;
+
+      const info = await this.loadJson(`books/${slug}/${slug}.json`);
+      const indexData = await this.loadJson(`books/${slug}/index.json`);
+      const subdirs = indexData?.files?.filter(f => !f.includes('.')) || [];
+      const hasChapters = subdirs.length > 0;
+
+      // Get summary from detals.json if available
+      const detals = await this.loadJson(`books/${slug}/detals.json`);
+
+      books.push({
+        slug,
+        title: info?.title || detals?.name || slug,
+        summary: info?.summary || detals?.summary || '',
+        hasChapters,
+        chapterCount: subdirs.length,
+        url: hasChapters
+          ? `book.html?cat=books&slug=${slug}`
+          : `post.html?cat=books&slug=${slug}`
+      });
     }
-    return posts;
+
+    this.books = books;
+    return books;
   }
 
-  // بارگذاری پست‌های یک دسته‌بندی
-  async loadCategoryPosts(category) {
-    return await this.collectPosts(category.path, category.path, category.id, category.name);
-  }
+  // Load articles
+  async loadArticles() {
+    const files = await this.scanDirectory('article');
+    const articles = [];
 
-  // بارگذاری همه پست‌ها
-  async loadAllPosts() {
-    let allPosts = [];
-    for (const cat of this.categories) {
-      const posts = await this.loadCategoryPosts(cat);
-      allPosts = allPosts.concat(posts);
+    for (const slug of files) {
+      if (slug.includes('.')) continue;
+
+      const info = await this.loadJson(`article/${slug}/${slug}.json`);
+
+      articles.push({
+        slug,
+        title: info?.title || slug,
+        summary: info?.summary || '',
+        hasChapters: false,
+        url: `post.html?cat=article&slug=${slug}`
+      });
     }
-    
-    // مرتب‌سازی بر اساس تاریخ (جدیدترین اول)
-    allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-    this.posts = allPosts;
-    return allPosts;
+
+    this.articles = articles;
+    return articles;
   }
 
-  // رندر کردن دسته‌بندی‌ها
-  renderCategories() {
-    const grid = document.getElementById('categoryGrid');
+  // Load TIL
+  async loadTil() {
+    const files = await this.scanDirectory('TIL');
+    const til = [];
+
+    for (const slug of files) {
+      if (slug.includes('.')) continue;
+
+      const info = await this.loadJson(`TIL/${slug}/${slug}.json`);
+
+      til.push({
+        slug,
+        title: info?.title || slug,
+        summary: info?.summary || '',
+        hasChapters: false,
+        url: `post.html?cat=TIL&slug=${slug}`
+      });
+    }
+
+    this.til = til;
+    return til;
+  }
+
+  renderBooks() {
+    const grid = document.getElementById('booksGrid');
+    const count = document.getElementById('booksCount');
     if (!grid) return;
-    
-    if (this.categories.length === 0) {
-      grid.innerHTML = `
-        <div class="error" style="grid-column:1/-1;">
-          <p>هیچ دسته‌بندی یافت نشد</p>
-          <small>لطفاً حداقل یک دایرکتوری با فایل detals.json در پوشه books یا article ایجاد کنید</small>
-        </div>
-      `;
+
+    if (this.books.length === 0) {
+      grid.innerHTML = '<div class="error" style="grid-column:1/-1;">کتابی یافت نشد</div>';
       return;
     }
-    
-    grid.innerHTML = this.categories.map((cat, index) => `
-      <a class="proj-card reveal" href="category.html?cat=${cat.id}">
-        <span class="proj-num">${this.toPersianNumber(index + 1).padStart(2, '۰')}</span>
-        <h3>${cat.name}</h3>
-        <p>${cat.summary}</p>
-        <span class="read-link">مشاهده یادداشت‌ها ←</span>
+
+    count.textContent = `${this.toPersianNumber(this.books.length)} مورد`;
+
+    grid.innerHTML = this.books.map((book, i) => `
+      <a class="proj-card reveal" href="${book.url}">
+        <span class="proj-num">${this.toPersianNumber(i + 1).padStart(2, '۰')}</span>
+        ${book.hasChapters ? `<span class="badge">${this.toPersianNumber(book.chapterCount)} فصل</span>` : ''}
+        <h3>${book.title}</h3>
+        <p>${book.summary}</p>
+        <span class="read-link">${book.hasChapters ? 'مشاهده فصل‌ها' : 'مشاهده یادداشت'} ←</span>
       </a>
     `).join('');
-    
+
     this.initReveal();
   }
 
-  // رندر کردن پست‌ها
-  renderPosts() {
-    const grid = document.getElementById('postsGrid');
-    const count = document.getElementById('postCount');
+  renderArticles() {
+    const grid = document.getElementById('articlesGrid');
+    const count = document.getElementById('articlesCount');
     if (!grid) return;
-    
-    if (this.posts.length === 0) {
-      grid.innerHTML = `
-        <div class="error" style="grid-column:1/-1;">
-          <p>هیچ یادداشتی یافت نشد</p>
-          <small>لطفاً حداقل یک فایل JSON در پوشه مربوطه ایجاد کنید</small>
-        </div>
-      `;
-      if (count) count.textContent = '۰ مورد';
+
+    if (this.articles.length === 0) {
+      grid.innerHTML = '<div class="error" style="grid-column:1/-1;">مقاله‌ای یافت نشد</div>';
       return;
     }
-    
-    if (count) {
-      count.textContent = `${this.toPersianNumber(this.posts.length)} مورد`;
-    }
-    
-    // فقط ۴ پست آخر را نمایش می‌دهیم
-    const displayPosts = this.posts.slice(0, 4);
-    
-    grid.innerHTML = displayPosts.map((post, index) => `
-      <article class="proj-card reveal">
-        <span class="proj-num">${this.toPersianNumber(index + 1).padStart(2, '۰')}</span>
-        <a href="${post.url}" class="badge">${post.categoryName}</a>
-        <h3>${post.title}</h3>
-        <p>${post.summary}</p>
-        <a href="${post.url}" class="read-link">مشاهده یادداشت ←</a>
-      </article>
+
+    count.textContent = `${this.toPersianNumber(this.articles.length)} مورد`;
+
+    grid.innerHTML = this.articles.map((art, i) => `
+      <a class="proj-card reveal" href="${art.url}">
+        <span class="proj-num">${this.toPersianNumber(i + 1).padStart(2, '۰')}</span>
+        <h3>${art.title}</h3>
+        <p>${art.summary}</p>
+        <span class="read-link">مشاهده مقاله ←</span>
+      </a>
     `).join('');
-    
+
     this.initReveal();
   }
 
-  // راه‌اندازی مجدد انیمیشن reveal
+  renderTil() {
+    const grid = document.getElementById('tilGrid');
+    const count = document.getElementById('tilCount');
+    if (!grid) return;
+
+    if (this.til.length === 0) {
+      grid.innerHTML = '<div class="error" style="grid-column:1/-1;">یادداشتی یافت نشد</div>';
+      return;
+    }
+
+    count.textContent = `${this.toPersianNumber(this.til.length)} مورد`;
+
+    grid.innerHTML = this.til.map((item, i) => `
+      <a class="proj-card reveal" href="${item.url}">
+        <span class="proj-num">${this.toPersianNumber(i + 1).padStart(2, '۰')}</span>
+        <h3>${item.title}</h3>
+        <p>${item.summary}</p>
+        <span class="read-link">مشاهده یادداشت ←</span>
+      </a>
+    `).join('');
+
+    this.initReveal();
+  }
+
   initReveal() {
     const revealEls = document.querySelectorAll('.reveal:not(.in)');
     const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { 
-        if(e.isIntersecting){ 
-          e.target.classList.add('in'); 
-          io.unobserve(e.target); 
-        } 
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
       });
-    }, {threshold:0.15});
+    }, { threshold: 0.15 });
     revealEls.forEach(el => io.observe(el));
   }
 
-  // بارگذاری کامل دیتاها
   async loadAll() {
-    try {
-      // پیدا کردن دسته‌بندی‌ها
-      this.categories = await this.findCategories();
-      this.renderCategories();
-      
-      // بارگذاری پست‌ها
-      await this.loadAllPosts();
-      this.renderPosts();
-    } catch (error) {
-      console.error('Error loading blog data:', error);
-      document.getElementById('categoryGrid').innerHTML = `
-        <div class="error" style="grid-column:1/-1;">
-          <p>خطا در بارگذاری دیتاها</p>
-          <small>${error.message}</small>
-        </div>
-      `;
-    }
+    await Promise.all([
+      this.loadBooks(),
+      this.loadArticles(),
+      this.loadTil()
+    ]);
+
+    this.renderBooks();
+    this.renderArticles();
+    this.renderTil();
   }
 }
 
-// ============================================
-// راه‌اندازی
-// ============================================
-
 document.addEventListener('DOMContentLoaded', async () => {
-  // منوی همبرگر
   const burger = document.getElementById('burgerBtn');
   const navLinks = document.getElementById('navLinks');
   
   if (burger && navLinks) {
-    burger.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
-
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
     navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-      });
+      a.addEventListener('click', () => navLinks.classList.remove('open'));
     });
   }
 
-  // بارگذاری دیتاهای بلاگ
   const blogManager = new BlogManager();
   await blogManager.loadAll();
 });

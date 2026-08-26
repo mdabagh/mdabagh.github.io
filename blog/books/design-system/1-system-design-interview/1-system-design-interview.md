@@ -837,12 +837,28 @@ Metrics: Collecting different types of metrics help us to gain business insights
 Automation: When a system gets big and complex, we need to build or leverage automation tools to improve productivity. Continuous integration is a good practice, in which each code check-in is verified through automation, allowing teams to detect problems early. Besides, automating your build, test, deploy process, etc. could improve developer productivity significantly.
 Adding message queues and different tools
 Figure 1-19 shows the updated design. Due to the space constraint, only one data center is shown in the figure.
+
+> **لاگ‌گیری، متریک و اتوماسیون**
+> 
+> هنگام کار با یک وب‌سایت کوچک که روی چند سرور اجرا می‌شود، لاگ‌گیری، متریک و پشتیبانی اتوماسیون رویه‌های خوبی هستند اما ضروری نیستند. اما حالا که سایت شما برای یک کسب‌وکار بزرگ رشد کرده، سرمایه‌گذاری در این ابزارها ضروری است.
+> 
+> **لاگ‌گیری (Logging):** مانیتورینگ لاگ‌های خطا مهم است زیرا به شناسایی خطاها و مشکلات سیستم کمک می‌کند. می‌توانید لاگ‌های خطا را در سطح هر سرور مانیتور کنید یا از ابزارها برای تجمیع آن‌ها در یک سرویس متمرکز برای جستجو و مشاهده آسان استفاده کنید.
+> 
+> **متریک (Metrics):** جمع‌آوری انواع مختلف متریک به ما کمک می‌کند بینش‌های تجاری به دست آوریم و وضعیت سلامت سیستم را درک کنیم. برخی متریک‌های زیر مفید هستند:
+> • متریک‌های سطح هاست: CPU، حافظه، دیسک I/O و غیره
+> • متریک‌های سطح تجمیع‌شده: برای مثال عملکرد کل لایه دیتابیس، لایه کش و غیره
+> • متریک‌های کلیدی کسب‌وکار: کاربران فعال روزانه، نرخ نگهداشت، درآمد و غیره
+> 
+> **اتوماسیون (Automation):** وقتی سیستم بزرگ و پیچیده می‌شود، باید ابزارهای اتوماسیون را بسازیم یا به کار بگیریم تا بهره‌وری را افزایش دهیم. یکپارچه‌سازی مداوم (Continuous Integration) رویه خوبی است که در آن هر بار کدگذاری از طریق اتوماسیون تأیید می‌شود و به تیم‌ها اجازه می‌دهد مشکلات را زودتر شناسایی کنند. علاوه بر این، اتوماسیون فرآیند build، test و deploy می‌تواند بهره‌وری توسعه‌دهندگان را به طور قابل توجهی افزایش دهد.
+> 
+> **اضافه کردن صف‌های پیام و ابزارهای مختلف**
+> شکل 1-19 طراحی به‌روزرسانی‌شده را نشان می‌دهد. به دلیل محدودیت فضا، فقط یک مرکز داده در شکل نشان داده شده است.
 1.	The design includes a message queue, which helps to make the system more loosely coupled and failure resilient.
 2.	Logging, monitoring, metrics, and automation tools are included.
 
 
 
-محل درج فارسی متن بالا
+> طراحی سیستم شامل یک صف پیام (Message Queue) است که به شل‌تر شدن اتصالات و مقاومت بیشتر سیستم در برابر خطاها کمک می‌کند. همچنین ابزارهای لاگ‌گیری، مانیتورینگ، متریک و اتوماسیون در سیستم گنجانده شده‌اند.
 
 ![19](images/System-Design-Interview-page27-image1.jpg)
 
@@ -852,7 +868,7 @@ Figure 1-19 shows the updated design. Due to the space constraint, only one data
 As the data grows every day, your database gets more overloaded. It is time to scale the data tier.
 
 
-محل درج فارسی متن بالا
+> با رشد روزافزون داده‌ها، دیتابیس شما بیشتر و بیشتر تحت فشار قرار می‌گیرد. زمان آن رسیده که لایه داده را مقیاس‌دهی کنیم.
 
 ---
 
@@ -863,10 +879,20 @@ Vertical scaling, also known as scaling up, is the scaling by adding more power 
 •	You can add more CPU, RAM, etc. to your database server, but there are hardware limits. If you have a large user base, a single server is not enough.
 •	Greater risk of single point of failures.
 •	The overall cost of vertical scaling is high. Powerful servers are much more expensive.
+
+> **مقیاس‌دهی دیتابیس**
+> 
+> دو رویکرد کلی برای مقیاس‌دهی دیتابیس وجود دارد: مقیاس‌دهی عمودی و مقیاس‌دهی افقی.
+> 
+> **مقیاس‌دهی عمودی (Vertical Scaling)**
+> مقیاس‌دهی عمودی که به نام scaling up نیز شناخته می‌شود، شامل اضافه کردن قدرت بیشتر (CPU، RAM، دیسک و غیره) به یک ماشین موجود است. سرورهای دیتابیس قدرتمندی وجود دارند. طبق سرویس دیتابیس رابطه‌ای آمازون (RDS) [12]، می‌توانید یک سرور دیتابیس با 24 ترابایت RAM دریافت کنید. این نوع سرورهای قدرتمند می‌توانند حجم زیادی از داده‌ها را ذخیره و مدیریت کنند. برای مثال، stackoverflow.com در سال 2013 بیش از 10 میلیون بازدیدکننده منحصربه‌فرد ماهانه داشت، اما فقط 1 دیتابیس اصلی (Master) داشت [13]. با این حال، مقیاس‌دهی عمودی معایب جدی دارد:
+> • می‌توانید CPU، RAM و غیره به سرور دیتابیس اضافه کنید، اما محدودیت‌های سخت‌افزاری وجود دارد. اگر پایگاه کاربری بزرگی دارید، یک سرور تنها کافی نیست.
+> • خطر بیشتر نقطه شکست واحد (Single Point of Failure)
+> • هزینه کلی مقیاس‌دهی عمودی بالاست. سرورهای قدرتمند بسیار گران‌تر هستند.
 Horizontal scaling
 Horizontal scaling, also known as sharding, is the practice of adding more servers. Figure 1-20 compares vertical scaling with horizontal scaling.
 
-محل درج فارسی متن بالا
+> مقیاس‌دهی افقی که به نام شاردینگ (Sharding) نیز شناخته می‌شود، شامل اضافه کردن سرورهای بیشتر به سیستم است. شکل ۱-۲۰ مقیاس‌دهی عمودی را با مقیاس‌دهی افقی مقایسه می‌کند.
 
 ![20](images/System-Design-Interview-page28-image1.jpg)
 
@@ -877,7 +903,8 @@ Figure 1-21 shows an example of sharded databases. User data is allocated to a d
 equals to 0, shard 0 is used to store and fetch data. If the result equals to 1, shard 1 is used. The same logic applies to other shards.
 
 
-محل درج فارسی متن بالا
+> شاردینگ، دیتابیس‌های بزرگ را به بخش‌های کوچک‌تر و قابل مدیریت‌تری به نام شارد (Shard) تقسیم می‌کند. هر شارد از یک اسکیمای مشترک استفاده می‌کند، اما داده‌های واقعی در هر شارد منحصربه‌فرد است.
+> شکل ۱-۲۱ مثالی از دیتابیس‌های شاردشده را نشان می‌دهد. داده‌های کاربر بر اساس شناسه کاربر به سرور دیتابیس اختصاص داده می‌شوند. هر بار که به داده دسترسی پیدا می‌کنید، از تابع هش برای پیدا کردن شارد مربوطه استفاده می‌شود. در مثال ما، user_id % 4 به عنوان تابع هش استفاده شده است. اگر نتیجه برابر ۰ باشد، شارد ۰ برای ذخیره و بازیابی داده استفاده می‌شود. اگر نتیجه برابر ۱ باشد، شارد ۱ استفاده می‌شود. همین منطق برای سایر شاردها نیز صادق است.
 
 
 ![21](images/System-Design-Interview-page29-image1.jpg)
@@ -887,7 +914,7 @@ equals to 0, shard 0 is used to store and fetch data. If the result equals to 1,
 
 Figure 1-22 shows the user table in sharded databases.
 
-محل درج فارسی متن بالا
+> شکل ۱-۲۲ جدول کاربران در دیتابیس‌های شاردشده را نشان می‌دهد.
 
 ![22](images/System-Design-Interview-page29-image2.jpg)
 
@@ -901,7 +928,7 @@ Celebrity problem: This is also called a hotspot key problem. Excessive access t
 Join and de-normalization: Once a database has been sharded across multiple servers, it is hard to perform join operations across database shards. A common workaround is to de-normalize the database so that queries can be performed in a single table.
 In Figure 1-23, we shard databases to support rapidly increasing data traffic. At the same time, some of the non-relational functionalities are moved to a NoSQL data store to reduce the database load. Here is an article that covers many use cases of NoSQL [14].
 
-محل درج فارسی متن بالا
+> در شکل ۱-۲۳، دیتابیس‌ها را شارد می‌کنیم تا افزایش سریع ترافیک داده را پشتیبانی کنیم. در عین حال، برخی از عملکردهای غیررابطه‌ای به یک مخزن داده NoSQL منتقل می‌شوند تا فشار از روی دیتابیس کاهش یابد. در اینجا مقاله‌ای وجود دارد که بسیاری از موارد استفاده NoSQL را پوشش می‌دهد [14].
 
 ![22](images/System-Design-Interview-page31-image1.jpg)
 
@@ -919,7 +946,7 @@ Scaling a system is an iterative process. Iterating on what we have learned in t
 •	Monitor your system and use automation tools
 Congratulations on getting this far! Now give yourself a pat on the back. Good job!
 
-محل درج فارسی متن بالا
+> تبریک! تا اینجا پیش آمدید. حالا یک دست مریزاد به خودتان بگویید. آفرین!
 
 ---
 
