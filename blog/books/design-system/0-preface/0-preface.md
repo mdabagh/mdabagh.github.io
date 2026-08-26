@@ -1,3 +1,8 @@
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
+
+---
 ![System Design Interview: An Insider’s Guide](images/System-Design-Interview-page1-image1.jpg)
 
 

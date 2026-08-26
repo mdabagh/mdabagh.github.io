@@ -1,35 +1,10 @@
-## ۸. ماهیت طراحی خوب (The Essence of Good Design)
-
-
-
-![A Pragmatic Approach](images/page001-057.png)
-
-![A Pragmatic Approach](images/page004-060-img2.png)
-
-![A Pragmatic Approach](images/page008-064.png)
-
-![A Pragmatic Approach](images/page012-068.png)
-
-![A Pragmatic Approach](images/page016-072.png)
-
-![A Pragmatic Approach](images/page017-073-img4.png)
-
-![A Pragmatic Approach](images/page018-074.png)
-
-![A Pragmatic Approach](images/page022-078.png)
-
-![A Pragmatic Approach](images/page026-082.png)
-
-![A Pragmatic Approach](images/page030-086.png)
-
-![A Pragmatic Approach](images/page034-090.png)
-
-![A Pragmatic Approach](images/page038-094.png)
-
-![A Pragmatic Approach](images/page042-098.png)
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
 
 ---
 
+###### 📄 صفحه ۵۷
 
 > Good Design Is Easier to Change Than Bad Design (Tip 14): A thing is well designed if it adapts to the people who use it. For code, that means it must adapt by changing. So we believe in the ETC principle: Easier to Change. ETC. That's it.
 > As far as we can tell, every design principle out there is a special case of ETC. Why is decoupling good? Because by isolating concerns we make each easier to change. ETC. Why is the single responsibility principle useful? Because a change in requirements is mirrored by a change in just one module. ETC. Why is naming important? Because good names make code easier to read, and you have to read it to change it. ETC!
@@ -39,9 +14,21 @@
 به نظر ما، هر اصل طراحی‌ای که وجود دارد حالت خاصی از ETC است. چرا جداسازی خوب است؟ چون با جدا کردن نگرانی‌ها، هر کدام را آسان‌تر برای تغییر می‌کنیم. ETC. چرا اصل مسئولیت واحد مفید است؟ چون تغییر در نیازمندی‌ها فقط در یک ماژول منعکس می‌شود. ETC. چرا نام‌گذاری مهم است؟ چون نام‌های خوب کد را آسان‌تر برای خواندن می‌کنند و باید بخوانیدش تا تغییرش دهید. ETC!
 ETC یک ارزش است، نه یک قاعده: ارزش‌ها چیزهایی هستند که به شما در تصمیم‌گیری کمک می‌کنند.
 
+![Section](images/page001-057.png)
+
+![Section](images/page002-058.png)
+
+![Section](images/page003-059.png)
+
+![Section](images/page004-060-img1.png)
+
+![Section](images/page004-060-img2.png)
+
+![Section](images/page005-061.png)
+
 ---
 
-## ۹. DRY — شرارت‌های تکرار (DRY—The Evils of Duplication)
+###### 📄 صفحه ۶۲
 
 > Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.
 > DRY—Don't Repeat Yourself (Tip 15): The alternative is to have the same thing expressed in two or more places. If you change one, you have to remember to change the others, or your program will be brought to its knees by a contradiction.
@@ -55,9 +42,19 @@ DRY فقط کد نیست: DRY درباره تکرار دانش، نیت است. 
 هر تکرار کدی تکرار دانش نیست: کد یکسان است، اما دانشی که نشان می‌دهند متفاوت است.
 استفاده مجدد را آسان کنید (نکته ۱۶): هدف شما ایجاد محیطی است که در آن پیدا کردن و استفاده مجدد از چیزهای موجود آسان‌تر از نوشتن خودتان باشد.
 
+![Section](images/page006-062.png)
+
+![Section](images/page007-063.png)
+
+![Section](images/page008-064.png)
+
+![Section](images/page009-065.png)
+
+![Section](images/page010-066.png)
+
 ---
 
-## ۱۰. قطعیت (Orthogonality)
+###### 📄 صفحه ۶۷
 
 > Orthogonality is a critical concept if you want to produce systems that are easy to design, build, test, and extend. In computing, the term has come to signify a kind of independence or decoupling. Two or more things are orthogonal if changes in one do not affect any of the others.
 > Eliminate Effects Between Unrelated Things (Tip 17): We want to design components that are self-contained: independent, and with a single, well-defined purpose.
@@ -73,13 +70,23 @@ DRY فقط کد نیست: DRY درباره تکرار دانش، نیت است. 
 - ریسک کاهش می‌یابد: بخش‌های آلوده کد جدا می‌شوند. سیستم حاصل شکننده‌تر است.
 کدتان را جدا نگه دارید. کد خجالتی بنویسید — ماژول‌هایی که چیز غیرضروری به ماژول‌های دیگر نشان نمی‌دهند.
 
+![Section](images/page011-067.png)
+
+![Section](images/page012-068.png)
+
+![Section](images/page013-069.png)
+
+![Section](images/page014-070.png)
+
+![Section](images/page015-071.png)
+
 ---
 
-## ۱۱. بازگشت‌پذیری (Reversibility)
+###### 📄 صفحه ۷۲
 
 > Nothing is more dangerous than an idea if it’s the only one you have.
 > ➤ Emil-Auguste Chartier (Alain)
->
+> 
 > There Are No Final Decisions (Tip 18): Many of the topics in this book are geared to producing flexible, adaptable software. By sticking to their recommendations—especially the DRY principle, decoupling, and use of external configuration—we don't have to make as many critical, irreversible decisions.
 > Flexible Architecture: How can you plan for architectural volatility? You can't. What you can do is make it easy to change. Hide third-party APIs behind your own abstraction layers.
 > Forgo Following Fads (Tip 19): No one knows what the future may hold, especially not us! So enable your code to rock-n-roll.
@@ -89,13 +96,35 @@ DRY فقط کد نیست: DRY درباره تکرار دانش، نیت است. 
 معماری انعطاف‌پذیر: چگونه برای نوسانات معماری برنامه‌ریزی کنید؟ نمی‌توانید. کاری که می‌توانید انجام دهید این است که تغییر را آسان کنید.
 از ترند‌ها پیروی نکنید (نکته ۱۹): هیچ‌کس نمی‌داند آینده چه خواهد داشت، مخصوصاً ما! پس به کدتان اجازه رقص بدهید.
 
+![Section](images/page016-072.png)
+
+![Section](images/page017-073-img1.png)
+
+![Section](images/page017-073-img2.png)
+
+![Section](images/page017-073-img3.png)
+
+![Section](images/page017-073-img4.png)
+
+![Section](images/page017-073-img5.png)
+
+![Section](images/page017-073-img6.png)
+
+![Section](images/page017-073-img7.png)
+
+![Section](images/page018-074.png)
+
+![Section](images/page019-075.png)
+
+![Section](images/page020-076.png)
+
 ---
 
-## ۱۲. گلوله‌های ردیاب (Tracer Bullets)
+###### 📄 صفحه ۷۷
 
 > Ready, fire, aim…
 > ➤ Anon
->
+> 
 > Use Tracer Bullets to Find the Target (Tip 20): In fact, given the complexity of today's project setup, with swarms of external dependencies and tools, tracer bullets become even more important.
 > Tracer code is not disposable: you write it for keeps. It contains all the error checking, structuring, documentation, and self-checking that any piece of production code has. It simply is not fully functional.
 > Tracer Bullets Don't Always Hit Their Target: Tracer bullets show what you're hitting. This may not always be the target. You then adjust your aim until they're on target.
@@ -107,9 +136,19 @@ DRY فقط کد نیست: DRY درباره تکرار دانش، نیت است. 
 گلوله‌های ردیاب همیشه به هدف نمی‌خورند: گلوله‌های ردیاب نشان می‌دهند به چه چیزی می‌خورید. این ممکن است همیشه هدف نباشد. سپس هدف‌گیری خود را تنظیم می‌کنید.
 کد ردیاب در مقابل پروتوتایپ: پروتوتایپ کد قابل دور ریختن تولید می‌کند. کد ردیاب لاغر اما کامل است و بخشی از اسکلت سیستم نهایی را تشکیل می‌دهد.
 
+![Section](images/page021-077.png)
+
+![Section](images/page022-078.png)
+
+![Section](images/page023-079.png)
+
+![Section](images/page024-080.png)
+
+![Section](images/page025-081.png)
+
 ---
 
-## ۱۳. پروتوتایپ‌ها و یادداشت‌های پست‌ایت (Prototypes and Post-it Notes)
+###### 📄 صفحه ۸۲
 
 > Many industries use prototypes to try out specific ideas; prototyping is much cheaper than full-scale production.
 > Prototype to Learn (Tip 21): Prototyping is a learning experience. Its value lies not in the code produced, but in the lessons learned.
@@ -123,22 +162,42 @@ DRY فقط کد نیست: DRY درباره تکرار دانش، نیت است. 
 نحوه استفاده از پروتوتایپ‌ها: از صحت، کامل بودن، استحکام و سبک چشم‌پوشی کنید.
 نحوه عدم استفاده از پروتوتایپ‌ها: قبل از شروع هر پروتوتایپ‌سازی مبتنی بر کد، مطمئن شوید همه درک می‌کنند که کد قابل دور ریختن می‌نویسید.
 
+![Section](images/page026-082.png)
+
+![Section](images/page027-083.png)
+
+![Section](images/page028-084.png)
+
+![Section](images/page029-085.png)
+
+![Section](images/page030-086.png)
+
 ---
 
-## ۱۴. زبان‌های دامنه (Domain Languages)
+###### 📄 صفحه ۸۷
 
 > The limits of my language are the limits of my world.
 > ➤ Ludwig Wittgenstein
->
+> 
 > Much as you may like to just say "make it so" and have the computer build your application, in many cases you can get at least partway there. Use and build domain languages.
 > Domain-Specific Languages (Tip 22): Programming in a small, domain-specific language is often simpler and more natural than programming in a general-purpose language.
 
 محدودیت‌های زبان من، محدودیت‌های دنیای من است.
 زبان‌های خاص دامنه (نکته ۲۲): برنامه‌نویسی در یک زبان کوچک و خاص دامنه اغلب ساده‌تر و طبیعی‌تر از برنامه‌نویسی در یک زبان عمومی است.
 
+![Section](images/page031-087.png)
+
+![Section](images/page032-088.png)
+
+![Section](images/page033-089.png)
+
+![Section](images/page034-090.png)
+
+![Section](images/page035-091.png)
+
 ---
 
-## ۱۵. تخمین (Estimating)
+###### 📄 صفحه ۹۲
 
 > Estimating is the process of finding an approximation, which is a value that is usable for some purpose even if input data may be incomplete, uncertain, or unstable.
 > The Computer Delivers Pizza (Tip 23): Often, when estimating time to do technical tasks, the answer is a complex function of many variables.
@@ -152,6 +211,22 @@ DRY فقط کد نیست: DRY درباره تکرار دانش، نیت است. 
 تخمین‌ها را از پایین به بالا بسازید: با وظایف کوچک شروع کنید و آن‌ها را جمع کنید.
 بدانید چه زمانی رهایش کنید: وقت زیادی برای تخمین صرف نکنید.
 
----
+![Section](images/page036-092.png)
 
-# فصل سوم: ابزارهای پایه ⏱️ ۲۰ دقیقه مطالعه
+![Section](images/page037-093.png)
+
+![Section](images/page038-094.png)
+
+![Section](images/page039-095.png)
+
+![Section](images/page040-096.png)
+
+![Section](images/page041-097.png)
+
+![Section](images/page042-098.png)
+
+![Section](images/page043-099.png)
+
+![Section](images/page044-100.png)
+
+---

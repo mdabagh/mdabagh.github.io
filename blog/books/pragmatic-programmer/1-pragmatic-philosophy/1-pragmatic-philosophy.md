@@ -1,39 +1,14 @@
-## ۱. زندگی شماست (It's Your Life)
-
-
-
-![A Pragmatic Philosophy](images/page001-019.png)
-
-![A Pragmatic Philosophy](images/page004-022.png)
-
-![A Pragmatic Philosophy](images/page007-025.png)
-
-![A Pragmatic Philosophy](images/page010-028.png)
-
-![A Pragmatic Philosophy](images/page013-031.png)
-
-![A Pragmatic Philosophy](images/page016-034.png)
-
-![A Pragmatic Philosophy](images/page019-037.png)
-
-![A Pragmatic Philosophy](images/page022-040.png)
-
-![A Pragmatic Philosophy](images/page025-043.png)
-
-![A Pragmatic Philosophy](images/page028-046.png)
-
-![A Pragmatic Philosophy](images/page031-049.png)
-
-![A Pragmatic Philosophy](images/page034-052.png)
-
-![A Pragmatic Philosophy](images/page037-055.png)
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
 
 ---
 
+###### 📄 صفحه ۱۹
 
 > I’m not in this world to live up to your expectations and you’re not in this world to live up to mine.
 > ➤ Bruce Lee
->
+> 
 > It is your life. You own it. You run it. You create it.
 > Many developers we talk to are frustrated. Their concerns are varied. Some feel they’re stagnating in their job, others that technology has passed them by. Folks feel they are under appreciated, or underpaid, or that their teams are toxic. Maybe they want to move to Asia, or Europe, or work from home. And the answer we give is always the same. "Why can’t you change it?"
 > Software development must appear close to the top of any list of careers where you have control. Our skills are in demand, our knowledge crosses geographic boundaries, we can work remotely. We’re paid well. We really can do just about anything we want.
@@ -48,13 +23,23 @@
 اما به دلیلی، توسعه‌دهندگان ظاهراً در برابر تغییر مقاومت می‌کنند. سنگر می‌گیرند و امیدوارند همه‌چیز بهتر شود. منفعلانه نگاه می‌کنند، در حالی که مهارت‌هایشان قدیمی می‌شود و شکایت می‌کنند که شرکت‌هایشان آموزش نمی‌دهد.
 پس این مهم‌ترین نکته کتاب است: شما توانایی عمل دارید (نکته ۳). محیط کارتان بد است؟ شغلتان کسل‌کننده است؟ سعی کنید آن را تغییر دهید. اما برای همیشه تلاش نکنید. همان‌طور که مارتین فاولر می‌گوید: "می‌توانید سازمان‌تان را تغییر دهید یا سازمان‌تان را تغییر دهید."
 
+![Section](images/page001-019.png)
+
+![Section](images/page002-020.png)
+
+![Section](images/page003-021.png)
+
+![Section](images/page004-022.png)
+
+![Section](images/page005-023.png)
+
 ---
 
-## ۲. گربه کد منبعم را خورد (The Cat Ate My Source Code)
+###### 📄 صفحه ۲۴
 
 > The greatest of all weaknesses is the fear of appearing weak.
 > ➤ J.B. Bossuet, Politics from Holy Writ, 1709
->
+> 
 > One of the cornerstones of the pragmatic philosophy is the idea of taking responsibility for yourself and your actions in terms of your career advancement, your learning and education, your project, and your day-to-day work. Pragmatic Programmers take charge of their own career, and aren’t afraid to admit ignorance or error.
 > Team Trust: Above all, your team needs to be able to trust and rely on you—and you need to be comfortable relying on each of them as well.
 > Take Responsibility: Responsibility is something you actively agree to. You make a commitment to ensure that something is done right, but you don’t necessarily have direct control over every aspect of it.
@@ -66,9 +51,19 @@
 مسئولیت بپذیرید: مسئولیت چیزی است که فعالانه با آن موافقت می‌کنید. تعهد می‌دهید که کاری درست انجام شود، اما لزوماً کنترل مستقیمی بر هر جنبه آن ندارید.
 گزینه‌ها ارائه دهید، بهانه‌های ضعیف نیاورید (نکته ۴): قبل از اینکه به کسی بگویید چرا کاری قابل انجام نیست، دیر شده، یا خراب است، متوقف شوید و به خودتان گوش دهید. به جای بهانه، گزینه‌ها ارائه دهید. نگویید قابل انجام نیست؛ توضیح دهید چه کاری می‌توان برای نجات موقعیت انجام داد.
 
+![Section](images/page006-024.png)
+
+![Section](images/page007-025.png)
+
+![Section](images/page008-026.png)
+
+![Section](images/page009-027.png)
+
+![Section](images/page010-028.png)
+
 ---
 
-## ۳. آنتروپی نرم‌افزار (Software Entropy)
+###### 📄 صفحه ۲۹
 
 > While software development is immune from almost all physical laws, the inexorable increase in entropy hits us hard. Entropy is a term from physics that refers to the amount of "disorder" in a system. When disorder increases in software, we call it "software rot."
 > A broken window: One broken window, left unrepaired for any substantial length of time, instills in the inhabitants of the building a sense of abandonment.
@@ -80,9 +75,19 @@
 با پنجره‌های شکسته زندگی نکنید (نکته ۵): "پنجره‌های شکسته" (طراحی‌های بد، تصمیمات اشتباه، یا کد ضعیف) را تعمیر نشده رها نکنید. هر کدام را به محض کشف تعمیر کنید.
 اول، آسیب نزنید: فقط به این دلیل که بحرانی وجود دارد، خسارت جانبی ایجاد نکنید. یک پنجره شکسته هم زیاد است.
 
+![Section](images/page011-029.png)
+
+![Section](images/page012-030.png)
+
+![Section](images/page013-031.png)
+
+![Section](images/page014-032.png)
+
+![Section](images/page015-033.png)
+
 ---
 
-## ۴. سوپ سنگی و قورباغه‌های آب‌پز (Stone Soup and Boiled Frogs)
+###### 📄 صفحه ۳۴
 
 > The three soldiers returning home from war were hungry. When they saw the village ahead their spirits lifted—they were sure the villagers would give them a meal. But when they got there, they found the doors locked and the windows closed. The soldiers boiled a pot of water and carefully placed three stones into it.
 > The villagers are tricked by the soldiers, who use the villagers' curiosity to get food from them. But more importantly, the soldiers act as a catalyst, bringing the village together so they can jointly produce something that they couldn't have done by themselves—a synergistic result.
@@ -96,13 +101,23 @@
 سمت اهالی روستا: چیزها آهسته به ما نزدیک می‌شوند. پروژه‌ها آهسته و به طور غیرقابل اجتناب از کنترل خارج می‌شوند.
 تصویر بزرگ را به یاد داشته باشید (نکته ۷): مثل قورباغه افسانه‌ای نباشید. تصویر بزرگ را زیر نظر داشته باشید. مدام بررسی کنید چه اتفاقی در اطرافتان می‌افتد، نه فقط آنچه شما شخصاً انجام می‌دهید.
 
+![Section](images/page016-034.png)
+
+![Section](images/page017-035.png)
+
+![Section](images/page018-036.png)
+
+![Section](images/page019-037.png)
+
+![Section](images/page020-038.png)
+
 ---
 
-## ۵. نرم‌افزار خوب enough (Good-Enough Software)
+###### 📄 صفحه ۳۹
 
 > Striving to better, oft we mar what’s well.
 > ➤ Shakespeare, King Lear 1.4
->
+> 
 > When good-enough software is best, you can discipline yourself to write software that’s good enough—good enough for your users, for future maintainers, for your own peace of mind.
 > Make Quality a Requirements Issue (Tip 8): Often you’ll be in situations where trade-offs are involved. Many users would rather use software with some rough edges today than wait a year for the shiny version. Great software today is often preferable to the fantasy of perfect software tomorrow.
 > Know When to Stop: In some ways, programming is like painting. You start with a blank canvas and certain basic raw materials. But artists will tell you that all the hard work is ruined if you don’t know when to stop.
@@ -112,13 +127,23 @@
 کیفیت را یک مسئله نیازمندی بدانید (نکته ۸): اغلب در موقعیت‌هایی خواهید بود که مبادلاتی در کار است. بسیاری از کاربران ترجیح می‌دهند امروز نرم‌افزاری با برخی ناهمواری‌ها استفاده کنند تا اینکه یک سال برای نسخه براق صبر کنند. نرم‌افزار عالی امروز اغلب بر تصور نرم‌افزار فردا ترجیح دارد.
 بدانید چه زمانی متوقف شوید: از جهاتی، برنامه‌نویسی مثل نقاشی است. با بوم خالی و مواد اولیه پایه شروع می‌کنید. اما هنرمندان به شما می‌گویند تمام تلاش‌ها خراب می‌شود اگر ندانید چه زمانی متوقف شوید.
 
+![Section](images/page021-039.png)
+
+![Section](images/page022-040.png)
+
+![Section](images/page023-041.png)
+
+![Section](images/page024-042.png)
+
+![Section](images/page025-043.png)
+
 ---
 
-## ۶. سبد دانش شما (Your Knowledge Portfolio)
+###### 📄 صفحه ۴۴
 
 > An investment in knowledge always pays the best interest.
 > ➤ Benjamin Franklin
->
+> 
 > Your knowledge and experience are your most important day-to-day professional assets. Unfortunately, they’re expiring assets.
 > Managing a knowledge portfolio is very similar to managing a financial portfolio:
 > 1. Serious investors invest regularly—as a habit.
@@ -140,13 +165,23 @@
 منظم در سبد دانش خود سرمایه‌گذاری کنید (نکته ۹): هر سال حداقل یک زبان جدید یاد بگیرید. هر ماه یک کتاب فنی بخوانید. کتاب‌های غیرفنی هم بخوانید. در کلاس‌ها شرکت کنید. در گروه‌های کاربری محلی شرکت کنید. با محیط‌های مختلف آزمایش کنید.
 آنچه می‌خوانید و می‌شنوید را به طور انتقادی تحلیل کنید (نکته ۱۰): "چرای پنجگانه" را بپرسید. این به نفع کیست؟ زمینه چیست؟
 
+![Section](images/page026-044.png)
+
+![Section](images/page027-045.png)
+
+![Section](images/page028-046.png)
+
+![Section](images/page029-047.png)
+
+![Section](images/page030-048.png)
+
 ---
 
-## ۷. ارتباط برقرار کن! (Communicate!)
+###### 📄 صفحه ۴۹
 
 > I believe that it is better to be looked over than it is to be overlooked.
 > ➤ Mae West, Belle of the Nineties, 1934
->
+> 
 > Maybe we can learn a lesson from Ms. West. It’s not just what you’ve got, but also how you package it. Having the best ideas, the finest code, or the most pragmatic thinking is ultimately sterile unless you can communicate with other people. A good idea is an orphan without effective communication.
 > English is Just Another Programming Language (Tip 11): Treat English (or whatever your native tongue may be) as just another programming language.
 > Know Your Audience: You’re communicating only if you’re conveying what you mean to convey—just talking isn’t enough.
@@ -173,6 +208,20 @@
 هم آنچه می‌گویید و هم نحوه گفتن آن مهم است (نکته ۱۲): هرچه ارتباط مؤثرتر باشد، تأثیرگذارتر می‌شوید.
 مستندات را درون کد بسازید، نه اینکه بعداً اضافه کنید (نکته ۱۳): تولید مستندات خوب از نظرات درون کد آسان است.
 
----
+![Section](images/page031-049.png)
 
-# فصل دوم: رویکرد عملگرا ⏱️ ۲۰ دقیقه مطالعه
+![Section](images/page032-050.png)
+
+![Section](images/page033-051.png)
+
+![Section](images/page034-052.png)
+
+![Section](images/page035-053.png)
+
+![Section](images/page036-054.png)
+
+![Section](images/page037-055.png)
+
+![Section](images/page038-056.png)
+
+---

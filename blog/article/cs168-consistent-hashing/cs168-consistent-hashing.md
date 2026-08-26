@@ -1,3 +1,8 @@
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
+
+---
 # CS168: Consistent Hashing - Stanford Lecture Notes
 
 > **منبع اصلی:** CS168 Stanford Lecture - The Algorithmic Foundations of Consistent Hashing

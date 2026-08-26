@@ -1,39 +1,10 @@
-## ۱۶. قدرت متن ساده (The Power of Plain Text)
-
-
-
-![The Basic Tools](images/page001-101.png)
-
-![The Basic Tools](images/page004-104.png)
-
-![The Basic Tools](images/page007-107.png)
-
-![The Basic Tools](images/page010-110.png)
-
-![The Basic Tools](images/page013-113.png)
-
-![The Basic Tools](images/page016-116.png)
-
-![The Basic Tools](images/page019-119.png)
-
-![The Basic Tools](images/page022-122.png)
-
-![The Basic Tools](images/page025-125.png)
-
-![The Basic Tools](images/page028-128.png)
-
-![The Basic Tools](images/page031-131.png)
-
-![The Basic Tools](images/page034-134.png)
-
-![The Basic Tools](images/page037-137.png)
-
-![The Basic Tools](images/page040-140.png)
-
-![The Basic Tools](images/page043-143.png)
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
 
 ---
 
+###### 📄 صفحه ۱۰۱
 
 > As Pragmatic Programmers, our base material isn't wood or iron, it's knowledge. We gather requirements as knowledge, and then express that knowledge in our designs, implementations, tests, and documents. And we believe that the best format for storing knowledge persistently is plain text.
 > Keep Knowledge in Plain Text (Tip 25): With plain text, we give ourselves the ability to manipulate knowledge, both manually and programmatically, using virtually every tool at our disposal.
@@ -45,9 +16,21 @@
 بیمه در برابر قدیمی شدن: فرم‌های خوانا توسط انسان و داده‌های خودتوصیفی، از تمام فرم‌های دیگر داده و برنامه‌هایی که آن‌ها را ایجاد کرده‌اند عمر طولانی‌تری خواهند داشت.
 ارزش افزوده: تقریباً هر ابزاری در جهان محاسبات می‌تواند روی متن ساده کار کند.
 
+![Section](images/page001-101.png)
+
+![Section](images/page002-102.png)
+
+![Section](images/page003-103.png)
+
+![Section](images/page004-104.png)
+
+![Section](images/page005-105.png)
+
+![Section](images/page006-106.png)
+
 ---
 
-## ۱۷. بازی‌های شل (Shell Games)
+###### 📄 صفحه ۱۰۷
 
 > Every woodworker needs a good, solid, reliable workbench, somewhere to hold work pieces at a convenient height while they're being shaped. For a programmer manipulating files of text, that workbench is the command shell.
 > Use the Power of Command Shells (Tip 26): Gain familiarity with the shell, and you'll find your productivity soaring.
@@ -59,9 +42,21 @@
 رابط‌های GUI فوق‌العاده هستند و برای برخی عملیات ساده می‌توانند سریع‌تر و راحت‌تر باشند. اما اگر تمام کارتان را با GUI انجام می‌دهید، از توانایی‌های کامل محیط خود محروم می‌شوید.
 پوسته خودتان: به همان شکلی که یک نجار فضای کار خود را سفارشی می‌کند، یک توسعه‌دهنده باید پوسته خود را سفارشی کند.
 
+![Section](images/page007-107.png)
+
+![Section](images/page008-108.png)
+
+![Section](images/page009-109.png)
+
+![Section](images/page010-110.png)
+
+![Section](images/page011-111.png)
+
+![Section](images/page012-112.png)
+
 ---
 
-## ۱۸. ویرایش قدرتمند (Power Editing)
+###### 📄 صفحه ۱۱۳
 
 > We've talked before about tools being an extension of your hand. Well, this applies to editors more than to any other software tool.
 > Achieve Editor Fluency (Tip 27): By becoming fluent, you no longer have to think about the mechanics of editing. The distance between thinking something and having it appear in an editor buffer drops way down.
@@ -73,13 +68,25 @@
 "روان" یعنی چه؟ حرکت و انتخاب بر اساس کاراکتر، کلمه، خط و پاراگراف. حرکت بر اساس واحدهای نحوی مختلف. نظرگذاری و حذف نظرات با یک دستور واحد. برگرداندن و بازگرداندن تغییرات.
 حرکت به سوی روانی: دستوراتی را یاد بگیرید که زندگی‌تان را آسان‌تر می‌کنند.
 
+![Section](images/page013-113.png)
+
+![Section](images/page014-114.png)
+
+![Section](images/page015-115.png)
+
+![Section](images/page016-116.png)
+
+![Section](images/page017-117.png)
+
+![Section](images/page018-118.png)
+
 ---
 
-## ۱۹. کنترل نسخه (Version Control)
+###### 📄 صفحه ۱۱۹
 
 > Progress, far from consisting in change, depends on retentiveness.
 > ➤ George Santayana
->
+> 
 > Version control systems keep track of every change you make in your source code and documentation. A good VCS will let you track changes, answering questions such as: Who made changes in this line of code? What's the difference between the current version and last week's?
 > Always Use Version Control (Tip 28): Always. Even if you are a single-person team on a one-week project. Even if it's a "throw-away" prototype. Make sure that everything is under version control: documentation, phone number lists, memos to vendors, makefiles, build and release procedures.
 > Version Control as a Project Hub: Use it to manage your build and deployment processes. Use it to track issues and bugs.
@@ -89,13 +96,25 @@
 همیشه از کنترل نسخه استفاده کنید (نکته ۲۸): همیشه. حتی اگر یک تیم یک نفره در یک پروژه یک هفته‌ای هستید. حتی اگر یک پروتوتایپ "قابل دور ریختن" است. مطمئن شوید همه چیز تحت کنترل نسخه است.
 کنترل نسخه به عنوان مرکز پروژه: از آن برای مدیریت فرآیندهای build و deployment استفاده کنید.
 
+![Section](images/page019-119.png)
+
+![Section](images/page020-120.png)
+
+![Section](images/page021-121.png)
+
+![Section](images/page022-122.png)
+
+![Section](images/page023-123.png)
+
+![Section](images/page024-124.png)
+
 ---
 
-## ۲۰. اشکال‌زدایی (Debugging)
+###### 📄 صفحه ۱۲۵
 
 > It is a painful thing To look at your own trouble and know That you yourself and no one else has made it
 > ➤ Sophocles, Ajax
->
+> 
 > Fix the Problem, Not the Blame (Tip 29): It doesn't really matter whether the bug is your fault or someone else's. It is still your problem.
 > Don't Panic (Tip 30): It's easy to get into a panic, especially if you are facing a deadline. But it is very important to step back a pace, and actually think about what could be causing the symptoms.
 > Failing Test Before Fixing Code (Tip 31): The best way to start fixing a bug is to make it reproducible.
@@ -113,9 +132,21 @@
 "select" خراب نیست (نکته ۳۳): به یاد داشته باشید، اگر رد پای سم دیدید، به اسب فکر کنید — نه زرافه.
 فرض نکنید — اثبات کنید (نکته ۳۴): وقتی با یک باگ غافلگیرکننده مواجه شدید، علاوه بر تعمیر آن، باید تعیین کنید چرا این خطا زودتر گرفته نشد.
 
+![Section](images/page025-125.png)
+
+![Section](images/page026-126.png)
+
+![Section](images/page027-127.png)
+
+![Section](images/page028-128.png)
+
+![Section](images/page029-129.png)
+
+![Section](images/page030-130.png)
+
 ---
 
-## ۲۱. دستکاری متن (Text Manipulation)
+###### 📄 صفحه ۱۳۱
 
 > Pragmatic Programmers manipulate text the same way woodworkers shape wood. Text manipulation languages are to programming what routers are to woodworking.
 > Learn a Text Manipulation Language (Tip 35): Using them, you can quickly hack up utilities and prototype ideas—jobs that might take five or ten times as long using conventional languages.
@@ -123,9 +154,21 @@
 برنامه‌نویسان عملگرا متن را به همان شکلی دستکاری می‌کنند که نجاران چوب را شکل می‌دهند. زبان‌های دستکاری متن در برنامه‌نویسی همان نقشی را دارند که ابزارهای تراش در نجاری.
 یک زبان دستکاری متن یاد بگیرید (نکته ۳۵): با استفاده از آن‌ها می‌توانید به سرعت ابزارهای کمکی بسازید و ایده‌ها را پروتوتایپ کنید — کارهایی که با زبان‌های معمولی پنج تا ده برابر طول می‌کشند.
 
+![Section](images/page031-131.png)
+
+![Section](images/page032-132.png)
+
+![Section](images/page033-133.png)
+
+![Section](images/page034-134.png)
+
+![Section](images/page035-135.png)
+
+![Section](images/page036-136.png)
+
 ---
 
-## ۲۲. دفترچه‌های روزانه مهندسی (Engineering Daybooks)
+###### 📄 صفحه ۱۳۷
 
 > Dave once worked for a small computer manufacturer, which meant working alongside electronic and sometimes mechanical engineers. Many of them walked around with a paper notebook.
 > The daybook has three main benefits: It is more reliable than memory. It gives you a place to store ideas that aren't immediately relevant to the task at hand. It acts as a kind of rubber duck.
@@ -135,6 +178,20 @@
 دفترچه روزانه سه مزیت اصلی دارد: قابل اعتمادتر از حافظه است. مکانی برای ذخیره ایده‌هایی که فوراً مرتبط با کار فعلی نیستند فراهم می‌کند. به عنوان نوعی اردک لاستیکی عمل می‌کند.
 پس، دفترچه مهندسی روزانه داشته باشید. از کاغذ استفاده کنید، نه فایل یا ویکی.
 
----
+![Section](images/page037-137.png)
 
-# فصل چهارم: شک‌گرایی عملگرا ⏱️ ۲۰ دقیقه مطالعه
+![Section](images/page038-138.png)
+
+![Section](images/page039-139.png)
+
+![Section](images/page040-140.png)
+
+![Section](images/page041-141.png)
+
+![Section](images/page042-142.png)
+
+![Section](images/page043-143.png)
+
+![Section](images/page044-144.png)
+
+---

@@ -1,39 +1,10 @@
-## ۳۳. شکستن جفت‌شدگی زمانی (Breaking Temporal Coupling)
-
-
-
-![Concurrency](images/page001-207.png)
-
-![Concurrency](images/page002-208.png)
-
-![Concurrency](images/page003-209.png)
-
-![Concurrency](images/page004-210.png)
-
-![Concurrency](images/page005-211.png)
-
-![Concurrency](images/page006-212.png)
-
-![Concurrency](images/page007-213.png)
-
-![Concurrency](images/page008-214.png)
-
-![Concurrency](images/page009-215.png)
-
-![Concurrency](images/page010-216.png)
-
-![Concurrency](images/page011-217.png)
-
-![Concurrency](images/page012-218.png)
-
-![Concurrency](images/page013-219.png)
-
-![Concurrency](images/page014-220.png)
-
-![Concurrency](images/page015-221.png)
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
 
 ---
 
+###### 📄 صفحه ۲۰۷
 
 > Temporal coupling is when two components of a system must execute in a particular order.
 > Identify Concurrency Hazards: Look for shared state, race conditions, and deadlocks.
@@ -43,9 +14,17 @@
 خطرات همزمانی را شناسایی کنید: به دنبال وضعیت مشترک، شرایط مسابقه و بن‌بست باشید.
 درباره همزمانی صریح باشید: از زبان‌ها و چارچوب‌هایی استفاده کنید که همزمانی را صریح می‌کنند.
 
+![Section](images/page001-207.png)
+
+![Section](images/page002-208.png)
+
+![Section](images/page003-209.png)
+
+![Section](images/page004-210.png)
+
 ---
 
-## ۳۴. وضعیت مشترک، وضعیت نادرست است (Shared State Is Incorrect State)
+###### 📄 صفحه ۲۱۱
 
 > Shared state is a common source of bugs. When multiple threads or processes access the same data, the results can be unpredictable.
 > Use Message Passing: Instead of sharing state, share messages.
@@ -56,9 +35,17 @@
 از ارسال پیام استفاده کنید: به جای اشتراک‌گذاری وضعیت، پیام‌ها را اشتراک‌گذاری کنید.
 تغییرناپذیری را ترجیح دهید: ساختارهای داده تغییرناپذیر ذاتاً thread-safe هستند.
 
+![Section](images/page005-211.png)
+
+![Section](images/page006-212.png)
+
+![Section](images/page007-213.png)
+
+![Section](images/page008-214.png)
+
 ---
 
-## ۳۵. بازیگران و فرآیندها (Actors and Processes)
+###### 📄 صفحه ۲۱۵
 
 > Actors are independent units of computation that communicate through message passing.
 > Each actor has its own state and processes messages sequentially.
@@ -70,9 +57,17 @@
 بازیگران می‌توانند بازیگران دیگری ایجاد کنند و پیام‌هایی به بازیگران دیگر بفرستند.
 این مدل بسیاری از مشکلات همزمانی را با طراحی حذف می‌کند.
 
+![Section](images/page009-215.png)
+
+![Section](images/page010-216.png)
+
+![Section](images/page011-217.png)
+
+![Section](images/page012-218.png)
+
 ---
 
-## ۳۶. تابلوهای سیاه (Blackboards)
+###### 📄 صفحه ۲۱۹
 
 > Blackboards provide a shared workspace where multiple agents can read and write information.
 > They decouple the producers of information from the consumers.
@@ -81,6 +76,12 @@
 تابلوهای سیاه فضای کار مشترکی فراهم می‌کنند که در آن عوامل متعدد می‌توانند اطلاعات را بخوانند و بنویسند.
 آن‌ها تولیدکنندگان اطلاعات را از مصرف‌کنندگان جدا می‌کنند.
 
----
+![Section](images/page013-219.png)
 
-# فصل هفتم: در حین برنامه‌نویسی ⏱️ ۲۰ دقیقه مطالعه
+![Section](images/page014-220.png)
+
+![Section](images/page015-221.png)
+
+![Section](images/page016-222.png)
+
+---

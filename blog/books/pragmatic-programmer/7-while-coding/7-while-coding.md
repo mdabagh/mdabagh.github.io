@@ -1,39 +1,10 @@
-## ۳۷. به مغز خزنده‌ات گوش بده (Listen to Your Lizard Brain)
-
-
-
-![While You Are Coding](images/page001-223-img1.png)
-
-![While You Are Coding](images/page003-225.png)
-
-![While You Are Coding](images/page005-227.png)
-
-![While You Are Coding](images/page007-229.png)
-
-![While You Are Coding](images/page009-231.png)
-
-![While You Are Coding](images/page011-233.png)
-
-![While You Are Coding](images/page013-235.png)
-
-![While You Are Coding](images/page015-237.png)
-
-![While You Are Coding](images/page017-239.png)
-
-![While You Are Coding](images/page019-241.png)
-
-![While You Are Coding](images/page021-243.png)
-
-![While You Are Coding](images/page023-245.png)
-
-![While You Are Coding](images/page025-247.png)
-
-![While You Are Coding](images/page027-249.png)
-
-![While You Are Coding](images/page029-251.png)
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
 
 ---
 
+###### 📄 صفحه ۲۲۳
 
 > Your intuition is valuable. If something feels wrong, it probably is.
 > The "lizard brain" is the ancient part of our brain that processes emotions and gut reactions.
@@ -45,9 +16,17 @@
 به آن احساس آزاردهنده که چیزی درست نیست گوش بدهید — دارد سعی می‌کند چیزی به شما بگوید.
 به غریزه خود اعتماد کنید، اما با شواهد تأیید کنید.
 
+![Section](images/page001-223-img1.png)
+
+![Section](images/page002-224.png)
+
+![Section](images/page003-225.png)
+
+![Section](images/page004-226.png)
+
 ---
 
-## ۳۸. برنامه‌نویسی بر اساس تصادف (Programming by Coincidence)
+###### 📄 صفحه ۲۲۷
 
 > Programmers often confuse "it works" with "it's correct."
 > Don't rely on coincidences. Understand why your code works.
@@ -58,9 +37,17 @@
 به تصادف‌ها تکیه نکنید. بفهمید چرا کد شما کار می‌کند.
 تست‌های بازگشتی کمک می‌کنند تغییرات عملکرد موجود را خراب نکنند.
 
+![Section](images/page005-227.png)
+
+![Section](images/page006-228.png)
+
+![Section](images/page007-229.png)
+
+![Section](images/page008-230.png)
+
 ---
 
-## ۳۹. سرعت الگوریتم (Algorithm Speed)
+###### 📄 صفحه ۲۳۱
 
 > Understanding Big-O notation helps you write efficient code.
 > O(1): Constant time. The operation takes the same amount of time regardless of input size.
@@ -76,9 +63,17 @@ O(n²): زمان درجه دوم. زمان با مجذور اندازه ورود
 O(log n): زمان لگاریتمی. بسیار کارآمد برای مجموعه داده‌های بزرگ.
 قبل از بهینه‌سازی پروفایل کنید. حدس نزنید — اندازه بگیرید.
 
+![Section](images/page009-231.png)
+
+![Section](images/page010-232.png)
+
+![Section](images/page011-233.png)
+
+![Section](images/page012-234.png)
+
 ---
 
-## ۴۰. بازآفرینی (Refactoring)
+###### 📄 صفحه ۲۳۵
 
 > Refactoring is the process of improving code without changing its behavior.
 > Refactor when you need to: when code is duplicated, when logic is complex, when names are unclear.
@@ -90,9 +85,17 @@ O(log n): زمان لگاریتمی. بسیار کارآمد برای مجموع
 بازآفرینی بازنویسی نیست. بهبودهای کوچک و تدریجی است.
 کد را در تمام مدت بازآفرینی کار نگه دارید.
 
+![Section](images/page013-235.png)
+
+![Section](images/page014-236.png)
+
+![Section](images/page015-237.png)
+
+![Section](images/page016-238.png)
+
 ---
 
-## ۴۱. تست تا کد (Test to Code)
+###### 📄 صفحه ۲۳۹
 
 > Testing is not just about finding bugs—it's about designing better software.
 > Write tests first (TDD): Write a failing test, make it pass, then refactor.
@@ -103,9 +106,17 @@ O(log n): زمان لگاریتمی. بسیار کارآمد برای مجموع
 اول تست بنویسید (TDD): یک تست ناموفق بنویسید، آن را رد کنید، سپس بازآفرینی کنید.
 تست‌ها به عنوان مستندات عمل می‌کنند: نشان می‌دهند چگونه باید از کد استفاده شود.
 
+![Section](images/page017-239.png)
+
+![Section](images/page018-240.png)
+
+![Section](images/page019-241.png)
+
+![Section](images/page020-242.png)
+
 ---
 
-## ۴۲. تست مبتنی بر خواص (Property-Based Testing)
+###### 📄 صفحه ۲۴۳
 
 > Instead of testing specific examples, test that properties hold for all inputs.
 > This finds edge cases that example-based tests might miss.
@@ -114,9 +125,17 @@ O(log n): زمان لگاریتمی. بسیار کارآمد برای مجموع
 به جای تست مثال‌های خاص، تست کنید که خواص برای تمام ورودی‌ها برقرار باشند.
 این موارد حدی را پیدا می‌کند که تست‌های مبتنی بر مثال ممکن است از دست بدهند.
 
+![Section](images/page021-243.png)
+
+![Section](images/page022-244.png)
+
+![Section](images/page023-245.png)
+
+![Section](images/page024-246.png)
+
 ---
 
-## ۴۳. بیرون امن باش (Stay Safe Out There)
+###### 📄 صفحه ۲۴۷
 
 > Security is not an afterthought—it must be built in from the start.
 > Never trust user input. Always validate and sanitize.
@@ -128,13 +147,21 @@ O(log n): زمان لگاریتمی. بسیار کارآمد برای مجموع
 از کتابخانه‌های امنیتی آزمایش شده استفاده کنید.
 وابستگی‌ها را به‌روز نگه دارید.
 
+![Section](images/page025-247.png)
+
+![Section](images/page026-248.png)
+
+![Section](images/page027-249.png)
+
+![Section](images/page028-250.png)
+
 ---
 
-## ۴۴. نام‌گذاری چیزها (Naming Things)
+###### 📄 صفحه ۲۵۱
 
 > There are only two hard things in Computer Science: cache invalidation and naming things.
 > ➤ Phil Karlton
->
+> 
 > Good names make code readable and maintainable.
 > Names should reveal intent. A name should tell you why it exists, what it does, and how it used.
 > Avoid encodings. Don't put type information in variable names (like strName or iCount).
@@ -145,6 +172,16 @@ O(log n): زمان لگاریتمی. بسیار کارآمد برای مجموع
 نام‌ها باید نیت را آشکار کنند. نام باید به شما بگوید چرا وجود دارد، چه کاری انجام می‌دهد و چگونه استفاده می‌شود.
 از رمزگذاری اجتناب کنید. اطلاعات نوع را در نام متغیرها قرار ندهید.
 
----
+![Section](images/page029-251.png)
 
-# فصل هشتم: قبل از پروژه ⏱️ ۱۵ دقیقه مطالعه
+![Section](images/page030-252.png)
+
+![Section](images/page031-253.png)
+
+![Section](images/page032-254.png)
+
+![Section](images/page033-255.png)
+
+![Section](images/page034-256.png)
+
+---

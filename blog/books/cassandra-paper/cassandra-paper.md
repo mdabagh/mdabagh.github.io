@@ -1,3 +1,8 @@
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
+
+---
 # ترجمه فارسی: Cassandra - A Decentralized Structured Storage System
 
 > **مقاله اصلی:** Cassandra - A Decentralized Structured Storage System

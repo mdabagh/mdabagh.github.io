@@ -1,3 +1,8 @@
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
+
+---
 # ترجمه فارسی: Maglev: A Fast and Reliable Software Network Load Balancer
 
 > **مقاله اصلی:** Maglev: A Fast and Reliable Software Network Load Balancer

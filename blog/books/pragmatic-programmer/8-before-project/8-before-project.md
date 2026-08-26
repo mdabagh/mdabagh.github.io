@@ -1,39 +1,10 @@
-## ۴۵. چاه نیازمندی‌ها (The Requirements Pit)
-
-
-
-![Before the Project](images/page001-257.png)
-
-![Before the Project](images/page002-258.png)
-
-![Before the Project](images/page003-259.png)
-
-![Before the Project](images/page004-260.png)
-
-![Before the Project](images/page005-261.png)
-
-![Before the Project](images/page006-262.png)
-
-![Before the Project](images/page007-263.png)
-
-![Before the Project](images/page008-264.png)
-
-![Before the Project](images/page009-265.png)
-
-![Before the Project](images/page010-266.png)
-
-![Before the Project](images/page011-267.png)
-
-![Before the Project](images/page012-268.png)
-
-![Before the Project](images/page013-269.png)
-
-![Before the Project](images/page014-270.png)
-
-![Before the Project](images/page015-271.png)
+> **راهنمای مطالعه**
+>
+> در هر بخش، ابتدا متن اصلی کتاب به زبان انگلیسی آورده شده و سپس ترجمه و توضیحات فارسی همان بخش ارائه شده است.
 
 ---
 
+###### 📄 صفحه ۲۵۷
 
 > Requirements are not what the customer says they want. They're what the customer needs.
 > The only constant in requirements is change.
@@ -45,9 +16,19 @@
 کاربران را زود و مداوم درگیر کنید.
 نیازمندی‌ها را با جزئیات پیاده‌سازی اشتباه نگیرید.
 
+![Section](images/page001-257.png)
+
+![Section](images/page002-258.png)
+
+![Section](images/page003-259.png)
+
+![Section](images/page004-260.png)
+
+![Section](images/page005-261.png)
+
 ---
 
-## ۴۶. حل پازل‌های غیرممکن (Solving Impossible Puzzles)
+###### 📄 صفحه ۲۶۲
 
 > When faced with an impossible problem, step back and look at it from a different angle.
 > Sometimes the constraints are self-imposed. Challenge assumptions.
@@ -58,9 +39,19 @@
 گاهی محدودیت‌ها خودتحمیلی هستند. فرضیات را به چالش بکشید.
 مشکل را تقسیم کنید. ساده‌ترین راه‌حل را پیدا کنید.
 
+![Section](images/page006-262.png)
+
+![Section](images/page007-263.png)
+
+![Section](images/page008-264.png)
+
+![Section](images/page009-265.png)
+
+![Section](images/page010-266.png)
+
 ---
 
-## ۴۷. با هم کار کردن (Working Together)
+###### 📄 صفحه ۲۶۷
 
 > Software development is a team sport. No one succeeds alone.
 > Communicate constantly. Share knowledge and context.
@@ -71,9 +62,19 @@
 مداوم ارتباط برقرار کنید. دانش و زمینه را به اشتراک بگذارید.
 برنامه‌نویسی جفتی و بررسی کد کیفیت کد را بهبود می‌بخشد.
 
+![Section](images/page011-267.png)
+
+![Section](images/page012-268.png)
+
+![Section](images/page013-269.png)
+
+![Section](images/page014-270.png)
+
+![Section](images/page015-271.png)
+
 ---
 
-## ۴۸. ماهیت چالاکی (The Essence of Agility)
+###### 📄 صفحه ۲۷۲
 
 > Agile is not a methodology. It's a mindset.
 > Agile values individuals and interactions over processes and tools.
@@ -89,6 +90,18 @@
 واکنش به تغییر بر پیروی از طرح.
 چالاکی به معنای بدون برنامه‌ریزی نیست. به معنای برنامه‌ریزی برای سازگاری است.
 
----
+![Section](images/page016-272.png)
 
-# فصل نهم: پروژه‌های عملگرا ⏱️ ۱۵ دقیقه مطالعه
+![Section](images/page017-273.png)
+
+![Section](images/page018-274.png)
+
+![Section](images/page019-275.png)
+
+![Section](images/page020-276.png)
+
+![Section](images/page021-277.png)
+
+![Section](images/page022-278.png)
+
+---
