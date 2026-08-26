@@ -39,7 +39,7 @@
   }
 
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; overflow-x: hidden;}
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
@@ -121,7 +121,14 @@
   }
 
   /* ================= ARTICLE BODY ================= */
-  #article-body{background:var(--paper); padding-top:56px; padding-bottom:100px;}
+  #article-body{
+    background:var(--paper);
+    padding-top:56px;
+    padding-bottom:100px;
+    max-width: var(--maxw-article);
+    margin: 0 auto;
+    width: 100%;
+  }
 
   .prose{font-size:16.5px; color:var(--ink);}
   .prose > * + *{margin-top:1.15em;}
@@ -144,17 +151,25 @@
     padding:14px 20px; color:var(--ink-soft); font-size:15.5px;
   }
   .prose code{
-    font-family:'JetBrains Mono', monospace; font-size:.86em; background:var(--paper-alt);
-    padding:2px 6px; border-radius:3px; color:var(--amber-dark); direction:ltr; unicode-bidi:embed;
+    font-family:'JetBrains Mono', monospace; font-size:.86em;
+    background:var(--paper-alt);
+    padding:2px 6px; border-radius:3px; color:var(--amber-dark);
+    direction:ltr; unicode-bidi:embed;
+    max-width: 100%;
   }
   .prose pre{
-    background:var(--navy-deep); color:#DCE5EE; padding:18px 20px; overflow-x:auto;
+    background:var(--navy-deep); color:#DCE5EE; padding:18px 20px;
+    overflow-x:auto; overflow-y: hidden;
     border:1px solid var(--navy-line); direction:ltr; text-align:left;
+    max-width: 100%;
   }
   .prose pre code{background:none; padding:0; color:inherit; font-size:13.5px; line-height:1.7;}
   .prose img{max-width:100%; height:auto; border:1px solid #D8DED6;}
   .prose hr{border:none; border-top:1px dashed #C9D0C2; margin:2em 0;}
-  .prose table{width:100%; border-collapse:collapse; font-size:14.5px;}
+  .prose table{
+    width:100%; border-collapse:collapse; font-size:14.5px;
+    max-width: 100%;
+  }
   .prose th,.prose td{border:1px solid #D8DED6; padding:9px 12px; text-align:right;}
   .prose th{background:var(--paper-alt); font-weight:700;}
 
@@ -178,7 +193,7 @@
   .resume-toast .btn-go{background:var(--amber); color:var(--navy-deep);}
   .resume-toast .btn-dismiss{background:transparent; color:#9FB0C3;}
 
-  /* چیپ دائمی گوشه صفحه: وضعیت ذخیره‌سازی زنده + دکمه‌ی همیشگی برای ادامه‌ی مطالعه */
+  /* چیپ دائمی گوشه صفحه */
   .progress-chip{
     position:fixed; bottom:22px; left:22px; z-index:180;
     display:flex; align-items:center; gap:10px;
@@ -270,7 +285,7 @@
 </section>
 
 <footer>
-  © ۲۰۲۶ محمدسجاد دباغ — <span>ساخته شده با عشق</span> · تهران
+  © ۲۰۲۶ محمدسجاد دباغ — <span>ساخته شده با عشل</span> · تهران
 </footer>
 
 <script type="importmap">
@@ -305,11 +320,6 @@ function injectSchema(data) {
   script.textContent = JSON.stringify(data);
   document.head.appendChild(script);
 }
-
-// ============================================
-// سیستم ذخیره پیشرفت مطالعه (localStorage)
-// همون منطق index.html — اینجا کاربر ادامه می‌ده
-// ============================================
 
 class ReadingProgressStore {
   constructor(prefix = 'readingProgress') { this.prefix = prefix; }
@@ -347,17 +357,12 @@ class ReadingProgressStore {
   }
 }
 
-// ============================================
-// نمایش یک پست — تک صفحه‌ی generic برای همه‌ی دسته‌ها
-// آدرس: blog/post.html?cat=design-system&slug=FORWARD
-// ============================================
-
 class PostViewer {
   constructor() {
     this.md = markdownIt({
-      html: false,       // اجازه‌ی HTML خام نده (امنیت)
-      linkify: true,      // آدرس‌های خام رو خودکار لینک کن
-      typographer: false, // برای متن فارسی خاموش بمونه بهتره
+      html: false,
+      linkify: true,
+      typographer: false,
       breaks: false
     });
     const params = new URLSearchParams(window.location.search);
@@ -380,14 +385,12 @@ class PostViewer {
     return num.toString().replace(/\d/g, d => persian[parseInt(d)]);
   }
 
- estimateReadTime(text) {
+  estimateReadTime(text) {
     const persianWords = text.match(/[\u0600-\u06FF]+/g) || [];
-
     const words = persianWords.length;
     const minutes = Math.max(1, Math.round(words / 180));
-
     return `${this.toPersianNumber(minutes)} دقیقه مطالعه`;
-}
+  }
 
   showError(message) {
     document.getElementById('articleTitle').textContent = 'یادداشت پیدا نشد';
@@ -401,14 +404,12 @@ class PostViewer {
 
   async load() {
     if (!this.cat || !this.slug) {
-      this.showError('دسته‌بندی یا اسلاگ پست در آدرس مشخص نشده (?cat=...&slug=...)');
+      this.showError('دسته‌بندی یا اسلاگ پست در آدرس مشخص نشده');
       return;
     }
 
-    // لینک بازگشت به صفحه دسته‌بندی
     document.getElementById('backLink').href = `category.html?cat=${this.cat}`;
 
-    // اسم دسته‌بندی برای نشان‌دادن بج
     try {
       const catRes = await fetch(`${this.cat}/detals.json`);
       if (catRes.ok) {
@@ -419,9 +420,7 @@ class PostViewer {
           catEl.style.display = 'inline-block';
         }
       }
-    } catch (e) {
-      console.error('Error loading category info:', e);
-    }
+    } catch (e) { console.error('Error loading category info:', e); }
 
     let postData;
     try {
@@ -437,9 +436,7 @@ class PostViewer {
     try {
       const mdRes = await fetch(`${this.cat}/markdouns/${this.slug}.md`);
       if (mdRes.ok) mdContent = await mdRes.text();
-    } catch (e) {
-      console.error('Error loading markdown file:', e);
-    }
+    } catch (e) { console.error('Error loading markdown file:', e); }
 
     const pageUrl = `${SITE_BASE}/blog/post.html?cat=${this.cat}&slug=${this.slug}`;
     const title = `${postData.title || 'یادداشت'} — بلاگ محمدسجاد دباغ`;
@@ -497,9 +494,6 @@ class PostViewer {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
   }
 
-  // ============================================
-  // نشانه‌گذاری و ادامه‌ی مطالعه
-  // ============================================
   toPersianNumber(num) {
     const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
     return num.toString().replace(/\d/g, d => persian[parseInt(d)]);
@@ -527,7 +521,6 @@ class PostViewer {
 
     const scrollToSaved = (y) => window.scrollTo({ top: y, behavior: 'smooth' });
 
-    // چیپ گوشه صفحه رو با متن تازه نشون بده (مگر اینکه خود کاربر بسته باشدش)
     const updateChip = (percent, { done = false } = {}) => {
       if (chipDismissedByUser) return;
       chipEl.classList.toggle('done', done);
@@ -537,12 +530,10 @@ class PostViewer {
       chipEl.classList.add('show');
     };
 
-    // ---- ۱) اگه پیشرفت قبلی (از جلسه‌ی قبل) وجود داره، toast رو نشون بده ----
     const saved = this.progressStore.get(this.cat, this.slug);
     if (saved && saved.scrollY > 0 && saved.percent < 95) {
       lastSavedScrollY = saved.scrollY;
       toastTextEl.textContent = `تا ${this.toPersianNumber(saved.percent)}٪ این یادداشت رو خونده بودی`;
-      // کمی صبر می‌کنیم تا محتوا کامل render و layout بشه، بعد toast رو نشون بده
       setTimeout(() => toastEl.classList.add('show'), 500);
 
       const hideToast = () => toastEl.classList.remove('show');
@@ -553,12 +544,8 @@ class PostViewer {
       });
       dismissBtn.addEventListener('click', hideToast);
 
-      // toast مدت زیادی (۱۲ ثانیه) روی صفحه می‌مونه؛ فقط با کلیک کاربر یا این تایمر بسته می‌شه،
-      // نه با اولین حرکت جزئی اسکرول (که قبلاً باعث می‌شد خیلی زود ناپدید بشه)
       setTimeout(hideToast, 12000);
 
-      // اگه toast بسته/ناپدید شد ولی هنوز کامل مطالعه نکرده، چیپ گوشه صفحه
-      // همیشه در دسترس می‌مونه تا بشه از همونجا ادامه داد
       updateChip(saved.percent);
       chipEl.onclick = (e) => {
         if (e.target === chipCloseBtn) return;
@@ -572,7 +559,6 @@ class PostViewer {
       chipEl.classList.remove('show');
     });
 
-    // ---- ۲) ردیابی و ذخیره‌ی پیشرفت مطالعه هنگام اسکرول (throttle شده) ----
     const onScroll = () => {
       const percent = this.calcScrollPercent();
       if (progressBarEl) progressBarEl.style.width = percent + '%';
@@ -589,20 +575,17 @@ class PostViewer {
         });
 
         if (result && result.percent >= 95) {
-          // وقتی مقاله تقریباً تمام خونده شد، دیگه لازم نیست چیزی ذخیره بمونه
           this.progressStore.clear(this.cat, this.slug);
           updateChip(100, { done: true });
-          // چیپ «کامل شد» رو بعد از چند ثانیه خودش محو کن
           setTimeout(() => chipEl.classList.remove('show'), 4000);
         } else if (result && result.percent >= 3) {
-          // به کاربر همیشه (نه فقط لحظه‌ی ورود) نشون بده که پیشرفتش داره ذخیره می‌شه
           updateChip(result.percent);
         }
       }, 700);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // مقدار اولیه‌ی نوار پیشرفت
+    onScroll();
   }
 }
 
@@ -621,14 +604,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const viewer = new PostViewer();
   await viewer.load();
 
-
   document.querySelectorAll('blockquote').forEach(blockquote => {
     const text = blockquote.textContent.trim();
     if (!/[آ-ی]/.test(text)) {
         blockquote.style.direction = 'ltr';
     }
   });
-
 });
 </script>
 
