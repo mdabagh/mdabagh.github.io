@@ -15,7 +15,7 @@
 > tal group versus the control group.
 > Rater evaluation
 > Human raters are presented with results for a given operation and choose which
-> one is “better” and why. This feedback is then used to determine whether a given
+> one is "better" and why. This feedback is then used to determine whether a given
 > change is positive, neutral, or negative. For example, Google has historically used
 > rater evaluation for search queries (we have published the guidelines we give our
 > raters). In some cases, the feedback from this ratings data can help determine
@@ -23,7 +23,7 @@
 > ministic systems like machine learning systems for which there is no clear correct
 > answer, only a notion of better or worse.
 > Large Tests and the Developer Workflow
-> We’ve talked about what large tests are, why to have them, when to have them, and
+> We've talked about what large tests are, why to have them, when to have them, and
 > how much to have, but we have not said much about the who. Who writes the tests?
 > Who runs the tests and investigates the failures? Who owns the tests? And how do we
 > make this tolerable?
@@ -47,6 +47,18 @@
 > 304
 > |
 > Chapter 14: Larger Testing
+
+**ارزیابی توسط داور (Rater Evaluation)**
+
+داوران انسانی نتایج یک عملیات مشخص را می‌بینند و انتخاب می‌کنند کدام "بهتر" است و چرا. این بازخورد سپس برای تعیین اینکه آیا یک تغییر مثبت، خنثی یا منفی است، استفاده می‌شود. به عنوان مثال، گوگل به طور تاریخی از rater evaluation برای queryهای جستجو استفاده کرده (راهنمایی‌هایی که به داوران خود می‌دهیم را منتشر کرده‌ایم). در برخی موارد، بازخورد از این داده‌های رتبه‌بندی می‌تواند به تعیین go/no-go برای تغییرات الگوریتم کمک کند. Rater evaluation برای سیستم‌های nondeterministic مانند سیستم‌های یادگیری ماشین (Machine Learning) که پاسخ صحیح روشنی ندارند و فقط مفهوم بهتر یا بدتر وجود دارد، حیاتی است.
+
+**تست‌های بزرگ و گردش کار توسعه‌دهنده**
+
+درباره اینکه تست‌های بزرگ چیست، چرا باید داشته باشیم، چه زمانی داشته باشیم و چه مقدار داشته باشیم، بحث کردیم، اما درباره اینکه "چه کسی" خیلی صحبت نکردیم. چه کسی تست‌ها را می‌نویسد؟ چه کسی تست‌ها را اجرا می‌کند و شکست‌ها را بررسی می‌کند؟ چه کسی مالک تست‌ها است؟ و چگونه این را قابل تحمل می‌کنیم؟
+
+اگرچه زیرسخت تست unit استاندارد ممکن است اعمال نشود، اما ادغام تست‌های بزرگتر در گردش کار توسعه‌دهنده همچنان حیاتی است. یک راه این است اطمینان حاصل شود مکانیزم‌های خودکار برای اجرای presubmit و post-submit وجود دارد، حتی اگر این مکانیزم‌ها متفاوت از مکانیزم‌های تست unit باشند. در گوگل، بسیاری از این تست‌های بزرگ در TAP قرار نمی‌گیرند. آن‌ها nonhermetic، بیش از حد flaky و/یا بیش از حد منابع فشرده هستند. اما همچنان نیاز داریم جلوی شکستن آن‌ها را بگیریم وگرنه سیگنالی ارائه نمی‌دهند و triage کردن آن‌ها بسیار دشوار می‌شود. بنابراین کاری که انجام می‌دهیم این است که یک post-submit continuous build جداگانه برای آن‌ها داریم. همچنین تشویق می‌کنیم این تست‌ها presubmit اجرا شوند، زیرا بازخورد مستقیم به نویسنده می‌دهد.
+
+تست‌های A/B diff که نیاز به تأیید دستی diffها دارند نیز می‌توانند در چنین گردش کاری ادغام شوند. برای presubmit، می‌تواند یک شرط code-review باشد که هر diff در UI قبل از تأیید change، تأیید شود. یکی از این تست‌ها، باگ‌های release-blocking را به طور خودکار اگر کد با diffهای حل نشده ارسال شود، فایل می‌کند.
 
 
 ![Section](images/page001-331.png)
@@ -95,8 +107,17 @@
 > |
 > Chapter 14: Larger Testing
 
+**کاهش timeoutها و تأخیرهای داخلی سیستم**
 
-تحلیل ایستا می‌تواند مشکلاتی مانند باگ‌ها، مشکلات امنیتی و مشکلات عملکرد را بدون اجرای کد شناسایی کند.
+یک سیستم production معمولاً با فرض یک topology استقرار توزیع‌شده پیکربندی می‌شود، اما SUT ممکن است روی یک machine واحد (یا حداقل یک cluster از machineهای هم‌مکان) مستقر شده باشد. اگر timeoutهای hardcoded یا (به‌خصوص) دستورات sleep در کد production وجود دارد که برای در نظر گرفتن تأخیر سیستم production استفاده می‌شوند، اینها باید قابل تنظیم باشند و هنگام اجرای تست‌ها کاهش یابند.
+
+**بهینه‌سازی زمان build تست**
+
+یکی از معایب monorepo ما این است که تمام وابستگی‌های یک تست بزرگ build شده و به عنوان ورودی ارائه می‌شوند، اما این ممکن است برای برخی تست‌های بزرگتر ضروری نباشد. اگر SUT از یک بخش اصلی که واقعاً تمرکز تست است و برخی وابستگی‌های binary peer لازم دیگر تشکیل شده باشد، ممکن است بتوان نسخه‌های pre-built از آن binaryهای دیگر در یک نسخه خوب شناخته‌شده استفاده کرد. سیستم build ما (بر اساس monorepo) به راحتی این مدل را پشتیبانی نمی‌کند، اما این رویکرد در واقع بازتاب بیشتری از production است که در آن سرویس‌های مختلف در نسخه‌های مختلف release می‌شوند.
+
+**از بین بردن Flakiness**
+Flakiness (شکنندگی) برای تست‌های unit به اندازه کافی بد است، اما برای تست‌های بزرگتر، می‌تواند آن‌ها را غیرقابل استفاده کند. یک تیم باید حذف flakiness این تست‌ها را اولویت بالا در نظر بگیرد. اما چگونه می‌توان flakiness را از این تست‌ها حذف کرد؟
+
 
 ![Section](images/page003-333.png)
 
@@ -107,7 +128,7 @@
 ###### 📄 صفحه ۳۳۵
 > Minimize the effort necessary to identify the root cause of the discrepancy
 > A stack trace is not useful for larger tests because the call chain can span multiple
-> process boundaries. Instead, it’s necessary to produce a trace across the call chain
+> process boundaries. Instead, it's necessary to produce a trace across the call chain
 > or to invest in automation that can narrow down the culprit. The test should pro‐
 > duce some kind of artifact to this effect. For example, Dapper is a framework
 > used by Google to associate a single request ID with all the requests in an RPC
@@ -125,9 +146,9 @@
 > And the test rots.
 > Integration tests of components within a particular project should be owned by the
 > project lead. Feature-focused tests (tests that cover a particular business feature across
-> a set of services) should be owned by a “feature owner”; in some cases, this owner
+> a set of services) should be owned by a "feature owner"; in some cases, this owner
 > might be a software engineer responsible for the feature implementation end to end;
-> in other cases it might be a product manager or a “test engineer” who owns the
+> in other cases it might be a product manager or a "test engineer" who owns the
 > description of the business scenario. Whoever owns the test must be empowered to
 > ensure its overall health and must have both the ability to support its maintenance
 > and the incentives to do so.
@@ -145,12 +166,30 @@
 > |
 > Chapter 14: Larger Testing
 
+**حداقل کردن تلاش لازم برای شناسایی علت اصلی عدم تطابق**
 
-ویژگی‌های اصلی:
-1. **مقیاس‌پذیری**: باید بتواند با پایگاه‌های کد بزرگ کار کند
-2. **قابلیت استفاده**: باید آسان برای استفاده باشد
-3. **دقت**: باید نتایج دقیق ارائه دهد
-4. **سرعت**: باید سریع اجرا شود
+Stack trace برای تست‌های بزرگتر مفید نیست زیرا زنجیره فراخوانی (Call Chain) می‌تواند چندین مرز process را در بر بگیرد. در عوض، لازم است trace در سراسر زنجیره فراخوانی تولید شود یا در خودکارسازی سرمایه‌گذاری شود که بتواند عامل اصلی را محدود کند. تست باید نوعی artifact برای این منظور تولید کند. به عنوان مثال، Dapper چارچوبی است که توسط گوگل استفاده می‌شود تا یک request ID واحد را با تمام درخواست‌ها در یک زنجیره فراخوانی RPC مرتبط کند و تمام logهای مرتبط با آن درخواست را می‌توان با آن ID همبسته کرد تا tracing تسهیل شود.
+
+**ارائه پشتیبانی و اطلاعات تماس**
+باید برای اجرای‌کننده تست آسان باشد که کمک دریافت کند، به این صورت که مالکان و پشتیبانان تست به راحتی قابل تماس باشند.
+
+**مالکیت تست‌های بزرگ**
+تست‌های بزرگتر باید مالکان مستندی داشته باشند — مهندسانی که بتوانند تغییرات در تست را به اندازه کافی بررسی کنند و بتوان در مورد شکست‌های تست روی حمایت آن‌ها حساب کرد. بدون مالکیت مناسب، یک تست می‌تواند قربانی موارد زیر شود:
+- برای مشارکت‌کنندگان دشوارتر می‌شود تست را اصلاح و به‌روز کنند
+- حل شکست‌های تست زمان بیشتری می‌برد
+
+و تست فاسد می‌شود (Test Rot).
+
+تست‌های integration اجزای درون یک پروژه خاص باید توسط lead پروژه مدیریت شوند. تست‌های متمرکز بر feature (تست‌هایی که یک feature تجاری خاص را در مجموعه‌ای از سرویس‌ها پوشش می‌دهند) باید توسط "مالک feature" مدیریت شوند؛ در برخی موارد، این مالک ممکن است یک مهندس نرم‌افزار مسئول پیاده‌سازی feature از ابتدا تا انتها باشد؛ در موارد دیگر ممکن است یک product manager یا "test engineer" باشد که مالک توصیف سناریوی تجاری است. هر کسی که مالک تست است باید قدرت تضمین سلامت کلی آن را داشته باشد و باید هم توانایی پشتیبانی نگهداری آن و هم انگیزه انجام آن را داشته باشد.
+
+اگر این اطلاعات به شکل ساختاریافته ثبت شود، می‌توان خودکارسازی حول مالکان تست ایجاد کرد. برخی رویکردهایی که استفاده می‌کنیم شامل موارد زیر است:
+
+**مالکیت منظم کد**
+در بسیاری موارد، یک تست بزرگ یک artifact کد مستقل است که در مکان خاصی در codebase ما قرار دارد. در آن صورت، می‌توانیم از اطلاعات OWNERS (فصل ۹) که از قبل در monorepo وجود دارد استفاده کنیم تا به خودکارسازی نشان دهیم مالکان یک تست خاص، مالکان کد تست هستند.
+
+**annotationهای هر تست**
+در برخی موارد، چندین metohd تست می‌توانند به یک کلاس یا ماژول تست واحد اضافه شوند و هر یک از این metohdها می‌توانند مالک feature متفاوتی داشته باشند. ما استفاده می‌کنیم
+
 
 ![Section](images/page005-335.png)
 
@@ -160,11 +199,17 @@
 
 ###### 📄 صفحه ۳۳۷
 
+**مالکیت تست‌های بزرگ ( ادامه)**
 
-درس‌های اصلی:
-1. **تمرکز بر خوشحالی توسعه‌دهنده**: ابزارها باید مفید و آسان باشند
-2. **بخشی از گردش کار توسعه**: تحلیل ایستا باید بخشی طبیعی از گردش کار باشد
-3. **توانمندسازی کاربران**: کاربران باید بتوانند مشارکت کنند
+**ساختار OWNERS فایل**
+رویکرد دیگر استفاده از فایل OWNERS است که ساختار سلسله‌مراتبی مالکیت را تعریف می‌کند. هر فایل یا دایرکتوری می‌تواند فایل OWNERS خود را داشته باشد که لیستی از افراد یا تیم‌هایی که مسئول آن بخش از کد هستند را مشخص می‌کند. این به خودکارسازی اجازه می‌دهد به طور خودکار مالکان مناسب را برای بررسی تغییرات شناسایی کند.
+
+**ابزارهای پشتیبانی**
+ابزارهای مختلفی برای کمک به مدیریت مالکیت تست وجود دارند. این ابزارها می‌توانند به طور خودکار مالکان را بر اساس ساختار کد شناسایی کنند و اعلان‌هایی برای آن‌ها ارسال کنند.
+
+**نتیجه‌گیری فصل تست‌های بزرگتر**
+تست‌های بزرگتر بخش حیاتی از استراتژی تست هستند اما چالش‌های خاص خود را دارند. آن‌ها نیاز به مدیریت محتاطانه، مالکیت روشن و ابزارهای مناسب دارند. با پیروی از بهترین شیوه‌های ذکر شده در این فصل، سازمان‌ها می‌توانند از این تست‌ها بهره‌مند شوند و در عین حال هزینه‌ها و پیچیدگی‌های آن‌ها را مدیریت کنند.
+
 
 ![Section](images/page007-337.png)
 
@@ -173,8 +218,8 @@
 ---
 
 ###### 📄 صفحه ۳۳۹
-> the lessons we’ve learned as we’ve deprecated large and heavily used internal systems.
-> Sometimes, it works as expected, and sometimes it doesn’t, but the general problem
+> the lessons we've learned as we've deprecated large and heavily used internal systems.
+> Sometimes, it works as expected, and sometimes it doesn't, but the general problem
 > of removing obsolete systems remains a difficult and evolving concern in the indus‐
 > try.
 > This chapter primarily deals with deprecating technical systems, not end-user prod‐
@@ -191,9 +236,9 @@
 > which are borne in the process of creating a system, but many other costs are borne as
 > a system is maintained across its lifetime. These ongoing costs, such as the opera‐
 > tional resources required to keep a system running or the effort to continually update
-> its codebase as surrounding ecosystems evolve, mean that it’s worth evaluating the
+> its codebase as surrounding ecosystems evolve, mean that it's worth evaluating the
 > trade-offs between keeping an aging system running or working to turn it down.
-> The age of a system alone doesn’t justify its deprecation. A system could be finely
+> The age of a system alone doesn't justify its deprecation. A system could be finely
 > crafted over several years to be the epitome of software form and function. Some soft‐
 > ware systems, such as the LaTeX typesetting system, have been improved over the
 > course of decades, and even though changes still happen, they are few and far
@@ -207,19 +252,23 @@
 > dencies that use the obsolete one.
 > The two systems might need to interface with each other, requiring complicated
 > transformation code. As both systems evolve, they may come to depend on each
-> other, making eventual removal of either more difficult. In the long run, we’ve discov‐
+> other, making eventual removal of either more difficult. In the long run, we've discov‐
 > ered that having multiple systems performing the same function also impedes the
 > evolution of the newer system because it is still expected to maintain compatibility
 > 312
 > |
 > Chapter 15: Deprecation
 
+**چرا Deprecated (منسوخ) کنیم؟**
 
-ویژگی‌های Tricorder:
-1. **تحلیل در حین ویرایش**: تحلیل کد در حین نوشتن
-2. **یکپارچه‌سازی با کامپایلر**: ادغام با کامپایلر
-3. **بازخورد یکپارچه**: ارائه بازخورد در محیط توسعه
-4. **ابزارهای یکپارچه**: ابزارهای مختلف در یک پلتفرم
+بحث ما درباره deprecation از فرض اساسی شروع می‌شود که کد یک بدهی (Liability) است، نه یک دارایی (Asset). در نهایت، اگر کد یک دارایی بود، چرا باید وقت صرف کنیم تا سیستم‌های منسوخ را حذف و متوقف کنیم؟ کد هزینه‌هایی دارد، برخی از آن‌ها در فرآیند ایجاد یک سیستم تحمل می‌شوند، اما بسیاری از هزینه‌های دیگر در طول عمر سیستم تحمل می‌شوند. این هزینه‌های مداوم، مانند منابع عملیاتی لازم برای حفظ اجرای یک سیستم یا تلاش برای به‌روزرسانی مداوم codebase آن با تکامل اکوسیستم‌های اطراف، به این معنی است که ارزش دارد trade-off بین حفظ اجرای یک سیستم پیر یا تلاش برای متوقف کردن آن را ارزیابی کنیم.
+
+سن یک سیستم به تنهایی deprecation آن را توجیه نمی‌کند. یک سیستم می‌تواند طی چندین سال به دقت ساخته شده باشد تا نمایانگر فرم و عملکرد نرم‌افزار باشد. برخی سیستم‌های نرم‌افزاری مانند سیستم حروفچینی LaTeX طی دهه‌ها بهبود یافته‌اند و اگرچه تغییرات همچنان رخ می‌دهد، اما کم و نادر هستند. فقط به این دلیل که چیزی قدیمی است، به این معنی نیست که منسوخ شده است.
+
+Deprecation بهترین گزینه برای سیستم‌هایی است که به طور قطعی منسوخ شده‌اند و جایگزینی وجود دارد که عملکرد قابل مقایسه‌ای ارائه می‌دهد. سیستم جدید ممکن است منابع را کارآمدتر استفاده کند، ویژگی‌های امنیتی بهتری داشته باشد، به شکل پایدارتری ساخته شده باشد، یا فقط باگ‌ها را رفع کند. داشتن دو سیستم برای انجام یک کار ممکن است مشکل فوری به نظر نرسد، اما با گذشت زمان، هزینه‌های نگهداری هر دو می‌تواند به طور قابل توجهی رشد کند. کاربران ممکن است نیاز داشته باشند از سیستم جدید استفاده کنند، اما همچنان وابستگی‌هایی داشته باشند که از سیستم منسوخ استفاده می‌کنند.
+
+این دو سیستم ممکن است نیاز به interfacing با یکدیگر داشته باشند و کد تبدیل پیچیده لازم باشد. با تکامل هر دو سیستم، ممکن است به یکدیگر وابسته شوند و حذف نهایی هر کدام را دشوارتر کنند. در دراز مدت، دریافته‌ایم که داشتن چندین سیستم که عملکرد یکسانی انجام می‌دهند، تکامل سیستم جدیدتر را نیز مختل می‌کند زیرا همچنان از آن انتظار می‌رود سازگاری را حفظ کند.
+
 
 ![Section](images/page009-339.png)
 

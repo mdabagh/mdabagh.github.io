@@ -304,6 +304,32 @@ class CategoryManager {
             console.error(`Error loading post ${basePath}/${file}:`, e);
           }
         } else if (!file.includes('.')) {
+          try {
+            const subFiles = await this.scanDirectory(`${basePath}/${file}`);
+            const hasSameNameJson = subFiles.includes(`${file}.json`);
+            if (hasSameNameJson) {
+              try {
+                const res = await fetch(`${basePath}/${file}/${file}.json`);
+                if (res.ok) {
+                  const postData = await res.json();
+                  const relativePath = basePath.replace(this.categorySlug, '').replace(/^\//, '');
+                  const fullSlug = relativePath ? `${relativePath}/${file}` : file;
+                  posts.push({
+                    id: fullSlug,
+                    title: postData.title || 'بدون عنوان',
+                    summary: postData.summary || '...',
+                    date: postData.date || new Date().toISOString().split('T')[0],
+                    url: `post.html?cat=${this.categorySlug}&slug=${fullSlug}`
+                  });
+                  continue;
+                }
+              } catch (e) {
+                console.error(`Error loading standalone post ${basePath}/${file}:`, e);
+              }
+            }
+          } catch (e) {
+            console.error(`Error scanning subdirectory ${basePath}/${file}:`, e);
+          }
           const subPosts = await this.collectPosts(`${basePath}/${file}`);
           posts.push(...subPosts);
         }
