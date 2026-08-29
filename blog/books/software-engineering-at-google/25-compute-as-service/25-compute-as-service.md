@@ -6,10 +6,10 @@
 -
 
 ###### 📄 صفحه ۵۳۷
-> 1 Remember the SRE “error-budget” formulation: perfection is rarely the best goal. Understand how much
+> 1 Remember the SRE "error-budget" formulation: perfection is rarely the best goal. Understand how much
 > room for error is acceptable and how much of that budget has been spent recently and use that to adjust the
 > trade-off between velocity and stability.
-> features to launch even if they aren’t perfect1 and can also create clarity in otherwise
+> features to launch even if they aren't perfect1 and can also create clarity in otherwise
 > contentious launch decisions.
 > One bug involved a rare dialect spoken on only one island in the Philippines. If a user
 > asked a search question in this dialect, instead of an answer to their question, they
@@ -19,30 +19,45 @@
 > language, if it happened every time a user searched in this language, and whether
 > these folks even used Google on a regular basis. Every quality engineer we spoke with
 > deferred us to a more senior person. Finally, data in hand, we put the question to
-> Search’s senior vice president. Should we delay a critical release to fix a bug that affec‐
+> Search's senior vice president. Should we delay a critical release to fix a bug that affec‐
 > ted only a very small Philippine island? It turns out that no matter how small your
 > island, you should get reliable and accurate search results: we delayed the release and
 > fixed the bug.
 > Meet Your Release Deadline
-> The second idea is that if you’re late for the release train, it will leave without you.
-> There’s something to be said for the adage, “deadlines are certain, life is not.” At some
+> The second idea is that if you're late for the release train, it will leave without you.
+> There's something to be said for the adage, "deadlines are certain, life is not." At some
 > point in the release timeline, you must put a stake in the ground and turn away devel‐
 > opers and their new features. Generally speaking, no amount of pleading or begging
-> will get a feature into today’s release after the deadline has passed.
-> There is the rare exception. The situation usually goes like this. It’s late Friday evening
-> and six software engineers come storming into the release manager’s cube in a panic.
+> will get a feature into today's release after the deadline has passed.
+> There is the rare exception. The situation usually goes like this. It's late Friday evening
+> and six software engineers come storming into the release manager's cube in a panic.
 > They have a contract with the NBA and finished the feature moments ago. But it must
 > go live before the big game tomorrow. The release must stop and we must cherry-
-> pick the feature into the binary or we’ll be in breach of contract! A bleary-eyed release
+> pick the feature into the binary or we'll be in breach of contract! A bleary-eyed release
 > engineer shakes their head and says it will take four hours to cut and test a new
-> binary. It’s their kid’s birthday and they still need to pick up the balloons.
-> A world of regular releases means that if a developer misses the release train, they’ll
+> binary. It's their kid's birthday and they still need to pick up the balloons.
+> A world of regular releases means that if a developer misses the release train, they'll
 > be able to catch the next train in a matter of hours rather than days. This limits devel‐
 > oper panic and greatly improves work–life balance for release engineers.
 > 510
 > |
 > Chapter 24: Continuous Delivery
 
+**تست‌های کاربر و ضرب‌الاجل انتشار**
+
+ویژگی‌ها را حتی اگر کامل نیستند راه‌اندازی کنید و همچنین می‌تواند وضوحی در تصمیمات راه‌اندازی بحث‌برانگیز ایجاد کند.
+
+یک باگ شامل یک گویش نادر بود که فقط در یک جزیره در فیلیپین صحبت می‌شد. اگر کاربری سؤال جستجویی به این گویش می‌پرسید، به جای پاسخ به سؤالش، یک صفحه وب خالی دریافت می‌کرد. مجبور بودیم تعیین کنیم آیا هزینه رفع این باگ ارزش به تأخیر انداختن انتشار یک ویژگی جدید اصلی را دارد.
+
+از دفتری به دفتر دیگر دویدیم تا سعی کنیم تعیین کنیم چند نفر واقعاً به این زبان صحبت می‌کنند، آیا هر بار که کاربری به این زبان جستجو می‌کرد این اتفاق می‌افتاد، و آیا این افراد حتی به طور منظم از Google استفاده می‌کردند یا خیر. هر مهندس کیفیتی که با او صحبت کردیم ما را به فرد ارشدتری ارجاع داد. سرانجام، با داده‌ها در دست، سؤال را به معاون ارشد Search ارائه دادیم. آیا باید یک انتشار حیاتی را برای رفع باگی که فقط یک جزیره کوچک فیلیپین را تحت تأثیر قرار می‌دهد به تأخیر بیندازیم؟ مشخص شد که مهم نیت جزیره شما چقدر کوچک باشد، باید نتایج جستجوی قابل اعتماد و دقیق دریافت کنید: انتشار را به تأخیر انداختیم و باگ را رفع کردیم.
+
+**ضرب‌الاجل انتشار خود را رعایت کنید (Meet Your Release Deadline)**
+
+ایده دوم این است که اگر از قطار انتشار جا بمانید، بدون شما حرکت خواهد کرد. چیزی برای گفتن در مورد این ضرب‌المثل وجود دارد: «ضرب‌الاجل‌ها مسلم هستند، زندگی نه.» در نقطه‌ای از جدول زمانی انتشار، باید یک نقطه ثابت بگذارید و توسعه‌دهندگان و ویژگی‌های جدیدشان را برگردانید. به طور کلی، هیچ مقدار التماس و خواهشی ویژگی‌ای را پس از گذشت ضرب‌الاجل وارد انتشار امروز نخواهد کرد.
+
+استثنای نادری وجود دارد. وضعیت معمولاً اینگونه است: جمعه شب دیر وقت است و شش مهندس نرم‌افزار با وحشت به کابین مدیر انتشار هجوم می‌آورند. آن‌ها قراردادی با NBA دارند و لحظاتی پیش ویژگی را تمام کردند. اما باید قبل از بازی بزرگ فردا زنده شود. انتشار باید متوقف شود و ما باید ویژگی را cherry-pick کنیم وگرنه نقض قرارداد خواهد شد! یک مهندس انتشار خواب‌آلود سرش را تکان می‌دهد و می‌گوید چهار ساعت طول می‌کشد تا باینری جدیدی بریده و تست شود. تولد بچه‌شان است و هنوز باید بادکنک‌ها را بردارد.
+
+دنیای انتشارهای منظم به این معنی است که اگر توسعه‌دهنده‌ای از قطار انتشار جا بماند، می‌تواند در عرض چند ساعت به جای چند روز قطار بعدی را بگیرد. این وحشت توسعه‌دهنده را محدود می‌کند و تعادل کار-زندگی را برای مهندسان انتشار به طور قابل توجهی بهبود می‌بخشد.
 
 ![Section](images/page001-537.png)
 
@@ -61,11 +76,6 @@
 ###### 📄 صفحه ۵۴۳
 
 
-مراحل رام‌کردن محیط محاسباتی:
-1. **اتوماسیون زحمت‌ها**: خودکارسازی کارهای تکراری
-2. **کانتینرسازی و چندمستأجری**: استفاده از کانتینرها برای ایزوله کردن برنامه‌ها
-3. **بهینه‌سازی و اتوماسیون**: بهینه‌سازی منابع و خودکارسازی مدیریت
-
 ![Section](images/page007-543.png)
 
 ![Section](images/page008-544.png)
@@ -82,13 +92,13 @@
 
 ###### 📄 صفحه ۵۴۹
 > containerization for which small resource footprints and short runtimes are expected.
-> This led Google’s engineers designing Borg in 2003 to look to different solutions, end‐
+> This led Google's engineers designing Borg in 2003 to look to different solutions, end‐
 > ing up with containers—a lightweight mechanism based on cgroups (contributed by
 > Google engineers into the Linux kernel in 2007) and chroot jails, bind mounts and/or
 > union/overlay filesystems for filesystem isolation. Open source container implemen‐
 > tations include Docker and LMCTFY.
-> Over time and with the evolution of the organization, more and more potential isola‐
-> tion failures are discovered. To give a specific example, in 2011, engineers working on
+> Over time and with the evolution of the organization, more and more potential isolation
+> failures are discovered. To give a specific example, in 2011, engineers working on
 > Borg discovered that the exhaustion of the process ID space (which was set by default
 > to 32,000 PIDs) was becoming an isolation failure, and limits on the total number of
 > processes/threads a single replica can spawn had to be introduced. We look at this
@@ -114,19 +124,24 @@
 > the usage, it is a larger fraction of configurations, which means that the majority of
 > engineers do not need to concern themselves with the tedious and error-prone bur‐
 > den of sizing their containers. We view this as a successful application of the idea that
-> “easy things should be easy, and complex things should be possible”—just because
+> "easy things should be easy, and complex things should be possible"—just because
 > some fraction of Borg workloads is too complex to be properly managed by rightsiz‐
-> ing doesn’t mean there isn’t great value in handling the easy cases.
+> ing doesn't mean there isn't great value in handling the easy cases.
 > 522
 > |
 > Chapter 25: Compute as a Service
 
+**کانتینرسازی، Rightsizing و Autoscaling**
 
-اصول اصلی:
-1. **معماری برای شکست**: طراحی سیستم برای مقاومت در برابر شکست
-2. **دسته‌ای در مقابل سرویس**: درک تفاوت بین کارهای دسته‌ای و سرویس
-3. **مدیریت حالت**: مدیریت حالت در سیستم‌های توزیع‌شده
-4. **اتصال به سرویس**: نحوه اتصال به سرویس‌ها
+کانتینرسازی برای محیط‌هایی مناسب است که ردپای منابع کوچک و زمان‌های اجرای کوتاه مورد انتظار است. این مهندسان گوگل را در طراحی Borg در سال ۲۰۰۳ به سمت راه‌حل‌های مختلفی سوق داد که در نهایت به کانتینرها منجر شد — مکانیزمی سبک‌وزن مبتنی بر cgroupها (که توسط مهندسان گوگل در سال ۲۰۰۷ به هسته لینوکس کمک شد) و chroot jailها، bind mountها و/یا فایل‌سیستم‌های union/overlay برای ایزوله‌سازی فایل‌سیستم. پیاده‌سازی‌های متن‌باز کانتینر شامل Docker و LMCTFY هستند.
+
+با گذشت زمان و با تکامل سازمان، شکست‌های ایزوله بالقوه بیشتری کشف می‌شوند. برای مثال خاص، در سال ۲۰۱۱، مهندسان Borg کشف کردند که تخلیه فضای شناسه فرآیند (PID space) — که به طور پیش‌فرض روی ۳۲,۰۰۰ PID تنظیم شده بود — در حال تبدیل شدن به یک شکست ایزوله است و محدودیت‌هایی برای تعداد کل فرآیندهای/رشته‌هایی که یک replica می‌تواند ایجاد کند باید معرفی شود.
+
+** Rightsizing و Autoscaling**
+
+Borg سال ۲۰۰۶ کار را بر اساس پارامترهای ارائه شده توسط مهندس در پیکربندی زمان‌بندی می‌کرد، مانند تعداد replicaها و الزامات منابع. با نگاه کردن به مشکل از دور، ایده درخواست از انسان‌ها برای تعیین اعداد الزامات منابع تا حدی ناقص است: اینها اعدادی نیستند که انسان‌ها روزانه با آن‌ها تعامل دارند. و بنابراین، این پارامترهای پیکربندی خودشان با گذشت زمان منبع بی‌کارآمدی می‌شوند. مهندسان باید زمانی را برای تعیین آن‌ها در ابتدا صرف کنند و هنگامی که سازمان شما سرویس‌های بیشتری انباشت می‌کند، هزینه تعیین آن‌ها افزایش می‌یابد. علاوه بر این، با گذشت زمان، برنامه تکامل می‌یابد (احتمالاً رشد می‌کند)، اما پارامترهای پیکربندی همراه نمی‌شوند. این به یک قطعی ختم می‌شود — جایی که مشخص می‌شود نسخه‌های جدید با گذشت زمان الزامات منابعی داشتند که حاشیه باقی مانده برای افزایش‌های غیرمنتظره یا قطعی‌ها را خوردند و وقتی چنین افزایشی یا قطعی واقعاً رخ می‌دهد، حاشیه باقی مانده ناکافی است.
+
+راه‌حل طبیعی خودکارسازی تنظیم این پارامترها است. متأسفانه، این کار به طور شگفت‌انگیزی برای انجام درست دشوار است. به عنوان مثال، گوگل اخیراً به نقطه‌ای رسیده که بیش از نیمی از مصرف منابع در کل ناوگان Borg توسط خودکارسازی rightsizing تعیین می‌شود. با این حال، اگرچه فقط نیمی از مصرف است، کسر بزرگتری از پیکربندی‌ها است، که به این معنی است که اکثر مهندسان نیازی ندارند خود را با بار خسته‌کننده و خطاپذیر اندازه‌گیری کانتینرهایشان درگیر کنند.
 
 ![Section](images/page013-549.png)
 
@@ -151,7 +166,7 @@
 > spend on the redundancy to mitigate the risk of an outage when cache capacity is lost.
 > In a similar vein to caching, data might be pulled in from external storage to local in
 > the warm-up of an application, in order to improve request serving latency.
-> One more case of using local storage—this time in case of data that’s written more
+> One more case of using local storage—this time in case of data that's written more
 > than read—is batching writes. This is a common strategy for monitoring data (think,
 > for instance, about gathering CPU utilization statistics from the fleet for the purposes
 > of guiding the autoscaling system), but it can be used anywhere where it is acceptable
@@ -168,7 +183,7 @@
 > tion, another application does need to get your address from somewhere. Where?
 > The answer is to have an extra layer of indirection; that is, other applications refer to
 > your application by some identifier that is durable across restarts of the specific
-> “backend” instances. That identifier can be resolved by another system that the
+> "backend" instances. That identifier can be resolved by another system that the
 > scheduler writes to when it places your application on a particular machine. Now, to
 > avoid distributed storage lookups on the critical path of making a request to your
 > application, clients will likely look up the address that your app can be found on, and
@@ -184,9 +199,19 @@
 > |
 > Chapter 25: Compute as a Service
 
+**کش‌نویسی، بچ‌نویسی و اتصال به سرویس**
 
-1. **حیوانات خانگی**: سرورهایی که به طور خاص مدیریت می‌شوند و جایگزینی آن‌ها دشوار است
-2. **گاوها**: سرورهایی که به طور یکسان مدیریت می‌شوند و جایگزینی آن‌ها آسان است
+در مورد مشابه کشینگ، داده‌ها ممکن است از ذخیره‌سازی خارجی به محلی در گرم کردن (warm-up) یک برنامه کشیده شوند، تا latency ارائه درخواست بهبود یابد.
+
+یک مورد دیگر استفاده از ذخیره‌سازی محلی — این بار در مورد داده‌هایی که بیشتر نوشته می‌شوند تا خوانده — batch نوشتن است. این یک استراتژی رایج برای داده‌های نظارتی است (مثلاً در مورد جمع‌آوری آمار بهره‌وری CPU از ناوگان برای هدایت سیستم autoscaling فکر کنید)، اما می‌تواند هر جایی استفاده شود که بخشی از داده‌ها قابل فن‌آوری باشد، یا به این دلیل که به ۱۰۰٪ پوشش داده نیاز نداریم (مورد نظارت)، یا به این دلیل که داده‌هایی که از بین می‌روند قابل بازآفرینی هستند (مورد یک کار دسته‌ای که داده‌ها را به قطعات پردازش می‌کند و خروجی هر قطعه را می‌نویسد).
+
+**اتصال به سرویس (Connecting to a Service)**
+
+همان‌طور که قبلاً ذکر شد، اگر هر چیزی در سیستم نام میزبانی که برنامه شما روی آن اجرا می‌شود را به صورت سخت‌کد شده داشته باشد (یا حتی به عنوان پارامتر پیکربندی در زمان راه‌اندازی ارائه شده باشد)، replicaهای برنامه شما گاو نیستند. با این حال، برای اتصال به برنامه شما، برنامه دیگری باید آدرس شما را از جایی بگیرد. کجا؟
+
+پاسخ داشتن یک لایه اضافی انتقال (indirection) است؛ یعنی برنامه‌های دیگر به برنامه شما با شناسه‌ای ارجاع می‌دهند که در بین راه‌اندازی‌های مجدد instanceهای خاص «backend» پایدار است. آن شناسه می‌تواند توسط سیستم دیگری حل شود که زمان‌بند (scheduler) هنگام قرار دادن برنامه شما روی یک ماشین خاص در آن می‌نویسد. حال، برای جلوگیری از جستجوهای ذخیره‌سازی توزیع‌شده در مسیر بحرانی ایجاد درخواست به برنامه شما، کلاینت‌ها احتمالاً آدرسی را که برنامه شما در آن یافت می‌شود جستجو کرده و اتصالی را در زمان راه‌اندازی برقرار کرده و آن را در پس‌زمینه پایش می‌کنند. این معمولاً به عنوان service discovery شناخته می‌شود و بسیاری از پیشنهادات محاسباتی راه‌حل‌های built-in یا ماژولار دارند.
+
+نتیجه این مدل این است که احتمالاً در برخی موارد نیاز به تکرار درخواست‌های خود دارید، زیرا سروری که با آن صحبت می‌کنید ممکن است قبل از اینکه موفق به پاسخ شود متوقف شود. تکرار درخواست‌ها یک شیوه استاندارد برای ارتباطات شبکه است (مثلاً اپلیکیشن موبایل به سرور) به دلیل مشکلات شبکه، اما ممکن است کمتر شهودی باشد.
 
 ![Section](images/page019-555.png)
 
@@ -215,20 +240,20 @@
 > that either all of the batch workload is effectively running on free resources (because
 > we are paying for them in the slack of serving jobs anyway) or all the serving work‐
 > load is effectively paying for only what they use, not for the slack capacity they need
-> for failure resistance (because the batch jobs are running in that slack). In Google’s
+> for failure resistance (because the batch jobs are running in that slack). In Google's
 > case, most of the time, it turns out we run batch effectively for free.
 > Multitenancy for serving jobs
 > Earlier, we discussed a number of requirements that a compute service must satisfy to
 > be suitable for running serving jobs. As previously discussed, there are multiple
 > advantages to having the serving jobs be managed by a common compute solution,
 > but this also comes with challenges. One particular requirement worth repeating is a
-> discovery service, discussed in “Connecting to a Service” on page 528. There are a
+> discovery service, discussed in "Connecting to a Service" on page 528. There are a
 > number of other requirements that are new when we want to extend the scope of a
 > managed compute solution to serving tasks, for example:
-> • Rescheduling of jobs needs to be throttled: although it’s probably acceptable to
-> kill and restart 50% of a batch job’s replicas (because it will cause only a tempo‐
-> rary blip in processing, and what we really care about is throughput), it’s unlikely
-> to be acceptable to kill and restart 50% of a serving job’s replicas (because the
+> • Rescheduling of jobs needs to be throttled: although it's probably acceptable to
+> kill and restart 50% of a batch job's replicas (because it will cause only a tempo‐
+> rary blip in processing, and what we really care about is throughput), it's unlikely
+> to be acceptable to kill and restart 50% of a serving job's replicas (because the
 > remaining jobs are likely too few to be able to serve user traffic while waiting for
 > the restarted jobs to come back up again).
 > • A batch job can usually be killed without warning. What we lose is some of the
@@ -246,11 +271,16 @@
 > |
 > Chapter 25: Compute as a Service
 
+**اشتراک‌گذاری چندمستأجری برای کارهای serving**
 
-راه‌های مدیریت حالت:
-1. **ذخیره‌سازی خارجی**: ذخیره حالت در سیستم‌های ذخیره‌سازی خارجی
-2. **تکرار**: تکرار داده‌ها برای مقاومت در برابر شکست
-3. **کش**: استفاده از کش برای بهبود عملکرد
+بسته به شکل بارهای کاری در یک مجموعه ماشین مشخص، این به این معنی است که یا کل بار کاری batch عملاً روی منابع رایگان اجرا می‌شود (زیرا ما در هر صورت برای آن‌ها در حاشیه کارهای serving پرداخت می‌کنیم) یا کل بار کاری serving عملاً فقط برای آنچه استفاده می‌کند پرداخت می‌کند، نه برای ظرفیت حاشیه‌ای که برای مقاومت در برابر شکست نیاز دارد (زیرا کارهای batch در آن حاشیه اجرا می‌شوند). در مورد گوگل، بیشتر اوقات، مشخص می‌شود که batch را عملاً رایگان اجرا می‌کنیم.
+
+**چندمستأجری برای کارهای serving (Multitenancy for Serving Jobs)**
+
+قبلاً تعدادی از الزاماتی را که یک سرویس محاسباتی باید برای مناسب بودن اجرای کارهای serving برآورده کند بحث کردیم. همان‌طور که قبلاً بحث شد، مزایای متعددی برای مدیریت کارهای serving توسط یک راه‌حل محاسباتی مشترک وجود دارد، اما این همراه با چالش‌هایی است. یک الزام خاص که ارزش تکرار دارد service discovery است که در «اتصال به سرویس» بحث شد. الزامات دیگر جدیدی وجود دارد وقتی می‌خواهیم دامنه یک راه‌حل محاسباتی مدیریت شده را به وظایف serving گسترش دهیم، برای مثال:
+
+• Rescheduling کارها باید محدود شود: اگرچه احتمالاً کشتن و راه‌اندازی مجدد ۵۰٪ replicaهای یک کار batch قابل قبول است (زیرا فقط یک لرزش موقت در پردازش ایجاد می‌کند و آنچه واقعاً مهم است throughput است)، بعید است کشتن و راه‌اندازی مجدد ۵۰٪ replicaهای یک کار serving قابل قبول باشد (زیرا کارهای باقی مانده احتمالاً برای ارائه ترافیک کاربر در حین انتظار برای برگشتن کارهای راه‌اندازی شده مجدد بسیار کم هستند).
+• یک کار batch معمولاً می‌تواند بدون هشدار کشته شود. آنچه از دست می‌دهیم بخشی از پردازش انجام شده است که می‌تواند دوباره انجام شود. وقتی یک کار serving بدون هشدار کشته می‌شود، احتمالاً خطر بازگشت خطا در ترافیک رو به کاربر یا (حداکثر) افزایش latency را داریم؛ ترجیح داده می‌شود چند ثانیه هشدار از قبل داده شود تا کار بتواند درخواست‌های در حال پردازش را تمام کند و درخواست‌های جدیدی قبول نکند.
 
 ![Section](images/page025-561.png)
 
@@ -269,7 +299,7 @@
 ###### 📄 صفحه ۵۶۷
 > 23 FaaS (Function as a Service) and PaaS (Platform as a Service) are related terms to serverless. There are differ‐
 > ences between the three terms, but there are more similarities, and the boundaries are somewhat blurred.
-> organization’s growth (because both the number of teams and the number of datacen‐
+> organization's growth (because both the number of teams and the number of datacen‐
 > ters a team occupies are likely to grow). And after the choice to manage cattle is
 > made, containers are a natural choice for management; they are lighter weight
 > (implying smaller resource overheads and startup times) and configurable enough
@@ -285,7 +315,7 @@
 > tion is serving web content and is using (or willing to adopt) a common server frame‐
 > work for handling the HTTP requests and serving responses. The key defining trait
 > of a framework is the inversion of control—so, the user will only be responsible for
-> writing an “Action” or “Handler” of some sort—a function in the chosen language
+> writing an "Action" or "Handler" of some sort—a function in the chosen language
 > that takes the request parameters and returns the response.
 > In the Borg world, the way you run this code is that you stand up a replicated con‐
 > tainer, each replica containing a server consisting of framework code and your func‐
@@ -299,8 +329,8 @@
 > running a larger number of framework servers, dynamically load/unload the action
 > code on different servers as needed, and dynamically direct requests to those servers
 > that have the relevant action code loaded. Individual teams no longer run servers,
-> hence “serverless.”
-> Most discussions of serverless frameworks compare them to the “VMs as pets”
+> hence "serverless."
+> Most discussions of serverless frameworks compare them to the "VMs as pets"
 > model. In this context, the serverless concept is a true revolution, as it brings in all of
 > the benefits of cattle management—autoscaling, lower overhead, lack of explicit pro‐
 > visioning of servers. However, as described earlier, the move to a shared, multitenant,
@@ -308,11 +338,19 @@
 > |
 > Chapter 25: Compute as a Service
 
+**ماشین‌های مجازی به عنوان گاو و Serverless**
 
-عوامل مؤثر:
-1. **تمرکز در مقابل سفارشی‌سازی**: آیا از یک سرویس مشترک استفاده شود یا سفارشی؟
-2. **سطح انتزاع**: آیا از سرور لس یا کانتینر استفاده شود؟
-3. **عمومی در مقابل خصوصی**: آیا از سرویس ابری عمومی استفاده شود یا خصوصی؟
+مزیت VMها به عنوان گاو عمدتاً در توانایی آوردن سیستم‌عامل خودمان نهفته است، که مهم است اگر بارهای کاری شما به مجموعه متنوعی از سیستم‌عامل‌ها برای اجرا نیاز داشته باشند. سازمان‌های متعدد همچنین تجربه از پیش موجود در مدیریت VMها و پیکربندی‌ها و بارهای کاری بر اساس VMها خواهند داشت و بنابراین ممکن است به جای کانتینرها از VMها استفاده کنند تا هزینه‌های مهاجرت را کاهش دهند.
+
+**Serverless چیست؟**
+
+انتزاع حتی بالاتر، پیشنهادات serverless است. فرض کنید یک سازمان محتوای وب ارائه می‌دهد و از یک فریم‌ورک سرور مشترک برای مدیریت درخواست‌های HTTP و ارائه پاسخ‌ها استفاده می‌کند (یا مایل به پذیرش آن است). ویژگی تعیین‌کننده کلیدی فریم‌ورک وارونگی کنترل (inversion of control) است — بنابراین، کاربر فقط مسئول نوشتن یک «عمل» یا «هندلر» از هر نوعی است — تابعی در زبان انتخابی که پارامترهای درخواست را دریافت و پاسخ را برمی‌گرداند.
+
+در دنیای Borg، راه اجرای این کد این است که یک کانتینر تکرار شده راه‌اندازی می‌کنید که هر replica حاوی سروری شامل کد فریم‌ورک و توابع شماست. اگر ترافیک افزایش یابد، با مقیاس‌پذیری بالا (اضافه کردن replicaها یا گسترش به datacenterهای جدید) مدیریت می‌کنید. اگر ترافیک کاهش یابد، مقیاس‌پذیری پایین انجام می‌دهید. توجه کنید که حضور حداقلی مورد نیاز است (گوگل معمولاً حداقل سه replica در هر datacenter که سروری در آن اجرا می‌شود فرض می‌کند).
+
+با این حال، اگر تیم‌های مختلف از فریم‌ورک یکسانی استفاده کنند، رویکرد متفاوتی ممکن است: به جای فقط چندمستأجری کردن ماشین‌ها، می‌توانیم سرورهای فریم‌ورک را نیز چندمستأجری کنیم. در این رویکرد، تعداد بیشتری از سرورهای فریم‌ورک را اجرا می‌کنیم، کد عمل را به طور پویا روی سرورهای مختلف در صورت نیاز بارگذاری/تخلیه می‌کنیم و درخواست‌ها را به طور پویا به سرورهایی هدایت می‌کنیم که کد عمل مربوطه بارگذاری شده دارند. تیم‌های جداگانه دیگر سرور اجرا نمی‌کنند، بنابراین «serverless».
+
+بیشتر بحث‌های در مورد فریم‌ورک‌های serverless آن‌ها را با مدل «VMها به عنوان حیوانات خانگی» مقایسه می‌کنند. در این زمینه، مفهوم serverless یک انقلاب واقعی است، زیرا تمام مزایای مدیریت گاوی را به ارمغان می‌آورد — autoscaling، سربار کمتر، فقدان provisioning صریح سرورها.
 
 ![Section](images/page031-567.png)
 
@@ -417,7 +455,7 @@
 > few long-lived branches at Google, 343
 > release branches, 339
 > work in progress is akin to a branch, 336
-> “brilliant jerks”, 57
+> "brilliant jerks", 57
 > brittle tests, 224
 > preventing, 233-239
 > striving for unchanging tests, 233
@@ -446,11 +484,7 @@
 > |
 > Index
 
-
-مهندسان نرم‌افزار در گوگل یاد گرفته‌اند که:
-1. **پایداری مهم است**: نرم‌افزار باید بتواند با تغییرات سازگار شود
-2. **ترسیم مسیر روشن**: توسعه‌دهندگان باید مسیر روشنی برای توسعه داشته باشند
-3. **شمول و دسترسی‌پذیری**: نرم‌افزار باید برای همه قابل استفاده باشد
+**فهرست الفبایی**
 
 ![Section](images/page043-579.png)
 
@@ -492,7 +526,7 @@
 > documented knowledge, 45
 > domain knowledge of documentation audien‐
 > ces, 191
-> DRY (Don’t Repeat Yourself) principle
+> DRY (Don't Repeat Yourself) principle
 > tests and code sharing, DAMP, not DRY,
 > 248-255
 > DAMP as complement to DRY, 251
@@ -565,8 +599,7 @@
 > |
 > Index
 
-
-مهندسان نرم‌افزار مسئولیت دارند که نرم‌افزاری بسازند که برای همه مفید باشد. این شامل در نظر گرفتن نیازهای کاربران متنوع و اطمینان از دسترسی‌پذیری است.
+**فهرست الفبایی (ادامه)**
 
 ![Section](images/page049-585.png)
 
@@ -651,7 +684,7 @@
 > flaws in performance ratings, 76
 > ignoring low performers, 89
 > personnel costs, 18
-> “Peter Principle”, 84
+> "Peter Principle", 84
 > Piper, 340
 > Code Search integration with, 353
 > tools built on top of, 406
@@ -682,8 +715,7 @@
 > |
 > Index
 
-
-آینده مهندسی نرم‌افزار پر از چالش‌ها و فرصت‌های جدید است. مهم است که همواره یاد بگیریم و با تغییرات سازگار شویم.
+**فهرست الفبایی (ادامه ۲)**
 
 ![Section](images/page055-591.png)
 
@@ -730,7 +762,7 @@
 > performing organizations and, 343
 > source control questions and, 429
 > trust, 35
-> being “Googley”, 41
+> being "Googley", 41
 > code reviews and, 400
 > practicing, 36-39
 > treating your team like children (antipat‐
@@ -800,6 +832,7 @@
 > |
 > Index
 
+**فهرست الفبایی (ادامه ۳)**
 
 ![Section](images/page061-597.png)
 

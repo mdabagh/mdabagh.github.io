@@ -249,8 +249,6 @@ serverIndex = hash(key) % N
 
 ![Figure 5-15](images/System-Design-Interview-page83-image1.jpg)
 
-![Figure 5-16](images/System-Design-Interview-page83-image2.jpg)
-
 ---
 
 ###### 📄 صفحه ۸۵

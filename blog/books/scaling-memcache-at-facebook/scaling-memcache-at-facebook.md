@@ -233,8 +233,6 @@ web serverها برای رسیدن به throughput (توان عملیاتی؛ ن
 
 جدول ۱ خلاصه‌ای از دو نوع item در application خودمان که مقادیر بزرگی دارند نشان می‌دهد. یک نوع (B) را به یک regional pool منتقل کرده‌ایم و نوع دیگر (A) را بدون تغییر گذاشته‌ایم. توجه کنید که clientها به itemهای دستهٔ B به مراتب کمتر از دستهٔ A access می‌کنند. نرخ access پایین دستهٔ B، آن را کاندیدای مناسبی برای یک regional pool می‌کند، چون تأثیر منفی روی inter-cluster bandwidth ندارد. دستهٔ B همچنین ۲۵٪ از wildcard pool هر cluster را اشغال می‌کرد، بنابراین regionalization efficiency قابل‌توجهی در storage به همراه دارد. اما itemهای دستهٔ A دو برابر بزرگ‌تر هستند و خیلی بیشتر access می‌شوند که آن‌ها را از نظر regionalization نامناسب می‌کند. تصمیم برای migrate کردن داده به regional poolها فعلاً بر اساس مجموعه‌ای از heuristicهای دستی مبتنی بر access rate، اندازهٔ data set و تعداد unique userهایی که به itemهای خاص access دارند گرفته می‌شود.
 
-![Table 1](images/Table1.png)
-
 ### ۴.۳ Cold Cluster Warmup (گرم‌کردن cluster سرد؛ پر کردن cache یک cluster تازه از روی یک cluster گرم)
 
 > When we bring a new cluster online, an existing one fails, or we perform scheduled maintenance the caches will have very poor hit rates, diminishing the ability to insulate backend services. A system called Cold Cluster Warmup mitigates this by allowing clients in the "cold cluster" (i.e. the frontend cluster that has an empty cache) to retrieve data from the "warm cluster" (i.e. a cluster that has caches with normal hit rates) rather than the persistent storage. This takes advantage of the aforementioned data replication that happens across frontend clusters. With this system cold clusters can be brought back to full capacity in a few hours instead of a few days.
@@ -295,8 +293,6 @@ hostهای experimental ما یک CPU از نوع Intel Xeon (X5650) با فرک
 
 **عملکرد Get:** ابتدا اثر جایگزین کردن implementation قبلی multi-threaded با یک global lock را با fine-grained locking بررسی می‌کنیم. hitها را با پیش‌پُر کردن cache با مقادیر ۳۲ بایتی، پیش از فرستادن memcached requestهایی با ۱۰ key در هر request اندازه گرفتیم. شکل ۷ حداکثر request rateای را نشان می‌دهد که برای نسخه‌های مختلف memcached با میانگین response time زیر یک میلی‌ثانیه قابل‌حفظ است. مجموعهٔ اول میله‌ها memcached ما پیش از fine-grained locking است، مجموعهٔ دوم memcached فعلی ماست، و مجموعهٔ آخر نسخهٔ open-source 1.4.10 است که به‌طور مستقل یک نسخهٔ coarser از locking strategy ما را پیاده‌سازی کرده.
 
-![Figure 7](images/Figure7.png)
-
 > Employing fine-grained locking triples the peak get rate for hits from 600k to 1.8M items per second. Performance for misses also increased from 2.7M to 4.5M items per second. Hits are more expensive because the return value has to be constructed and transmitted, while misses require a single static response (END) for the entire multiget indicating that all keys missed.
 
 استفاده از fine-grained locking، peak get rate برای hitها را از ۶۰۰ هزار به ۱٫۸ میلیون item در ثانیه سه برابر می‌کند. performance برای missها هم از ۲٫۷ میلیون به ۴٫۵ میلیون item در ثانیه افزایش یافت. hitها گران‌تر هستند چون return value باید ساخته و منتقل شود، در حالی که missها فقط به یک پاسخ static (END) برای کل multiget (درخواست چندتایی؛ واکشی چند key در یک request) نیاز دارند که نشان می‌دهد همهٔ keyها miss شده‌اند.
@@ -304,8 +300,6 @@ hostهای experimental ما یک CPU از نوع Intel Xeon (X5650) با فرک
 > We also investigated the performance effects of using UDP instead of TCP. Figure 8 shows the peak request rate we can sustain with average latencies of less than one millisecond for single gets and multigets of 10 keys. We found that our UDP implementation outperforms our TCP implementation by 13% for single gets and 8% for 10-key multigets.
 
 اثرات performance استفاده از UDP به جای TCP را هم بررسی کردیم. شکل ۸ حداکثر request rateای را نشان می‌دهد که می‌توانیم با average latency کمتر از یک میلی‌ثانیه برای single getها و multigetهای ۱۰ کلیدی حفظ کنیم. دیدیم که implementation UDP ما برای single getها ۱۳٪ و برای multigetهای ۱۰ کلیدی ۸٪ بهتر از implementation TCP عمل می‌کند.
-
-![Figure 8](images/Figure8.png)
 
 > Because multigets pack more data into each request than single gets, they use fewer packets to do the same work. Figure 8 shows an approximately four-fold improvement for 10-key multigets over single gets.
 
@@ -355,13 +349,9 @@ Memcached از یک slab allocator (تخصیص‌دهندهٔ اسلب؛ مؤل�
 
 **Fanout:** شکل ۹ توزیع تعداد memcached serverهای distinct را که یک web server ممکن است هنگام پاسخ به یک page request به آن‌ها نیاز داشته باشد نشان می‌دهد. همان‌طور که دیده می‌شود، ۵۶٪ از همهٔ page requestها با کمتر از ۲۰ memcached server تماس می‌گیرند. از نظر حجم، user requestها معمولاً مقادیر کمی از دادهٔ cache‌شده را می‌خواهند. اما این distribution یک long tail هم دارد. این شکل همچنین distribution یکی از صفحات محبوب‌تر ما را نشان می‌دهد که الگوی all-to-all را بهتر نشان می‌دهد. اکثر requestهای این نوع بیش از ۱۰۰ سرور distinct را access می‌کنند؛ access به چند صد memcached server هم نادر نیست.
 
-![Figure 9](images/Figure9.png)
-
 > Response size: Figure 10 shows the response sizes from memcache requests. The difference between the median (135 bytes) and the mean (954 bytes) implies that there is a very large variation in the sizes of the cached items. In addition there appear to be three distinct peaks at approximately 200 bytes, 600 bytes, and larger values. Larger items tend to store lists of data while smaller items tend to store single pieces of content.
 
 **Response Size:** شکل ۱۰ اندازهٔ پاسخ‌ها از memcache requestها را نشان می‌دهد. تفاوت بین median (۱۳۵ بایت) و mean (۹۵۴ بایت) نشان می‌دهد که variance بسیار زیادی در اندازهٔ itemهای cache‌شده وجود دارد. علاوه بر این، سه peak متمایز در حدود ۲۰۰ بایت، ۶۰۰ بایت و مقادیر بزرگ‌تر دیده می‌شود. itemهای بزرگ‌تر معمولاً lists of data ذخیره می‌کنند در حالی که itemهای کوچک‌تر معمولاً یک قطعه محتوای تکی ذخیره می‌کنند.
-
-![Figure 10](images/Figure10.png)
 
 > Latency: We measure the round-trip latency to request data from memcache, which includes the cost of routing the request and receiving the reply, network transfer time, and the cost of deserialization and decompression. Over 7 days the median request latency is 333 microseconds while the 75th and 95th percentiles (p75 and p95) are 475μs and 1.135ms respectively. Our median end-to-end latency from an idle web server is 178μs while the p75 and p95 are 219μs and 374μs, respectively. The wide variance between the p95 latencies arises from handling large responses and waiting for the runnable thread to be scheduled as discussed in Section 3.1.
 
@@ -386,8 +376,6 @@ Memcached از یک slab allocator (تخصیص‌دهندهٔ اسلب؛ مؤل�
 > In Figure 11, we use this monitoring mechanism to report our invalidation latencies across a 30 day span. We break this data into two different components: (1) the delete originated from a web server in the master region and was destined to a memcached server in the master region, and (2) the delete originated from a replica region and was destined to another replica region. As the data show, when the source and destination of the delete are co-located with the master our success rates are much higher and achieve four 9s of reliability within 1 second and five 9s after one hour. However when the deletes originate and head to locations outside of the master region our reliability drops to three 9s within a second and four 9s within 10 minutes. In our experience, we find that if an invalidation is missing after only a few seconds the most common reason is that the first attempt failed and subsequent retrials will resolve the problem.
 
 در شکل ۱۱، از این monitoring mechanism برای گزارش invalidation latencyهای خودمان طی یک بازهٔ ۳۰ روزه استفاده می‌کنیم. این داده را به دو component تقسیم می‌کنیم: (۱) deleteای که از یک web server در master region شروع شده و مقصدش یک memcached server در master region بوده، و (۲) deleteای که از یک replica region شروع شده و مقصدش یک replica region دیگر بوده. همان‌طور که داده‌ها نشان می‌دهند، وقتی source و destination یک delete هم‌مکان با master هستند، success rate ما خیلی بالاتر است و به reliability چهار عدد ۹ ظرف ۱ ثانیه و پنج عدد ۹ بعد از یک ساعت می‌رسد. اما وقتی deleteها از بیرون master region شروع می‌شوند و به سمت آن می‌روند، reliability ما در یک ثانیه به سه عدد ۹ و در ۱۰ دقیقه به چهار عدد ۹ کاهش می‌یابد. در تجربهٔ ما، اگر یک invalidation فقط چند ثانیه بعد هنوز انجام نشده باشد، معمول‌ترین دلیلش این است که تلاش اول شکست خورده و retryهای بعدی مشکل را حل خواهند کرد.
-
-![Figure 11](images/Figure11.png)
 
 ---
 
@@ -434,8 +422,6 @@ TAO [37] یک سیستم دیگر از فیسبوک است که برای سرو�
 از فیلیپ آجود، ناتان برونسون، مارک درایتون، دیوید فترمن، الکس گارترل، آندری گریننکو، رابرت جانسون، سانجیو کومار، آنتون لیختاروف، مارک مارچوکوف، اسکات مارلت، بن مائر، دیوید میزنر، کنراد میشلس، اندرو پاپ، جف روتشیلد، جیسون سوبل و یی جیون سونگ برای مشارکت‌هایشان تشکر می‌کنیم. همچنین از داوران anonymous، shepherd خودمان مایکل پیاتک، تور ام. آمودت، رمزی اچ. آراپاتسی-دوسئو و تایلر هترینگتون برای بازخورد ارزشمندشان روی نسخه‌های اولیهٔ مقاله سپاسگزاریم. در نهایت، از همکاران مهندس خودمان در فیسبوک برای پیشنهادها، bug reportها و حمایتی که memcache را به آنچه امروز هست تبدیل کرده تشکر می‌کنیم.
 
 ---
-
-![Table 2 & 3](images/Table2-3.png)
 
 ---
 
