@@ -158,12 +158,23 @@
     max-width: 100%;
   }
   .prose pre{
+    position:relative;
     background:var(--navy-deep); color:#DCE5EE; padding:18px 20px;
     overflow-x:auto; overflow-y: hidden;
     border:1px solid var(--navy-line); direction:ltr; text-align:left;
     max-width: 100%;
   }
   .prose pre code{background:none; padding:0; color:inherit; font-size:13.5px; line-height:1.7;}
+  .copy-btn{
+    position:absolute; top:10px; right:10px; z-index:2;
+    display:inline-flex; align-items:center; justify-content:center;
+    width:32px; height:32px; padding:0; border-radius:6px; cursor:pointer;
+    background:rgba(140,168,192,0.18); border:1px solid var(--navy-line);
+    color:#B8C7D6; opacity:.6;
+    transition:opacity .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .copy-btn:hover, .copy-btn:focus-visible{opacity:1; background:var(--amber); border-color:var(--amber); color:var(--navy-deep);}
+  .copy-btn.copied{opacity:1; background:var(--amber); border-color:var(--amber); color:var(--navy-deep);}
   .prose img{max-width:100%; height:auto; border:1px solid #D8DED6;}
   .prose hr{border:none; border-top:1px dashed #C9D0C2; margin:2em 0;}
   .prose table{
@@ -521,8 +532,53 @@ class PostViewer {
     });
     contentEl.innerHTML = `<article class="prose">${tempDiv.innerHTML}</article>`;
 
+    this.setupCopyButtons();
     this.revealAll();
     this.setupReadingProgress();
+  }
+
+  setupCopyButtons() {
+    const copyIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+    const checkIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+
+    document.querySelectorAll('#articleContent pre').forEach(pre => {
+      if (pre.querySelector('.copy-btn')) return;
+
+      const codeEl = pre.querySelector('code');
+      const textToCopy = codeEl ? codeEl.textContent : pre.textContent;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.title = 'کپی کد';
+      btn.setAttribute('aria-label', 'کپی کد');
+      btn.innerHTML = copyIcon;
+
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+        } catch (e) {
+          const ta = document.createElement('textarea');
+          ta.value = textToCopy;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        btn.classList.add('copied');
+        btn.innerHTML = checkIcon;
+        btn.title = 'کپی شد ✓';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = copyIcon;
+          btn.title = 'کپی کد';
+        }, 2000);
+      });
+
+      pre.appendChild(btn);
+    });
   }
 
   revealAll() {
