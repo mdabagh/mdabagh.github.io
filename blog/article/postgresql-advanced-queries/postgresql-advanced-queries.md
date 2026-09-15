@@ -8,21 +8,42 @@
 
 ## فصل ۰: ساخت دیتابیس نمونه
 
-برای تمرین کوئری‌های پیشرفته، ابتدا نیاز به یک دیتابیس نمونه داریم. دیتابیس Two Trees شامل دو schema اصلی است:
+برای تمرین کوئری‌های پیشرفته، ابتدا نیاز به یک دیتابیس نمونه داریم. دیتابیس Two Trees شامل دو schema اصلی `inventory` و `sales` است.
 
-- **`inventory`**: شامل جداول `categories` و `products`
-- **`sales`**: شامل جداول `customers`، `orders` و `order_lines`
+### ساختار جداول
 
 ```sql
+-- Create the Two Trees Database 
+
+----------------------------------------------------------
+-- EMPTY THE TWO TREES DATABASE IN CASE IT CONTAINS CONTENT
+----------------------------------------------------------
+
+DROP TABLE IF EXISTS inventory.products;
+DROP TABLE IF EXISTS inventory.categories;
+DROP SCHEMA IF EXISTS inventory;
+DROP TABLE IF EXISTS sales.order_lines;
+DROP TABLE IF EXISTS sales.orders;
+DROP TABLE IF EXISTS sales.customers;
+DROP SCHEMA IF EXISTS sales;
+
+-----------------------------------
+-- CREATE THE TABLE STRUCTURE
+-----------------------------------
+
+-- Create the database schemas
 CREATE SCHEMA inventory;
 CREATE SCHEMA sales;
 
+
+-- Create a table for the Two Trees category data
 CREATE TABLE inventory.categories (
     category_id          INT NOT NULL PRIMARY KEY,
     category_description VARCHAR(50),
     product_line         VARCHAR(25)
 );
 
+-- Create a table for the Two Trees product data
 CREATE TABLE inventory.products (
     sku             VARCHAR(7) NOT NULL PRIMARY KEY,
     product_name    VARCHAR(50) NOT NULL,
@@ -33,8 +54,10 @@ CREATE TABLE inventory.products (
 
 ALTER TABLE inventory.products
 ADD CONSTRAINT fk_products_category_id FOREIGN KEY (category_id)
-    REFERENCES inventory.categories (category_id);
+    REFERENCES inventory.categories (category_id)
+;
 
+-- Create a table for the Two Trees customer data
 CREATE TABLE sales.customers (
     customer_id CHAR(5) NOT NULL PRIMARY KEY,
     company     VARCHAR(100),
@@ -45,6 +68,7 @@ CREATE TABLE sales.customers (
     newsletter  BOOLEAN
 );
 
+-- Create a table for the Two Trees order data
 CREATE TABLE sales.orders (
     order_id     INT GENERATED ALWAYS AS IDENTITY (START WITH 100 INCREMENT BY 1) NOT NULL PRIMARY KEY,
     order_date   DATE,
@@ -53,8 +77,10 @@ CREATE TABLE sales.orders (
 
 ALTER TABLE sales.orders
 ADD CONSTRAINT fk_customers_customer_id FOREIGN KEY (customer_id)
-    REFERENCES sales.customers (customer_id);
+    REFERENCES sales.customers (customer_id)
+;
 
+-- Create a table for the order's line-item data
 CREATE TABLE sales.order_lines (
     order_id    INT,
     line_id     INT GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) NOT NULL PRIMARY KEY,
@@ -64,10 +90,417 @@ CREATE TABLE sales.order_lines (
 
 ALTER TABLE sales.order_lines
 ADD CONSTRAINT fk_orders_order_id FOREIGN KEY (order_id)
-    REFERENCES sales.orders (order_id);
+    REFERENCES sales.orders (order_id)
+;
 ```
 
-داده‌های نمونه شامل دسته‌بندی محصولات (روغن زیتون، روغن‌های طعم‌دار، محصولات زیبایی و بهداشت)، مشتریان، سفارشات و اقلام سفارش است.
+### درج داده‌ها در جداول
+
+```sql
+-----------------------------------
+-- INSERT DATA INTO TABLES 
+-----------------------------------
+
+-- Add data to the categories table
+INSERT INTO inventory.categories
+    (category_id, category_description, product_line)
+VALUES
+    (1, 'Olive Oils', 'Gourmet Chef'),
+    (2, 'Flavor Infused Oils', 'Gourmet Chef'),
+    (3, 'Bath and Beauty', 'Cosmetics')
+;
+
+-- Add data to the customers table
+INSERT INTO sales.customers VALUES
+    ('FV418', 'Flavorville', '798 Ravinia Road', 'Des Moines', 'IA', '50320', TRUE),
+    ('WR421', 'Wild Rose', '222 Dakota Lane', 'Kalamazoo', 'MI', '49001', TRUE),
+    ('BX305', 'Bread Express', '3362 Ute Loop', 'Tiffin', 'OH', '44883', FALSE),
+    ('BV446', 'Blue Vine', '40675 Raymond Curve', 'Columbus', 'GA', '31901', TRUE),
+    ('GR208', 'Green Gardens', '394 Mesa Palms Avenue', 'Atlanta', 'GA', '15742', FALSE),
+    ('DF600', 'Delish Food', '809 Weathersfield Ctr Park', 'Madisonville', 'OH', '45227', FALSE)
+;
+
+-- Add data to the products table
+INSERT INTO inventory.products
+    (sku, product_name, category_id, size, price)
+VALUES
+    ('ALB008', 'Delicate', 1, 8, 10.99),
+    ('ALB032', 'Delicate', 1, 32, 18.99),
+    ('ALB064', 'Delicate', 1, 64, 22.99),
+    ('ALB128', 'Delicate', 1, 128, 26.99),
+    ('EV008', 'Extra Virgin', 1, 8, 8.99),
+    ('EV016', 'Extra Virgin', 1, 16, 12.99),
+    ('EV032', 'Extra Virgin', 1, 32, 16.99),
+    ('EV064', 'Extra Virgin', 1, 64, 20.99),
+    ('EV128', 'Extra Virgin', 1, 128, 24.99),
+    ('FCP008', 'First Cold Press', 1, 8, 8.99),
+    ('FCP016', 'First Cold Press', 1, 16, 12.99),
+    ('FCP032', 'First Cold Press', 1, 32, 16.99),
+    ('FCP064', 'First Cold Press', 1, 64, 20.99),
+    ('FCP128', 'First Cold Press', 1, 128, 24.99),
+    ('FR008', 'Frantoio', 1, 8, 10.99),
+    ('FR016', 'Frantoio', 1, 16, 14.99),
+    ('FR032', 'Frantoio', 1, 32, 18.99),
+    ('FR064', 'Frantoio', 1, 64, 22.99),
+    ('FR128', 'Frantoio', 1, 128, 26.99),
+    ('HOJ008', 'Bold', 1, 8, 11.99),
+    ('HOJ016', 'Bold', 1, 16, 15.99),
+    ('HOJ032', 'Bold', 1, 32, 19.99),
+    ('HOJ064', 'Bold', 1, 64, 23.99),
+    ('HOJ128', 'Bold', 1, 128, 27.99),
+    ('KRN008', 'Koroneiki', 1, 8, 10.99),
+    ('KRN016', 'Koroneiki', 1, 16, 14.99),
+    ('KRN032', 'Koroneiki', 1, 32, 18.99),
+    ('KRN064', 'Koroneiki', 1, 64, 22.99),
+    ('KRN128', 'Koroneiki', 1, 128, 26.99),
+    ('LEC008', 'Leccino', 1, 8, 10.99),
+    ('LEC016', 'Leccino', 1, 16, 14.99),
+    ('LEC032', 'Leccino', 1, 32, 18.99),
+    ('LEC064', 'Leccino', 1, 64, 22.99),
+    ('LEC128', 'Leccino', 1, 128, 26.99),
+    ('LGT008', 'Light', 1, 8, 8.99),
+    ('LGT016', 'Light', 1, 16, 12.99),
+    ('LGT032', 'Light', 1, 32, 16.99),
+    ('LGT064', 'Light', 1, 64, 20.99),
+    ('LGT128', 'Light', 1, 128, 24.99),
+    ('MAN008', 'Manzanilla', 1, 8, 10.99),
+    ('MAN016', 'Manzanilla', 1, 16, 14.99),
+    ('MAN032', 'Manzanilla', 1, 32, 18.99),
+    ('MAN064', 'Manzanilla', 1, 64, 22.99),
+    ('MAN128', 'Manzanilla', 1, 128, 26.99),
+    ('MIS008', 'Mission', 1, 8, 10.99),
+    ('MIS016', 'Mission', 1, 16, 14.99),
+    ('MIS032', 'Mission', 1, 32, 18.99),
+    ('MIS064', 'Mission', 1, 64, 22.99),
+    ('MIS128', 'Mission', 1, 128, 26.99),
+    ('MOR008', 'Moraiolo', 1, 8, 10.99),
+    ('MOR016', 'Moraiolo', 1, 16, 14.99),
+    ('MOR032', 'Moraiolo', 1, 32, 18.99),
+    ('MOR064', 'Moraiolo', 1, 64, 22.99),
+    ('MOR128', 'Moraiolo', 1, 128, 26.99),
+    ('OBL008', 'Oblica', 1, 8, 11.99),
+    ('OBL016', 'Oblica', 1, 16, 15.99),
+    ('OBL032', 'Oblica', 1, 32, 19.99),
+    ('OBL064', 'Oblica', 1, 64, 22.99),
+    ('OBL128', 'Oblica', 1, 128, 27.99),
+    ('PEN008', 'Pendolino', 1, 8, 10.99),
+    ('PEN016', 'Pendolino', 1, 16, 14.99),
+    ('PEN032', 'Pendolino', 1, 32, 18.99),
+    ('PEN064', 'Pendolino', 1, 64, 22.99),
+    ('PEN128', 'Pendolino', 1, 128, 26.99),
+    ('PCH008', 'Picholine', 1, 8, 11.99),
+    ('PCH016', 'Picholine', 1, 16, 15.99),
+    ('PCH032', 'Picholine', 1, 32, 19.99),
+    ('PCH064', 'Picholine', 1, 64, 23.99),
+    ('PCH128', 'Picholine', 1, 128, 27.99),
+    ('PIC008', 'Picual', 1, 8, 10.99),
+    ('PIC016', 'Picual', 1, 16, 14.99),
+    ('PIC032', 'Picual', 1, 32, 18.99),
+    ('PIC064', 'Picual', 1, 64, 22.99),
+    ('PIC128', 'Picual', 1, 128, 26.99),
+    ('PUR008', 'Pure', 1, 8, 8.99),
+    ('PUR016', 'Pure', 1, 16, 12.99),
+    ('PUR032', 'Pure', 1, 32, 16.99),
+    ('PUR064', 'Pure', 1, 64, 20.99),
+    ('PUR128', 'Pure', 1, 128, 24.99),
+    ('REF008', 'Refined', 1, 8, 8.99),
+    ('REF016', 'Refined', 1, 16, 12.99),
+    ('REF032', 'Refined', 1, 32, 16.99),
+    ('REF064', 'Refined', 1, 64, 20.99),
+    ('REF128', 'Refined', 1, 128, 24.99),
+    ('V008', 'Virgin', 1, 8, 8.99),
+    ('V016', 'Virgin', 1, 16, 12.99),
+    ('V032', 'Virgin', 1, 32, 16.99),
+    ('V064', 'Virgin', 1, 64, 20.99),
+    ('V128', 'Virgin', 1, 128, 24.99),
+    ('MI008', 'Mandarin-Infused EVO', 2, 8, 8.99),
+    ('MI016', 'Mandarin-Infused EVO', 2, 16, 12.99),
+    ('MI032', 'Mandarin-Infused EVO', 2, 32, 16.99),
+    ('LI008', 'Lemon-Infused EVO', 2, 8, 8.99),
+    ('LI016', 'Lemon-Infused EVO', 2, 16, 12.99),
+    ('LI032', 'Lemon-Infused EVO', 2, 32, 16.99),
+    ('BI008', 'Basil-Infused EVO', 2, 8, 10.99),
+    ('BI016', 'Basil-Infused EVO', 2, 16, 14.99),
+    ('BI032', 'Basil-Infused EVO', 2, 32, 18.99),
+    ('RI008', 'Rosemary-Infused EVO', 2, 8, 10.99),
+    ('RI016', 'Rosemary-Infused EVO', 2, 16, 14.99),
+    ('RI032', 'Rosemary-Infused EVO', 2, 32, 18.99),
+    ('GI008', 'Garlic-Infused EVO', 2, 8, 11.99),
+    ('GI016', 'Garlic-Infused EVO', 2, 16, 15.99),
+    ('GI032', 'Garlic-Infused EVO', 2, 32, 19.99),
+    ('JI008', 'Chili-Infused EVO', 2, 8, 11.99),
+    ('JI016', 'Chili-Infused EVO', 2, 16, 15.99),
+    ('JI032', 'Chili-Infused EVO', 2, 32, 19.99),
+    ('OGEC004', 'Olive Glow eye cream', 3, 4, 18.99),
+    ('OGFL006', 'Olive Glow face lotion', 3, 6, 14.99),
+    ('OGBL012', 'Olive Glow body lotion', 3, 12, 12.99),
+    ('OGFT006', 'Olive Glow foot treatment', 3, 6, 7.99),
+    ('OGNR004', 'Olive Glow night repair', 3, 4, 21.99),
+    ('OGBG016', 'Olive Glow bath gel', 3, 16, 9.99),
+    ('OGHS006', 'Olive Glow hand soap', 3, 6, 6.99)
+;
+
+-- Add data to the orders table
+INSERT INTO sales.orders (order_date, customer_id) VALUES
+    ('2021-03-15', 'BX305'),
+    ('2021-03-17', 'GR208'),
+    ('2021-03-19', 'BV446'),
+    ('2021-03-19', 'BV446'),
+    ('2021-03-20', 'FV418'),
+    ('2021-03-21', 'DF600'),
+    ('2021-03-22', 'FV418'),
+    ('2021-03-23', 'WR421'),
+    ('2021-03-24', 'WR421'),
+    ('2021-03-25', 'GR208'),
+    ('2021-03-25', 'BX305'),
+    ('2021-03-26', 'GR208'),
+    ('2021-03-26', 'BV446'),
+    ('2021-03-27', 'FV418'),
+    ('2021-03-28', 'WR421'),
+    ('2021-03-28', 'BV446'),
+    ('2021-03-28', 'DF600'),
+    ('2021-03-29', 'DF600'),
+    ('2021-03-29', 'BX305'),
+    ('2021-03-30', 'GR208'),
+    ('2021-03-31', 'BX305'),
+    ('2021-04-01', 'BX305'),
+    ('2021-04-03', 'GR208'),
+    ('2021-04-05', 'BV446'),
+    ('2021-04-05', 'BV446'),
+    ('2021-04-06', 'FV418'),
+    ('2021-04-07', 'DF600'),
+    ('2021-04-08', 'FV418'),
+    ('2021-04-09', 'WR421'),
+    ('2021-04-10', 'WR421'),
+    ('2021-04-11', 'GR208'),
+    ('2021-04-11', 'BX305'),
+    ('2021-04-12', 'GR208'),
+    ('2021-04-12', 'BV446'),
+    ('2021-04-13', 'FV418'),
+    ('2021-04-14', 'WR421'),
+    ('2021-04-14', 'BV446'),
+    ('2021-04-14', 'DF600'),
+    ('2021-04-15', 'DF600'),
+    ('2021-04-15', 'BX305'),
+    ('2021-04-16', 'GR208'),
+    ('2021-04-16', 'BX305'),
+    ('2021-04-17', 'GR208'),
+    ('2021-04-19', 'BV446'),
+    ('2021-04-19', 'BV446'),
+    ('2021-04-20', 'FV418'),
+    ('2021-04-21', 'DF600'),
+    ('2021-04-22', 'FV418'),
+    ('2021-04-23', 'WR421'),
+    ('2021-04-24', 'WR421'),
+    ('2021-04-25', 'GR208'),
+    ('2021-04-25', 'BX305'),
+    ('2021-04-26', 'GR208'),
+    ('2021-04-26', 'BV446'),
+    ('2021-04-27', 'FV418'),
+    ('2021-04-28', 'WR421'),
+    ('2021-04-28', 'BV446'),
+    ('2021-04-28', 'DF600'),
+    ('2021-04-29', 'DF600'),
+    ('2021-04-29', 'BX305'),
+    ('2021-04-30', 'GR208')
+;
+
+-- Add data to the order_lines table
+INSERT INTO sales.order_lines (order_id, sku, quantity) VALUES
+    (100,  'HOJ016',  2),
+    (101,  'MAN128',  2),
+    (101,  'MIS032',  1),
+    (101,  'PEN008',  1),
+    (101,  'RI016',  1),
+    (102,  'FCP128',  2),
+    (102,  'FCP128',  3),
+    (102,  'LGT016',  3),
+    (102,  'MIS064',  1),
+    (102,  'OBL008',  3),
+    (103,  'FCP016',  4),
+    (104,  'MIS016',  1),
+    (105,  'HOJ128',  2),
+    (105,  'KRN128',  4),
+    (105,  'LEC008',  4),
+    (106,  'JI032',  1),
+    (106,  'MOR032',  2),
+    (106,  'PIC016',  1),
+    (106,  'RI032',  4),
+    (107,  'LI016',  3),
+    (107,  'PIC008',  4),
+    (107,  'PIC064',  3),
+    (107,  'V032',  4),
+    (108,  'FCP008',  4),
+    (108,  'RI008',  1),
+    (109,  'EV008',  3),
+    (109,  'OBL128',  2),
+    (110,  'FCP008',  5),
+    (110,  'LGT008',  3),
+    (110,  'PUR016',  4),
+    (110,  'V064',  1),
+    (111,  'KRN128',  3),
+    (112,  'JI032',  3),
+    (112,  'OBL128',  1),
+    (112,  'PCH032',  4),
+    (113,  'HOJ008',  2),
+    (113,  'PUR064',  2),
+    (113,  'PUR128',  3),
+    (113,  'REF008',  3),
+    (114,  'EV128',  5),
+    (115,  'FR128',  5),
+    (115,  'PCH064',  4),
+    (115,  'PUR064',  4),
+    (116,  'FCP128',  2),
+    (116,  'PEN064',  4),
+    (117,  'ALB064',  3),
+    (117,  'ALB128',  2),
+    (117,  'GI032',  4),
+    (117,  'HOJ064',  2),
+    (117,  'JI016',  1),
+    (117,  'PIC016',  4),
+    (118,  'FR008',  2),
+    (118,  'PIC016',  2),
+    (118,  'REF008',  2),
+    (119,  'JI016',  3),
+    (119,  'MI008',  3),
+    (120,  'BI008',  4),
+    (120,  'EV032',  4),
+    (120,  'FR064',  1),
+    (120,  'PEN032',  2),
+    (121,  'HOJ016',  3),
+    (122,  'MAN128',  5),
+    (122,  'MIS032',  4),
+    (122,  'PEN008',  4),
+    (122,  'RI016',  3),
+    (123,  'FCP128',  1),
+    (123,  'FCP128',  4),
+    (123,  'LGT016',  2),
+    (123,  'MIS064',  2),
+    (123,  'OBL008',  3),
+    (124,  'FCP016',  1),
+    (125,  'MIS016',  1),
+    (126,  'HOJ128',  4),
+    (126,  'KRN128',  1),
+    (126,  'LEC008',  4),
+    (127,  'JI032',  2),
+    (127,  'MOR032',  4),
+    (127,  'PIC016',  2),
+    (127,  'RI032',  1),
+    (128,  'LI016',  2),
+    (128,  'PIC008',  4),
+    (128,  'PIC064',  2),
+    (128,  'V032',  2),
+    (129,  'FCP008',  1),
+    (129,  'RI008',  2),
+    (130,  'EV008',  3),
+    (130,  'OBL128',  2),
+    (131,  'FCP008',  3),
+    (131,  'LGT008',  4),
+    (131,  'PUR016',  1),
+    (131,  'V064',  3),
+    (132,  'KRN128',  2),
+    (133,  'JI032',  3),
+    (133,  'OBL128',  4),
+    (133,  'PCH032',  4),
+    (134,  'HOJ008',  1),
+    (134,  'PUR064',  2),
+    (134,  'PUR128',  1),
+    (134,  'REF008',  3),
+    (135,  'EV128',  2),
+    (136,  'FR128',  1),
+    (136,  'PCH064',  2),
+    (136,  'PUR064',  2),
+    (137,  'FCP128',  3),
+    (137,  'PEN064',  5),
+    (138,  'ALB064',  4),
+    (138,  'ALB128',  4),
+    (138,  'GI032',  4),
+    (138,  'HOJ064',  1),
+    (138,  'JI016',  2),
+    (138,  'PIC016',  5),
+    (139,  'FR008',  3),
+    (139,  'PIC016',  4),
+    (139,  'REF008',  4),
+    (140,  'JI016',  3),
+    (140,  'MI008',  1),
+    (141,  'BI008',  1),
+    (141,  'EV032',  4),
+    (141,  'FR064',  1),
+    (141,  'PEN032',  2),
+    (141,  'HOJ016',  1),
+    (142,  'MAN128',  3),
+    (142,  'MIS032',  4),
+    (142,  'PEN008',  3),
+    (142,  'RI016',  2),
+    (143,  'FCP128',  4),
+    (143,  'FCP128',  4),
+    (143,  'LGT016',  1),
+    (143,  'MIS064',  3),
+    (143,  'OBL008',  4),
+    (144,  'FCP016',  4),
+    (145,  'MIS016',  2),
+    (146,  'HOJ128',  5),
+    (146,  'KRN128',  3),
+    (146,  'LEC008',  3),
+    (147,  'JI032',  3),
+    (147,  'MOR032',  3),
+    (147,  'PIC016',  1),
+    (147,  'RI032',  2),
+    (148,  'LI016',  1),
+    (148,  'PIC008',  2),
+    (148,  'PIC064',  2),
+    (148,  'V032',  1),
+    (149,  'FCP008',  2),
+    (149,  'RI008',  3),
+    (150,  'EV008',  3),
+    (150,  'OBL128',  2),
+    (151,  'FCP008',  4),
+    (151,  'LGT008',  2),
+    (151,  'PUR016',  4),
+    (151,  'V064',  5),
+    (152,  'KRN128',  2),
+    (153,  'JI032',  2),
+    (153,  'OBL128',  5),
+    (153,  'PCH032',  4),
+    (154,  'HOJ008',  4),
+    (154,  'PUR064',  4),
+    (154,  'PUR128',  3),
+    (154,  'REF008',  2),
+    (155,  'EV128',  1),
+    (156,  'FR128',  1),
+    (156,  'PCH064',  4),
+    (156,  'PUR064',  3),
+    (157,  'FCP128',  3),
+    (157,  'PEN064',  3),
+    (158,  'ALB064',  3),
+    (158,  'ALB128',  3),
+    (158,  'GI032',  4),
+    (158,  'HOJ064',  1),
+    (158,  'JI016',  4),
+    (158,  'PIC016',  1),
+    (159,  'FR008',  3),
+    (159,  'PIC016',  2),
+    (159,  'REF008',  3),
+    (160,  'JI016',  2),
+    (160,  'MI008',  4)
+;
+```
+
+### بررسی داده‌های درج شده
+
+```sql
+--------------------------
+-- REVIEW THE ENTERED DATA
+--------------------------
+
+SELECT * FROM inventory.categories;
+SELECT * FROM inventory.products;
+SELECT * FROM sales.customers;
+SELECT * FROM sales.orders;
+SELECT * FROM sales.order_lines;
+```
+
+> **توضیح:** دیتابیس Two Trees شامل یک فروشگاه روغن زیتون است. جدول `categories` سه دسته‌بندی دارد (روغن زیتون، روغن‌های طعم‌دار، و محصولات زیبایی و بهداشت). جدول `products` شامل ۱۰۴ محصول با سایزها و قیمت‌های مختلف است. جدول `customers` شامل ۶ مشتری، جدول `orders` شامل ۶۱ سفارش (از مارس تا آوریل ۲۰۲۱)، و جدول `order_lines` شامل ۱۶۰ قلم سفارش است.
 
 ---
 
@@ -75,146 +508,174 @@ ADD CONSTRAINT fk_orders_order_id FOREIGN KEY (order_id)
 
 ### توابع تجمعی پایه
 
-تابع‌های تجمعی مانند `COUNT`، `MAX`، `MIN`، `AVG` و `SUM` پایه‌ای‌ترین ابزار تحلیل داده در SQL هستند. با استفاده از `GROUP BY` می‌توان این توابع را روی گروه‌های مختلفی از داده اعمال کرد.
+ابتدا تمام محصولات را مشاهده می‌کنیم:
 
 ```sql
-SELECT product_name,
-    COUNT(*) AS "number of products",
-    MAX(price) AS "highest price",
-    MAX(size) AS "largest size",
-    MIN(price) AS "lowest price",
-    AVG(price) AS "average price"
-FROM inventory.products
-GROUP BY product_name;
+select sku, product_name, size, price
+from inventory.products;
 ```
 
-این کوئری برای هر نام محصول (مثلاً Extra Virgin، Bold و ...) تعداد محصولات، بالاترین و پایین‌ترین قیمت و میانگین قیمت را نشان می‌دهد.
-
-### فیلتر کردن با WHERE و HAVING
-
-`WHERE` برای فیلتر کردن ردیف‌ها **قبل از** گروه‌بندی و `HAVING` برای فیلتر کردن گروه‌ها **بعد از** گروه‌بندی استفاده می‌شود:
+سپس از توابع تجمعی برای خلاصه‌سازی اطلاعات هر نام محصول استفاده می‌کنیم:
 
 ```sql
-SELECT product_name, category_id, size, price
-FROM inventory.products
-WHERE price > 20.00;
-
-SELECT size AS "product size", COUNT(*) AS "number of products"
-FROM inventory.products
-GROUP BY size
-HAVING COUNT(*) > 10
-ORDER BY size DESC;
+select product_name,
+	count(*) as "number of products",
+	max(price) as "highest price",
+	max(size) as "largest size",
+	min(price) as "lowest price",
+	avg(price) as "average price"
+from inventory.products
+group by product_name;
 ```
 
-کوئری اول تمام محصولات با قیمت بیش از ۲۰ دلار را برمی‌گرداند. کوئری دوم سایزهایی که بیش از ۱۰ محصول دارند را نشان می‌دهد.
+> **توضیح:** این کوئری برای هر نام محصول (مثلاً Extra Virgin، Bold و ...) تعداد محصولات مرتبط، بالاترین و پایین‌ترین قیمت، بزرگ‌ترین سایز و میانگین قیمت را نشان می‌دهد.
 
 ### توابع تجمعی بولینی (Boolean Aggregates)
 
-PostgreSQL توابع تجمعی ویژه‌ای برای مقادیر بولین ارائه می‌دهد:
-
 ```sql
-SELECT newsletter, COUNT(*), MAX(newsletter)
-FROM sales.customers
-GROUP BY newsletter;
+select * from sales.customers
 
-SELECT state, COUNT(*), BOOL_AND(newsletter), BOOL_OR(newsletter)
-FROM sales.customers
-GROUP BY state;
+select newsletter, count(*), max(newsletter)
+from sales.customers
+group by newsletter
+
+select state, count(*), bool_and(newsletter), bool_or(newsletter)
+from sales.customers
+group by state
 ```
 
-- **`BOOL_AND`**: اگر **همه** مقادیر در گروه `TRUE` باشند، نتیجه `TRUE` است
-- **`BOOL_OR`**: اگر **حداقل یکی** از مقادیر در گروه `TRUE` باشد، نتیجه `TRUE` است
+> **توضیح:**
+> - کوئری اول تمام مشتریان را نشان می‌دهد.
+> - کوئری دوم تعداد مشتریان را بر اساس وضعیت عضویت در خبرنامه گروه‌بندی می‌کند.
+> - کوئری سوم از توابع بولینی استفاده می‌کند:
+>   - **`BOOL_AND(newsletter)`**: اگر **همه** مشتریان یک ایالت عضو خبرنامه باشند، `TRUE` برمی‌گرداند
+>   - **`BOOL_OR(newsletter)`**: اگر **حداقل یکی** از مشتریان یک ایالت عضو خبرنامه باشد، `TRUE` برمی‌گرداند
+
+### فیلتر کردن با WHERE و HAVING
+
+```sql
+select product_name, category_id, size, price
+from inventory.products
+where price > 20.00;
+
+select size as "product size", count(*) as "number of products"
+from inventory.products
+group by size
+having count(*) > 10
+order by size DESC;
+```
+
+> **توضیح:**
+> - `WHERE` برای فیلتر کردن ردیف‌ها **قبل از** گروه‌بندی استفاده می‌شود (محصولاتی با قیمت بیش از ۲۰ دلار).
+> - `HAVING` برای فیلتر کردن گروه‌ها **بعد از** گروه‌بندی استفاده می‌شود (سایزهایی که بیش از ۱۰ محصول دارند).
 
 ### فیلتر شرطی با FILTER
 
 عبارت `FILTER` به شما امکان می‌دهد تابع تجمعی را فقط روی ردیف‌هایی اعمال کنید که شرط خاصی برقرار باشد — بدون نیاز به زیرکوئری:
 
 ```sql
-SELECT category_id,
-    COUNT(*) AS "count all",
-    AVG(price) AS "average price",
-    COUNT(*) FILTER (WHERE size <= 16) AS "count small",
-    AVG(price) FILTER (WHERE size <= 16) AS "average price small",
-    COUNT(*) FILTER (WHERE size > 16) AS "count large",
-    AVG(price) FILTER (WHERE size > 16) AS "average price large"
-FROM inventory.products
-GROUP BY ROLLUP (category_id)
-ORDER BY category_id;
+select category_id,
+	count(*) as "count all",
+	avg(price) as "average price",
+	-- small products
+	count(*) filter (where size <=16) as "count small",
+	avg(price) filter (where size <= 16) as "average price small",
+	-- large products
+	count(*) filter (where size >16) as "count large",
+	avg(price) filter (where size >16) as "average price large"
+from inventory.products
+group by rollup (category_id)
+order by category_id
 ```
 
-این کوئری همزمان تعداد و میانگین قیمت محصولات کوچک (سایز ≤ ۱۶) و بزرگ (سایز > ۱۶) را در هر دسته‌بندی نشان می‌دهد.
+> **توضیح:** این کوئری همزمان تعداد و میانگین قیمت محصولات کوچک (سایز ≤ ۱۶) و بزرگ (سایز > ۱۶) را در هر دسته‌بندی نشان می‌دهد. از `ROLLUP` هم استفاده شده تا ردیف خلاصه کلی هم تولید شود.
 
-### تعداد سفارشات ماهانه هر مشتری
-
-با ترکیب `FILTER` و `GROUP BY` می‌توان گزارش‌های ماهانه جالبی ساخت:
+### چالش ۱: تعداد سفارشات ماهانه و تعداد فروش هر محصول
 
 ```sql
-SELECT customer_id,
-    COUNT(*) FILTER (WHERE order_date >= '2021-03-01' AND order_date <= '2021-03-31') AS "March",
-    COUNT(*) FILTER (WHERE order_date BETWEEN '2021-04-01' AND '2021-04-30') AS "April"
-FROM sales.orders
-GROUP BY customer_id;
+-- Number of orders per month for each customer
+select * from sales.orders;
+
+select customer_id,
+	count(*) filter (where order_date >= '2021-03-01' and order_date <= '2021-03-31') as "March",
+	count(*) filter (where order_date between '2021-04-01' and '2021-04-30') as "April"
+from sales.orders
+group by customer_id;
+
+
+-- Quantity of each product sold
+select * from sales.order_lines;
+
+select sku, sum(quantity) as "Total Sold"
+from sales.order_lines
+group by rollup (sku)
+order by sum(quantity) DESC;
 ```
+
+> **توضیح:**
+> - کوئری اول تعداد سفارشات هر مشتری را در ماه‌های مارس و آوریل با استفاده از `FILTER` نشان می‌دهد.
+> - کوئری دوم مجموع تعداد فروش هر محصول (بر اساس SKU) را با `ROLLUP` محاسبه می‌کند که شامل ردیف خلاصه کلی هم می‌شود.
 
 ### ROLLUP: خلاصه‌سازی سلسله‌مراتبی
 
-`ROLLUP` زیرمجموعه‌های تجمعی را به صورت سلسله‌مراتبی تولید می‌کند. به ازای هر ترکیب از ستون‌ها، یک ردیف خلاصه اضافه می‌کند:
+`ROLLUP` زیرمجموعه‌های تجمعی را به صورت سلسله‌مراتبی تولید می‌کند:
 
 ```sql
-SELECT category_id,
-    product_name,
-    COUNT(*),
-    MIN(price) AS "lowest price",
-    MAX(price) AS "highest price",
-    AVG(price) AS "average price"
-FROM inventory.products
-GROUP BY ROLLUP (category_id, product_name)
-ORDER BY category_id, product_name;
+select category_id,
+	product_name,
+	count(*),
+	min(price) as "lowest price",
+	max(price) as "highest price",
+	avg(price) as "average price"
+from inventory.products
+group by rollup (category_id, product_name)
+order by category_id, product_name;
 ```
 
-`ROLLUP (category_id, product_name)` سه سطح خلاصه تولید می‌کند:
-1. هر ترکیب `(category_id, product_name)`
-2. خلاصه بر اساس `category_id` به تنهایی
-3. خلاصه کل (ردیف grand total با مقادیر `NULL`)
+> **توضیح:** `ROLLUP (category_id, product_name)` سه سطح خلاصه تولید می‌کند:
+> 1. هر ترکیب `(category_id, product_name)`
+> 2. خلاصه بر اساس `category_id` به تنهایی
+> 3. خلاصه کل (ردیف grand total با مقادیر `NULL`)
 
 ### CUBE: تمام ترکیبات ممکن
 
 برخلاف `ROLLUP` که فقط زیرمجموعه‌های سلسله‌مراتبی را تولید می‌کند، `CUBE` تمام ترکیبات ممکن ستون‌ها را می‌سازد:
 
 ```sql
-SELECT category_id,
-    size,
-    COUNT(*),
-    MIN(price) AS "lowest price",
-    MAX(price) AS "highest price",
-    AVG(price) AS "average price"
-FROM inventory.products
-GROUP BY CUBE (category_id, size)
-ORDER BY category_id, size;
+select category_id,
+	size,
+	count(*),
+	min(price) as "lowest price",
+	max(price) as "highest price",
+	avg(price) as "average price"
+from inventory.products
+group by cube (category_id, size)
+order by category_id, size;
 ```
 
-`CUBE (category_id, size)` چهار سطح خلاصه تولید می‌کند:
-1. هر ترکیب `(category_id, size)`
-2. خلاصه بر اساس `category_id`
-3. خلاصه بر اساس `size`
-4. خلاصه کل
+> **توضیح:** `CUBE (category_id, size)` چهار سطح خلاصه تولید می‌کند:
+> 1. هر ترکیب `(category_id, size)`
+> 2. خلاصه بر اساس `category_id`
+> 3. خلاصه بر اساس `size`
+> 4. خلاصه کل
 
 ### انحراف معیار و واریانس
 
 PostgreSQL توابع آماری داخلی برای محاسبه انحراف معیار و واریانس دارد:
 
 ```sql
-SELECT gender, COUNT(*), AVG(height_inches), MIN(height_inches), MAX(height_inches),
-    STDDEV_SAMP(height_inches),
-    STDDEV_POP(height_inches),
-    VAR_SAMP(height_inches),
-    VAR_POP(height_inches)
-FROM public.people_heights
-GROUP BY gender;
+select gender, count(*), avg(height_inches), min(height_inches), max(height_inches),
+stddev_samp(height_inches),
+stddev_pop(height_inches),
+var_samp(height_inches),
+var_pop(height_inches)
+from public.people_heights
+group by gender
 ```
 
-- **`STDDEV_SAMP`** / **`VAR_SAMP`**: انحراف معیار/واریانس **نمونه** (تقسیم بر `n-1`)
-- **`STDDEV_POP`** / **`VAR_POP`**: انحراف معیار/واریانس **جمعیت** (تقسیم بر `n`)
+> **توضیح:** جدول `people_heights` شامل ۴۰۰ رکورد با اطلاعات قد ۴۰۰ نفر است.
+> - **`STDDEV_SAMP`** / **`VAR_SAMP`**: انحراف معیار/واریانس **نمونه** (تقسیم بر `n-1`)
+> - **`STDDEV_POP`** / **`VAR_POP`**: انحراف معیار/واریانس **جمعیت** (تقسیم بر `n`)
 
 ---
 
@@ -225,62 +686,71 @@ GROUP BY gender;
 ### عبارت OVER پایه
 
 ```sql
-SELECT sku, product_name, size, price,
-    AVG(price) OVER()
-FROM inventory.products;
+select sku,
+	product_name,
+	size,
+	price,
+	avg(price) over()
+from inventory.products
 ```
 
-عبارت `OVER()` بدون هیچ پارامتری، میانگین قیمت **تمام** محصولات را به هر ردیف اضافه می‌کند. این با `GROUP BY` تفاوت دارد چون ردیف‌ها حفظ می‌شوند.
+> **توضیح:** عبارت `OVER()` بدون هیچ پارامتری، میانگین قیمت **تمام** محصولات را به هر ردیف اضافه می‌کند. این با `GROUP BY` تفاوت دارد چون ردیف‌ها حفظ می‌شوند.
 
 ### PARTITION BY: گروه‌بندی درون پنجره
 
-`PARTITION BY` مشابه `GROUP BY` عمل می‌کند اما برخلاف آج، ردیف‌ها را تجمیع نمی‌کند:
-
 ```sql
-SELECT size, AVG(price) AS "average price"
-FROM inventory.products
-GROUP BY size
-ORDER BY size;
+select size, avg(price) as "average price"
+from inventory.products
+group by size
+order by size;
 
-SELECT sku, product_name, size, category_id, price,
-    AVG(price) OVER(PARTITION BY size) AS "average price for size",
-    price - AVG(price) OVER(PARTITION BY size) AS "difference"
-FROM inventory.products
-ORDER BY sku, size;
+select sku,
+	product_name,
+	size,
+	category_id,
+	price,
+	avg(price) over(partition by size) as "average price for size",
+	price - avg(price) over(partition by size) as "difference"
+from inventory.products
+order by sku, size;
 ```
 
-کوئری دوم برای هر محصول، میانگین قیمت **همان سایز** و اختلاف قیمت آن محصول با میانگین را نشان می‌دهد. این اطلاعات برای تحلیل قیمت‌گذاری بسیار مفید است.
+> **توضیح:** کوئری اول میانگین قیمت هر سایز را با `GROUP BY` ساده نشان می‌دهد. کوئری دوم از `PARTITION BY size` استفاده می‌کند تا برای هر محصول، میانگین قیمت **همان سایز** و اختلاف قیمت آن محصول با میانگین را نشان دهد. این اطلاعات برای تحلیل قیمت‌گذاری بسیار مفید است.
 
 ### تعریف پنجره با WINDOW clause
 
 اگر می‌خواهید چند تابع پنجره‌ای را روی **یک پنجره مشترک** اعمال کنید، می‌توانید پنجره را یکبار تعریف کرده و نام‌گذاری کنید:
 
 ```sql
-SELECT sku, product_name, category_id, size, price,
-    AVG(price) OVER (xyz),
-    MIN(price) OVER (xyz),
-    MAX(price) OVER (xyz)
-FROM inventory.products
-WINDOW xyz AS (PARTITION BY category_id)
-ORDER BY sku, size;
+select sku,
+	product_name,
+	category_id,
+	size,
+	price,
+	avg(price) over (xyz),
+	min(price) over (xyz),
+	max(price) over (xyz)
+from inventory.products
+window xyz as (partition by category_id)
+order by sku, size;
 ```
 
-این روش هم خوانایی کد را بالا می‌برد و هم از تکرار جلوگیری می‌کند.
+> **توضیح:** این روش هم خوانایی کد را بالا می‌برد و هم از تکرار جلوگیری می‌کند. پنجره `xyz` بر اساس `category_id` تعریف شده و سه تابع تجمعی روی آن اعمال می‌شود.
 
 ### توابع مکانی (Positional Functions)
 
 توابع `FIRST_VALUE`، `LAST_VALUE` و `NTH_VALUE` مقادیر خاصی را از پنجره برمی‌گردانند:
 
 ```sql
-SELECT company,
-    FIRST_VALUE(company) OVER(ORDER BY company
-        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING),
-    LAST_VALUE(company) OVER(ORDER BY company
-        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING),
-    NTH_VALUE(company, 3) OVER(ORDER BY company
-        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
-FROM sales.customers
-ORDER BY company;
+select company,
+	first_value(company) over(order by company
+		rows between unbounded preceding and unbounded following),
+	last_value(company) over(order by company
+		rows between unbounded preceding and unbounded following),
+	nth_value(company, 3) over(order by company
+		rows between unbounded preceding and unbounded following)
+from sales.customers
+order by company;
 ```
 
 > **نکته مهم:** بدون تعریف فریم (`ROWS BETWEEN ...`)، `LAST_VALUE` فقط آخرین ردیف پنجره فعلی را برمی‌گرداند، نه آخرین ردیف کل مجموعه. به همین دلیل باید `UNBOUNDED FOLLOWING` را مشخص کنید.
@@ -288,203 +758,244 @@ ORDER BY company;
 ### اولین و آخرین تاریخ سفارش هر مشتری
 
 ```sql
-SELECT DISTINCT customer_id,
-    FIRST_VALUE(order_date)
-        OVER (PARTITION BY customer_id ORDER BY order_date
-              ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING),
-    LAST_VALUE(order_date)
-        OVER (PARTITION BY customer_id ORDER BY order_date
-              ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
-FROM sales.orders
-ORDER BY customer_id;
+select * from sales.orders;
+
+select distinct customer_id,
+	first_value(order_date)
+		over (partition by customer_id
+			 order by order_date
+			 rows between unbounded preceding and unbounded following),
+	last_value(order_date)
+		over (partition by customer_id
+			 order by order_date
+			 rows between unbounded preceding and unbounded following)
+from sales.orders
+order by customer_id;
 ```
+
+> **توضیح:** این کوئری برای هر مشتری، اولین و آخرین تاریخ سفارش را نشان می‌دهد. از `DISTINCT` استفاده شده تا هر مشتری فقط یکبار نمایش داده شود.
 
 ### فریم‌بندی و میانگین متحرک (Moving Average)
 
-فریم پنجره مشخص می‌کند کدام ردیف‌ها در هر محاسبه لحاظ شوند. با استفاده از `ROWS BETWEEN` می‌توان میانگین متحرک، مجموع پیشرو و مجموع پسرو ساخت:
+فریم پنجره مشخص می‌کند کدام ردیف‌ها در هر محاسبه لحاظ شوند:
 
 ```sql
-SELECT order_id,
-    SUM(order_id) OVER (ORDER BY order_id ROWS BETWEEN 0 PRECEDING AND 2 FOLLOWING)
-        AS "3 period leading sum",
-    SUM(order_id) OVER (ORDER BY order_id ROWS BETWEEN 2 PRECEDING AND 0 FOLLOWING)
-        AS "3 period trailing sum",
-    AVG(order_id) OVER (ORDER BY order_id ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)
-        AS "3 period moving average"
-FROM sales.orders;
+select order_id,
+sum(order_id) over (order by order_id rows between 0 preceding and 2 following)
+	as "3 period leading sum",
+sum(order_id) over (order by order_id rows between 2 preceding and 0 following)
+	as "3 period trailing sum",
+avg(order_id) over (order by order_id rows between 1 preceding and 1 following)
+	as "3 period moving average"
+from sales.orders;
 ```
 
-- **Leading (پیشرو)**: `0 PRECEDING AND 2 FOLLOWING` — ردیف فعلی + ۲ ردیف بعد
-- **Trailing (پسرو)**: `2 PRECEDING AND 0 FOLLOWING` — ۲ ردیف قبل + ردیف فعلی
-- **Moving Average (میانگین متحرک)**: `1 PRECEDING AND 1 FOLLOWING` — یک قبل + فعلی + یک بعد
+> **توضیح:**
+> - **Leading (پیشرو)**: `0 PRECEDING AND 2 FOLLOWING` — ردیف فعلی + ۲ ردیف بعد
+> - **Trailing (پسرو)**: `2 PRECEDING AND 0 FOLLOWING` — ۲ ردیف قبل + ردیف فعلی
+> - **Moving Average (میانگین متحرک)**: `1 PRECEDING AND 1 FOLLOWING` — یک قبل + فعلی + یک بعد
 
-### محاسبه جمعی سفارشات
+### محاسبه جمعی سفارشات (Running Total)
 
 ترکیب `PARTITION BY` و `ORDER BY` درون فریم، امکان محاسبات جمعی (running total) را فراهم می‌کند:
 
 ```sql
-SELECT order_lines.order_id,
-    order_lines.line_id,
-    order_lines.sku,
-    order_lines.quantity,
-    products.price AS "price each",
-    order_lines.quantity * products.price AS "line total",
-    SUM(order_lines.quantity * products.price)
-        OVER (PARTITION BY order_id) AS "order total",
-    SUM(order_lines.quantity * products.price)
-        OVER (PARTITION BY order_id ORDER BY line_id) AS "running total"
-FROM sales.order_lines INNER JOIN inventory.products
-    ON order_lines.sku = products.sku;
+select order_lines.order_id,
+	order_lines.line_id,
+	order_lines.sku,
+	order_lines.quantity,
+	products.price as "price each",
+	order_lines.quantity * products.price as "line total",
+	sum (order_lines.quantity * products.price)
+		over (partition by order_id) as "order total",
+	sum (order_lines.quantity * products.price)
+		over (partition by order_id order by line_id) as "running total"
+from sales.order_lines inner join inventory.products
+	on order_lines.sku = products.sku;
 ```
 
-- **`ORDER total`**: جمع کل مبلغ هر سفارش (بدون `ORDER BY` در فریم = کل پنجره)
-- **`Running total`**: جمع تجمعی اقلام سفارش به ترتیب `line_id`
+> **توضیح:**
+> - **`ORDER total`**: جمع کل مبلغ هر سفارش (بدون `ORDER BY` در فریم = کل پنجره)
+> - **`Running total`**: جمع تجمعی اقلام سفارش به ترتیب `line_id`
+
+### چالش ۲: حداکثر، حداقل و میانگین قیمت در هر دسته و سایز
+
+```sql
+select category_id, product_name, size, price,
+	max(price) over(w),
+	min(price) over(w),
+	avg(price) over(w),
+	count(*) over(w)
+from inventory.products
+window w as (partition by category_id, size)
+order by category_id, product_name, size;
+```
+
+> **توضیح:** این کوئری با استفاده از پنجره `w` که بر اساس هر ترکیب `(category_id, size)` تعریف شده، حداکثر، حداقل، میانگین قیمت و تعداد محصولات هر گروه را نشان می‌دهد.
 
 ---
 
 ## فصل ۳: توابع آماری
 
-### درصدکل (Percentile) و میانه (Median)
-
-PostgreSQL دو تابع اصلی برای محاسبه درصدکل دارد:
+### میانه (Median) با PERCENTILE_DISC و PERCENTILE_CONT
 
 ```sql
--- میانه با percentile_disc (مقدار واقعی از داده)
-SELECT gender,
-    PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY height_inches) AS "discrete median",
-    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY height_inches) AS "continuous median"
-FROM public.people_heights
-GROUP BY ROLLUP (gender);
+select gender,
+percentile_disc(0.5) within group (order by height_inches) as "discrete median",
+percentile_cont(0.5) within group (order by height_inches) as "continuous median"
+from public.people_heights
+group by rollup (gender);
 ```
 
-- **`PERCENTILE_DISC` (گسسته)**: مقدار واقعی نزدیک‌ترین ردیف را برمی‌گرداند
-- **`PERCENTILE_CONT` (پیوسته)**: مقدار با اعمال درون‌یابی (interpolation) برمی‌گرداند — برای محاسبات آماری دقیق‌تر مناسب‌تر است
+> **توضیح:**
+> - **`PERCENTILE_DISC(0.5)` (گسسته)**: مقدار واقعی نزدیک‌ترین ردیف را برمی‌گرداند — یعنی دقیقاً یکی از مقادیر موجود در داده‌ها
+> - **`PERCENTILE_CONT(0.5)` (پیوسته)**: مقدار با اعمال درون‌یابی (interpolation) برمی‌گرداند — برای محاسبات آماری دقیق‌تر مناسب‌تر است
+> - `ROLLUP (gender)` هم میانه کلی همه افراد و هم میانه هر جنسیت را نشان می‌دهد
+
+### حالت (Mode)
+
+```sql
+select
+mode() within group (order by height_inches)
+from public.people_heights;
+
+select height_inches, count(*)
+from public.people_heights
+group by height_inches
+order by count(*) desc;
+```
+
+> **توضیح:** `MODE()` مقداری را برمی‌گرداند که بیشترین تکرار را دارد. کوئری دوم برای بررسی دستی تمام مقادیر و تعداد تکرارشان را نشان می‌دهد.
 
 ### چارک‌ها (Quartiles)
 
 ```sql
-SELECT
-    PERCENTILE_CONT(.25) WITHIN GROUP (ORDER BY height_inches) AS "1st quartile",
-    PERCENTILE_CONT(.50) WITHIN GROUP (ORDER BY height_inches) AS "2nd quartile",
-    PERCENTILE_CONT(.75) WITHIN GROUP (ORDER BY height_inches) AS "3rd quartile"
-FROM public.people_heights;
+select
+percentile_cont(.25) within group (order by height_inches) as "1st quartile",
+percentile_cont(.50) within group (order by height_inches) as "2nd quartile",
+percentile_cont(.75) within group (order by height_inches) as "3rd quartile"
+from public.people_heights;
+
+-- WARNING: the ntile() function only creates even groups,
+--          not statistical quartiles
+select name, height_inches,
+	ntile(4) over (order by height_inches)
+from public.people_heights
+order by height_inches;
 ```
 
-> **هشدار:** تابع `NTILE()` فقط گروه‌های مساوی ایجاد می‌کند و **چارک‌های آماری واقعی نیست**. برای چارک‌های دقیق از `PERCENTILE_CONT` استفاده کنید.
+> **هشدار مهم:** تابع `NTILE()` فقط گروه‌های مساوی ایجاد می‌کند و **چارک‌های آماری واقعی نیست**. برای چارک‌های دقیق از `PERCENTILE_CONT` استفاده کنید.
 
-### حالت (Mode)
-
-Mode یا نما، مقداری است که بیشترین تکرار را دارد:
+### دامنه (Range)
 
 ```sql
-SELECT
-    MODE() WITHIN GROUP (ORDER BY height_inches)
-FROM public.people_heights;
-
--- بررسی دستی
-SELECT height_inches, COUNT(*)
-FROM public.people_heights
-GROUP BY height_inches
-ORDER BY COUNT(*) DESC;
+select 
+gender,
+max(height_inches) - min(height_inches) as "height range"
+from public.people_heights
+group by rollup (gender);
 ```
 
-### دامنه (Range) و اطلاعات قیمتی
+> **توضیح:** این کوئری دامنه قد (اختلاف بلندترین و کوتاه‌ترین فرد) را برای هر جنسیت و همچنین در کل محاسبه می‌کند.
+
+### چالش ۳: اطلاعات آماری قیمت محصولات
 
 ```sql
-SELECT 
-    gender,
-    MAX(height_inches) - MIN(height_inches) AS "height range"
-FROM public.people_heights
-GROUP BY ROLLUP (gender);
+-- Obtain statistical information about product pricing
+
+select category_id,
+	min(price) as "min price",
+	percentile_cont(.25) within group (order by price) as "1st quartile",
+	percentile_cont(.50) within group (order by price) as "2nd quartile",
+	percentile_cont(.75) within group (order by price) as "3rd quartile",
+	max(price) as "max price",
+	max(price) - min(price) as "price range"
+from inventory.products
+group by rollup (category_id);
 ```
 
-### چالش: اطلاعات آماری قیمت محصولات
-
-```sql
-SELECT category_id,
-    MIN(price) AS "min price",
-    PERCENTILE_CONT(.25) WITHIN GROUP (ORDER BY price) AS "1st quartile",
-    PERCENTILE_CONT(.50) WITHIN GROUP (ORDER BY price) AS "2nd quartile",
-    PERCENTILE_CONT(.75) WITHIN GROUP (ORDER BY price) AS "3rd quartile",
-    MAX(price) AS "max price",
-    MAX(price) - MIN(price) AS "price range"
-FROM inventory.products
-GROUP BY ROLLUP (category_id);
-```
-
-این کوئری توزیع قیمت را در هر دسته‌بندی و همچنین در کل محصولات نشان می‌دهد.
+> **توضیح:** این کوئری توزیع قیمت را در هر دسته‌بندی و همچنین در کل محصولات نشان می‌دهد — شامل حداقل، چارک‌ها، حداکثر و دامنه قیمت.
 
 ---
 
 ## فصل ۴: رتبه‌بندی و توزیع
 
-### توابع رتبه‌بندی پایه
+### رتبه‌بندی با Window Functions
 
 ```sql
-SELECT name, height_inches, gender,
-    RANK() OVER (PARTITION BY gender ORDER BY height_inches DESC),
-    DENSE_RANK() OVER (PARTITION BY gender ORDER BY height_inches DESC)
-FROM public.people_heights
-ORDER BY gender, height_inches DESC;
+-- ranking with window functions
+select name, height_inches, gender,
+	rank() over (partition by gender order by height_inches desc),
+	dense_rank() over (partition by gender order by height_inches desc)
+from public.people_heights
+order by gender, height_inches desc;
 ```
 
-تفاوت `RANK` و `DENSE_RANK`:
-- **`RANK`**: در صورت تساوی، رتبه بعدی ردیف می‌شود (مثلاً ۱، ۱، ۳)
-- **`DENSE_RANK`**: بدون ردیف کردن، رتبه بعدی می‌آید (مثلاً ۱، ۱، ۲)
+> **توضیح تفاوت `RANK` و `DENSE_RANK`:**
+> - **`RANK`**: در صورت تساوی، رتبه بعدی ردیف می‌شود (مثلاً ۱، ۱، ۳، ۴)
+> - **`DENSE_RANK`**: بدون ردیف کردن، رتبه بعدی می‌آید (مثلاً ۱، ۱، ۲، ۳)
 
-### رتبه‌بندی محصولات
+### چارک با PERCENT_RANK و CUME_DIST
 
 ```sql
-SELECT product_name, category_id, size, price,
-    DENSE_RANK() OVER (ORDER BY price DESC) AS "rank overall",
-    DENSE_RANK() OVER (PARTITION BY category_id ORDER BY price DESC) AS "rank category",
-    DENSE_RANK() OVER (PARTITION BY size ORDER BY price DESC) AS "rank price"
-FROM inventory.products
-ORDER BY category_id, price DESC;
+select name, gender, height_inches,
+	percent_rank() over (order by height_inches desc),
+	case
+		when percent_rank() over (order by height_inches desc) < .25 then '1st'
+		when percent_rank() over (order by height_inches desc) < .50 then '2nd'
+		when percent_rank() over (order by height_inches desc) < .75 then '3rd'
+		else '4th'
+	end as "quartile rank"
+from public.people_heights
+order by height_inches desc;
 ```
 
-این کوئری هر محصول را در سه سطح رتبه‌بندی می‌کند: کلی، درون دسته‌بندی و درون سایز.
+> **توضیح:** این کوئری با ترکیب `PERCENT_RANK` و `CASE`، هر فرد را در یکی از چهار چارک (۱ تا ۴) قرار می‌دهد.
 
-### درصد رتبه و توزیع تجمعی
+### توزیع درصدی و توزیع تجمعی
 
 ```sql
-SELECT name, gender, height_inches,
-    PERCENT_RANK() OVER (ORDER BY height_inches DESC),
-    CUME_DIST() OVER (ORDER BY height_inches DESC)
-FROM public.people_heights
-ORDER BY height_inches DESC;
+select name, gender, height_inches,
+	percent_rank() over (order by height_inches desc),
+	cume_dist() over (order by height_inches desc)
+from public.people_heights
+order by height_inches desc;
 ```
 
-- **`PERCENT_RANK`**: موقعیت درصدی ردیف نسبت به کل (بین ۰ تا ۱)
-- **`CUME_DIST`**: توزیع تجمعی — درصد ردیف‌هایی که مقدار کوچکتر یا مساوی دارند
+> **توضیح:**
+> - **`PERCENT_RANK`**: موقعیت درصدی ردیف نسبت به کل (بین ۰ تا ۱)
+> - **`CUME_DIST`**: توزیع تجمعی — درصد ردیف‌هایی که مقدار کوچکتر یا مساوی دارند
 
-### تبدیل درصد رتبه به چارک
+### رتبه‌بندی محصولات در سه سطح
 
 ```sql
-SELECT name, gender, height_inches,
-    PERCENT_RANK() OVER (ORDER BY height_inches DESC),
-    CASE
-        WHEN PERCENT_RANK() OVER (ORDER BY height_inches DESC) < .25 THEN '1st'
-        WHEN PERCENT_RANK() OVER (ORDER BY height_inches DESC) < .50 THEN '2nd'
-        WHEN PERCENT_RANK() OVER (ORDER BY height_inches DESC) < .75 THEN '3rd'
-        ELSE '4th'
-    END AS "quartile rank"
-FROM public.people_heights
-ORDER BY height_inches DESC;
+-- rank product pricing overall, by category, and by size
+
+select product_name, category_id, size, price,
+	dense_rank() over (order by price desc) as "rank overall",
+	dense_rank() over (partition by category_id order by price desc) as "rank category",
+	dense_rank() over (partition by size order by price desc) as "rank price"
+from inventory.products
+order by category_id, price desc;
 ```
+
+> **توضیح:** این کوئری هر محصول را در سه سطح رتبه‌بندی می‌کند: کلی، درون دسته‌بندی و درون سایز.
 
 ### رتبه‌بندی فرضی (Hypothetical Ranking)
 
-با `RANK()` به صورت aggregate می‌توان بررسی کرد که یک مقدار فرضی در کجا قرار می‌گرفت:
-
 ```sql
-SELECT gender,
-    RANK(70) WITHIN GROUP (ORDER BY height_inches DESC)
-FROM public.people_heights
-GROUP BY ROLLUP (gender);
+-- using rank as a hypothetical grouping set aggregate
+select name, height_inches
+from public.people_heights
+order by height_inches desc;
+
+select gender,
+rank(70) within group (order by height_inches desc)
+from public.people_heights
+group by rollup (gender);
 ```
 
-این کوئری می‌گوید: «اگر شخصی با قد ۷۰ اینچ وجود داشت، در رتبه چندم قرار می‌گرفت؟»
+> **توضیح:** کوئری اول افراد را به ترتیب قد نزولی نشان می‌دهد. کوئری دوم بررسی می‌کند: «اگر شخصی با قد ۷۰ اینچ وجود داشت، در رتبه چندم قرار می‌گرفت؟» — هم برای هر جنسیت و هم در کل.
 
 ---
 
@@ -495,47 +1006,49 @@ GROUP BY ROLLUP (gender);
 `CASE` معادل `if-else` در SQL است و برای تبدیل مقادیر بر اساس شرایط مختلف استفاده می‌شود:
 
 ```sql
-SELECT sku, product_name, category_id,
-    CASE
-        WHEN category_id = 1 THEN 'Olive Oils'
-        WHEN category_id = 2 THEN 'Flavor Infused Oils'
-        WHEN category_id = 3 THEN 'Bath and Beauty'
-        ELSE 'category unknown'
-    END AS "category description",
-    size, price
-FROM inventory.products;
+select sku, product_name, category_id,
+	case
+		when category_id = 1 then 'Olive Oils'
+		when category_id = 2 then 'Flavor Infused Oils'
+		when category_id = 3 then 'Bath and Beauty'
+		else 'category unknown'
+	end as "category description",
+	size, price
+from inventory.products;
 ```
+
+> **توضیح:** این کوئری شماره دسته‌بندی (عددی) را به نام توصیفی (متنی) تبدیل می‌کند. اگر شماره دسته‌بندی با هیچ‌کدام از شرایط مطابقت نداشت، مقدار `'category unknown'` نمایش داده می‌شود.
 
 ### COALESCE: اولین مقدار غیر NULL
 
-`COALESCE` اولین مقدار غیر `NULL` را از لیست ورودی‌ها برمی‌گرداند:
-
 ```sql
--- اضافه کردن یک دسته‌بندی بدون توضیح
-INSERT INTO inventory.categories VALUES (4, NULL, 'Gift Baskets');
+select * from inventory.categories;
 
-SELECT category_id,
-    COALESCE(category_description, product_line) AS "description",
-    product_line
-FROM inventory.categories;
+insert into inventory.categories values
+(4, null, 'Gift Baskets');
+
+select category_id,
+	coalesce(category_description, product_line) as "description",
+	product_line
+from inventory.categories;
 ```
 
-وقتی `category_description` برابر `NULL` باشد، مقدار `product_line` به عنوان توضیح نمایش داده می‌شود.
+> **توضیح:** ابتدا تمام دسته‌بندی‌ها را می‌بینیم. سپس یک دسته‌بندی جدید با `category_description` خالی (NULL) اضافه می‌کنیم. تابع `COALESCE` اولین مقدار غیر `NULL` را از لیست ورودی‌ها برمی‌گرداند — وقتی `category_description` برابر `NULL` باشد، مقدار `product_line` به عنوان توضیح نمایش داده می‌شود.
 
 ### NULLIF: تبدیل مقدار به NULL
 
-`NULLIF` دو مقدار را مقایسه می‌کند و اگر برابر باشند، `NULL` برمی‌گرداند:
-
 ```sql
-SELECT NULLIF('A', 'A');  -- نتیجه: NULL
+select nullif('A', 'A');
 
-SELECT sku, product_name, category_id,
-    NULLIF(size, 32) AS "size",
-    price
-FROM inventory.products;
+select * from inventory.products;
+
+select sku, product_name, category_id,
+	nullif(size, 32) as "size",
+	price
+from inventory.products;
 ```
 
-این کوئری تمام محصولات با سایز ۳۲ را به صورت `NULL` نمایش می‌دهد. این تابع معمولاً در ترکیب با `COALESCE` برای مدیریت مقادیر پیش‌فرض استفاده می‌شود.
+> **توضیح:** `NULLIF('A', 'A')` نتیجه `NULL` برمی‌گرداند چون دو مقدار برابر هستند. کوئری سوم تمام محصولات با سایز ۳۲ را به صورت `NULL` نمایش می‌دهد. این تابع معمولاً در ترکیب با `COALESCE` برای مدیریت مقادیر پیش‌فرض استفاده می‌شود.
 
 ---
 
@@ -543,107 +1056,105 @@ FROM inventory.products;
 
 ### تبدیل نوع داده (CAST)
 
-PostgreSQL روش‌های متعددی برای تبدیل نوع داده دارد. ساده‌ترین آن استفاده از `::` است:
-
 ```sql
-SELECT order_id,
-    order_date::TEXT,
-    customer_id
-FROM sales.orders;
+select order_id,
+	order_date::text,
+	customer_id
+from sales.orders;
 ```
+
+> **توضیح:** اپراتور `::` روش ساده PostgreSQL برای تبدیل نوع داده است. در اینجا `order_date` از نوع `DATE` به `TEXT` تبدیل می‌شود.
 
 ### تابع IN با لیست و زیرکوئری
 
-تابع `IN` برای بررسی عضویت در یک مجموعه استفاده می‌شود و هم با لیست مستقیم و هم با زیرکوئری کار می‌کند:
-
 ```sql
--- استفاده با لیست مستقیم
-SELECT *
-FROM inventory.products
-WHERE product_name IN ('Delicate', 'Bold', 'Light');
+-- us an in() function with a list
+select *
+from inventory.products
+where product_name in('Delicate', 'Bold', 'Light');
 
--- استفاده با زیرکوئری
-SELECT *
-FROM inventory.products
-WHERE product_name IN (
-    SELECT product_name
-    FROM inventory.products
-    GROUP BY product_name
-    HAVING COUNT(*) >= 5
+-- use an in function with a sub select query
+select *
+from inventory.products
+where product_name in(
+		select product_name
+		from inventory.products
+		group by product_name
+		having count(*) >= 5
 );
+
+-- determine the query used as a sub select above
+select product_name, count(*)
+from inventory.products
+group by product_name
+having count(*) >= 5;
 ```
 
-کوئری دوم محصولاتی را برمی‌گرداند که حداقل ۵ اندازه مختلف دارند.
+> **توضیح:**
+> - کوئری اول محصولاتی را برمی‌گرداند که نامشان در لیست `'Delicate'`، `'Bold'` یا `'Light'` باشد.
+> - کوئری دوم از یک زیرکوئری استفاده می‌کند تا محصولاتی را پیدا کند که حداقل ۵ اندازه مختلف دارند.
+> - کوئری سوم همان زیرکوئری را به تنهایی اجرا می‌کند تا ببینیم دقیقاً کدام محصولات واجد شرط هستند.
 
 ### LAG و LEAD: دسترسی به ردیف‌های مجاور
 
-`LAG` به ردیف قبلی و `LEAD` به ردیف بعدی دسترسی می‌دهند:
-
 ```sql
-SELECT order_id,
-    customer_id,
-    order_date,
-    LAG(order_date, 1) OVER(PARTITION BY customer_id ORDER BY order_id)
-        AS "previous order date",
-    LEAD(order_date, 1) OVER(PARTITION BY customer_id ORDER BY order_id)
-        AS "next order",
-    LEAD(order_date, 1) OVER(PARTITION BY customer_id ORDER BY order_id) -
-        order_date AS "time between orders"
-FROM sales.orders
-ORDER BY customer_id, order_date;
+select order_id,
+	customer_id,
+	order_date,
+	lag(order_date, 1) over(partition by customer_id order by order_id)
+		as "previous order date",
+	lead (order_date, 1) over(partition by customer_id order by order_id)
+		as "next order",
+	lead (order_date, 1) over(partition by customer_id order by order_id) -
+		order_date as "time between orders"
+from sales.orders
+order by customer_id, order_date;
 ```
 
-این کوئری برای هر سفارش، تاریخ سفارش قبلی و بعدی مشتری و فاصله زمانی بین سفارشات را نشان می‌دهد.
+> **توضیح:**
+> - **`LAG(order_date, 1)`**: تاریخ سفارش **قبلی** هر مشتری (۱ ردیف قبل)
+> - **`LEAD(order_date, 1)`**: تاریخ سفارش **بعدی** هر مشتری (۱ ردیف بعد)
+> - ستون سوم فاصله زمانی بین سفارش فعلی و سفارش بعدی را نشان می‌دهد
 
 ### ROW_NUMBER: شماره ردیف
 
-`ROW_NUMBER` یک شماره یکتا و پیوسته به هر ردیف اختصاص می‌دهد:
-
 ```sql
-SELECT sku, product_name, size,
-    ROW_NUMBER() OVER (PARTITION BY product_name ORDER BY sku)
-FROM inventory.products;
+select * from inventory.products;
+
+select sku, product_name, size,
+	row_number() over (partition by product_name order by sku)
+from inventory.products;
 ```
 
-برای هر نام محصول، ردیف‌ها را از ۱ شماره‌گذاری می‌کند (بر اساس ترتیب `sku`).
-
-### تفاوت ROW_NUMBER, RANK و DENSE_RANK
-
-| تابع | رفتار در تساوی | شماره‌گذاری |
-|---|---|---|
-| `ROW_NUMBER` | حتی در تساوی، شماره یکتا | ۱، ۲، ۳، ۴ |
-| `RANK` | شماره تکراری، رتبه ردیف می‌شود | ۱، ۱، ۳، ۴ |
-| `DENSE_RANK` | شماره تکراری، بدون ردیف | ۱، ۱، ۲، ۳ |
+> **توضیح:** `ROW_NUMBER` یک شماره یکتا و پیوسته از ۱ به هر ردیف اختصاص می‌دهد. برای هر نام محصول، ردیف‌ها بر اساس ترتیب `sku` شماره‌گذاری می‌شوند.
 
 ### جستجو با generate_series
 
-تابع `generate_series` یک آرایه پیوسته از مقادیر تولید می‌کند. با ترکیب آن با `IN` می‌توانید سفارشات در بازه زمانی خاصی را پیدا کنید:
-
 ```sql
-SELECT * 
-FROM sales.orders
-WHERE order_date IN (
-    SELECT GENERATE_SERIES('2021-03-15'::TIMESTAMP, '2021-03-31'::TIMESTAMP, '5 days')
+select * 
+from sales.orders
+where order_date in(
+	select generate_series('2021-03-15'::timestamp, '2021-03-31'::timestamp, '5 days')	
 )
-ORDER BY order_id;
+order by order_id;
 ```
 
-این کوئری سفارشاتی را برمی‌گرداند که در تاریخ‌های ۱۵، ۲۰، ۲۵ و ۳۰ مارس ثبت شده‌اند.
+> **توضیح:** تابع `generate_series` یک آرایه پیوسته از مقادیر تولید می‌کند. در اینجا مقادیر `'2021-03-15'`، `'2021-03-20'`، `'2021-03-25'` و `'2021-03-30'` تولید می‌شوند. سپس سفارشاتی که تاریخشان در این مجموعه باشد، برگردانده می‌شوند.
 
-### چالش نهایی: مقایسه ردیف‌ها با LAG
+### چالش ۵ (نهایی): مقایسه ردیف‌ها با LAG
 
 ```sql
-SELECT person_id,
-    name,
-    height_inches,
-    LAG(name, 1) OVER (ORDER BY height_inches) AS "is taller than",
-    height_inches - LAG(height_inches, 1) OVER (ORDER BY height_inches)
-        AS "by this many inches"
-FROM public.people_heights
-ORDER BY height_inches DESC;
+select person_id,
+	name,
+	height_inches,
+	lag(name, 1) over (order by height_inches) as "is taller than",
+	height_inches - lag(height_inches, 1) over (order by height_inches)
+		as "by this many inches"
+from public.people_heights
+order by height_inches desc;
 ```
 
-این کوئری هر شخص را با فردی که دقیقاً کوتاه‌تر از اوست مقایسه می‌کند و اختلاف قد را نشان می‌دهد.
+> **توضیح:** این کوئری هر شخص را با فردی که دقیقاً کوتاه‌تر از اوست مقایسه می‌کند و اختلاف قد را نشان می‌دهد. با `ORDER BY height_inches DESC` از بلندترین شروع می‌شود.
 
 ---
 
@@ -651,11 +1162,11 @@ ORDER BY height_inches DESC;
 
 | فصل | موضوعات اصلی |
 |---|---|
-| فصل ۱ | توابع تجمعی، GROUP BY، HAVING، FILTER، ROLLUP، CUBE، انحراف معیار |
-| فصل ۲ | Window Functions، OVER، PARTITION BY، WINDOW clause، فریم‌بندی، میانگین متحرک |
-| فصل ۳ | PERCENTILE_CONT/DISC، MODE، چارک‌ها، دامنه |
-| فصل ۴ | RANK، DENSE_RANK، PERCENT_RANK، CUME_DIST، NTILE |
+| فصل ۱ | توابع تجمعی، GROUP BY، HAVING، FILTER، ROLLUP، CUBE، BOOL_AND/OR، انحراف معیار و واریانس |
+| فصل ۲ | Window Functions، OVER، PARTITION BY، WINDOW clause، فریم‌بندی، میانگین متحرک، FIRST_VALUE/LAST_VALUE/NTH_VALUE، Running Total |
+| فصل ۳ | PERCENTILE_CONT/DISC، MODE، چارک‌ها، NTILE (هشدار)، دامنه |
+| فصل ۴ | RANK، DENSE_RANK، PERCENT_RANK، CUME_DIST، رتبه‌بندی فرضی |
 | فصل ۵ | CASE، COALESCE، NULLIF |
-| فصل ۶ | CAST، LAG/LEAD، IN، ROW_NUMBER، generate_series |
+| فصل ۶ | CAST (`::`)، LAG/LEAD، IN با لیست و زیرکوئری، ROW_NUMBER، generate_series |
 
 > **منبع:** LinkedIn Learning - PostgreSQL Advanced Queries (2022)
