@@ -1,6 +1,7 @@
 {
     "files": [
         "lyft-rate-limiting",
-        "cs168-consistent-hashing"
+        "cs168-consistent-hashing",
+        "postgresql-advanced-queries"
     ]
 }
