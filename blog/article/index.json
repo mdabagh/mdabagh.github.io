@@ -1,7 +1,15 @@
 {
     "files": [
+        "documentation-engineering-study-path",
         "lyft-rate-limiting",
         "cs168-consistent-hashing",
-        "postgresql-advanced-queries"
+        "postgresql-advanced-queries",
+        "lethbridge-engineers-use-documentation",
+        "de-souza-documentation-for-maintenance",
+        "docs-for-developers",
+        "docs-like-code",
+        "diataxis-framework",
+        "living-documentation",
+        "google-docs-best-practices"
     ]
 }
