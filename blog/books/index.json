@@ -14,6 +14,7 @@
         "stripe-rate-limiters",
         "pragmatic-programmer",
         "software-engineering-at-google",
-        "refactoring"
+        "refactoring",
+        "docs-for-developers"
     ]
 }

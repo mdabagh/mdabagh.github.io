@@ -42,7 +42,7 @@
 | ۱ | [Lethbridge et al. 2003](post.html?cat=article&slug=lethbridge-engineers-use-documentation) | تشخیص | واقعاً چه چیزی خراب است — نگرش یا ظرفیت؟ |
 | ۲ | [de Souza et al. 2006](post.html?cat=article&slug=de-souza-documentation-for-maintenance) | اولویت‌بندی | بودجهٔ مستندات را کجا خرج کنیم؟ |
 | ۳ | [Diátaxis](post.html?cat=article&slug=diataxis-framework) | ساختار | چه **نوع** سندی بنویسیم؟ |
-| ۴ | [Docs for Developers](post.html?cat=article&slug=docs-for-developers) | مهارت و چرخهٔ عمر | چگونه بنویسیم و از کجا شروع کنیم؟ |
+| ۴ | [Docs for Developers](post.html?cat=books&slug=docs-for-developers) | مهارت و چرخهٔ عمر | چگونه بنویسیم و از کجا شروع کنیم؟ |
 | ۵ | [Google Style Guide](post.html?cat=article&slug=google-docs-best-practices) | سبک و انضباط | چقدر بنویسیم و چه چیزی را حذف کنیم؟ |
 | ۶ | [Docs Like Code](post.html?cat=article&slug=docs-like-code) | فرآیند و ابزار | چگونه نگهش داریم و چگونه همکاری کنیم؟ |
 | ۷ | [Living Documentation](post.html?cat=article&slug=living-documentation) | خودکارسازی | چگونه کاری کنیم که هرگز عقب نیفتیم؟ |
@@ -119,7 +119,7 @@
 - **Friction Log (لاگ اصطکاک):** ثبت هر بار که کسی در مستندات یا فرآیند شما گیر می‌کند، همراه با زمان صرف‌شده. بعد از دو هفته، الگوها آن‌قدر واضح می‌شوند که حدس‌زدن لازم نیست.
 - **نمونهٔ کدِ تولیدشده از تست‌ها:** رفع خودکار مشکل «نمونهٔ کدِ منسوخ».
 
-📖 **[مطالعهٔ کامل: Docs for Developers — راهنمای مهندس برای نوشتن فنی](post.html?cat=article&slug=docs-for-developers)**
+📖 **[مطالعهٔ کامل: Docs for Developers — راهنمای مهندس برای نوشتن فنی](post.html?cat=books&slug=docs-for-developers)**
 
 > **برای QA/QC:** لاگ اصطکاک در تیم QA تقریباً **آماده** است؛ فقط باید شروع کنید به ثبت. هر بار که تستری در گزارش می‌نویسد «طبق مستندات عمل نکرد و مجبور شدم از همکار بپرسم»، آن یک سطر لاگ اصطکاک است. این تبدیل، کم‌هزینه‌ترین ورود شما به مهندسی مستندات است.
 
