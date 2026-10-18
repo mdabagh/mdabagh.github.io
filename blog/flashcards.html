@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230E2A47'/%3E%3Crect x='4' y='4' width='56' height='56' fill='none' stroke='%23F2A541' stroke-width='3'/%3E%3Ctext x='32' y='40' font-family='JetBrains Mono, monospace' font-size='24' font-weight='700' fill='%23F2A541' text-anchor='middle'%3EMD%3C/text%3E%3C/svg%3E">
+<title>فلش کارت — بلاگ محمدسجاد دباغ</title>
+<meta name="description" content="فلش کارت‌های مرور کتاب System Design Interview؛ هر بار یک کارت تصادفی، یک سؤال چهارگزینه‌ای و توضیح پاسخ.">
+<meta name="author" content="محمدسجاد دباغ">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://mdabagh.github.io/blog/flashcards.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="بلاگ محمدسجاد دباغ">
+<meta property="og:title" content="فلش کارت — بلاگ محمدسجاد دباغ">
+<meta property="og:description" content="مرور کتاب System Design Interview با فلش کارت و سؤال چهارگزینه‌ای.">
+<meta property="og:url" content="https://mdabagh.github.io/blog/flashcards.html">
+<meta property="og:locale" content="fa_IR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0E2A47;
+    --navy-line:#2C5580;
+    --paper:#F1F3EE;
+    --paper-alt:#E7EBE3;
+    --ink:#10243D;
+    --ink-soft:#51637A;
+    --amber:#F2A541;
+    --amber-dark:#C97F1E;
+    --cyan-line:#8FC1DE;
+    --ok:#2E7D4F;
+    --ok-bg:#E3F1E7;
+    --bad:#B83A2E;
+    --bad-bg:#F8E4E1;
+    --maxw:820px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    font-family:'Vazirmatn', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:3px;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  .nav-wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; right:0; left:0; z-index:100;
+    background:rgba(14,42,71,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--navy-line);
+  }
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .brand{display:flex; align-items:center; gap:12px; color:#F1F3EE;}
+  .brand-mark{
+    width:34px; height:34px; border:1.5px solid var(--amber);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace; font-weight:700; font-size:12px;
+    color:var(--amber); flex-shrink:0;
+  }
+  .brand-name{font-weight:700; font-size:15px;}
+  .brand-sub{font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--cyan-line); letter-spacing:0.5px;}
+  #navLinks{display:flex; align-items:center; gap:28px; color:#C6D2DE; font-size:14px;}
+  #navLinks a:hover{color:var(--amber);}
+  .nav-cta{background:var(--amber); color:var(--navy-deep) !important; padding:9px 18px; font-weight:700; font-size:13px; border:1px solid var(--amber); transition:all .2s ease; border-radius:4px;}
+  .nav-cta:hover{background:transparent; color:var(--amber) !important;}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; padding:8px;}
+  .burger span{width:22px; height:2px; background:#F1F3EE; display:block;}
+  @media (max-width: 860px){
+    .burger{display:flex;}
+    #navLinks{
+      position:absolute; top:64px; right:0; left:0; background:var(--navy-deep);
+      flex-direction:column; align-items:flex-start; padding:20px 28px; gap:18px;
+      border-bottom:1px solid var(--navy-line); display:none;
+    }
+    #navLinks.open{display:flex;}
+    #navLinks a{width:100%;}
+  }
+
+  /* ---------- HERO ---------- */
+  #hero{background:var(--navy-deep); color:#EDF1F5;}
+  #hero .wrap{padding-top:120px; padding-bottom:44px;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    border-bottom:2px solid var(--navy-line); padding-bottom:14px; gap:20px; flex-wrap:wrap;
+  }
+  .section-title{font-weight:800; font-size:clamp(1.5rem, 3.4vw, 2.15rem);}
+  .sheet-meta{font-family:'JetBrains Mono', monospace; font-size:11px; color:#9FB0C3; white-space:nowrap;}
+  #hero p{font-size:15px; color:#C6D2DE; max-width:60ch; margin-top:16px;}
+
+  /* ---------- STEPS ---------- */
+  main .wrap{padding-top:40px; padding-bottom:70px;}
+  .steps{display:flex; gap:8px; margin-bottom:22px; font-family:'JetBrains Mono', monospace; font-size:11px;}
+  .step{flex:1; padding:8px 10px; border:1px solid #C9D0C2; color:var(--ink-soft); text-align:center; font-family:'Vazirmatn', sans-serif; font-size:12.5px;}
+  .step.active{border-color:var(--amber-dark); color:var(--amber-dark); font-weight:700; background:#FBF1E2;}
+  .step.done{color:var(--ink); border-color:var(--ink-soft);}
+
+  /* ---------- CARD ---------- */
+  .card{background:#fff; border:1px solid #C9D0C2; padding:30px; position:relative;}
+  .card::before{content:''; position:absolute; top:0; right:0; width:72px; height:3px; background:var(--amber);}
+  .card-meta{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px;}
+  .badge{
+    display:inline-block; font-family:'JetBrains Mono', monospace; font-size:10.5px;
+    padding:4px 10px; border:1px solid var(--amber-dark); color:var(--amber-dark); border-radius:3px;
+  }
+  .card-num{font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--ink-soft);}
+  .card h2{font-size:20px; font-weight:800; margin-bottom:14px;}
+  .card .content{font-size:15.5px; color:var(--ink);}
+  .question{font-size:17px; font-weight:700; margin-bottom:18px;}
+
+  .options{display:grid; gap:10px;}
+  .opt{
+    display:flex; align-items:flex-start; gap:12px; text-align:right; width:100%;
+    background:var(--paper); border:1px solid #C9D0C2; padding:13px 16px; cursor:pointer;
+    font-size:15px; color:var(--ink); line-height:1.8; transition:border-color .15s, background .15s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--amber-dark); background:#FBF1E2;}
+  .opt:disabled{cursor:default;}
+  .opt-key{
+    flex-shrink:0; width:26px; height:26px; border:1px solid var(--ink-soft); border-radius:3px;
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; margin-top:1px;
+  }
+  .opt.correct{border-color:var(--ok); background:var(--ok-bg);}
+  .opt.correct .opt-key{background:var(--ok); border-color:var(--ok); color:#fff;}
+  .opt.wrong{border-color:var(--bad); background:var(--bad-bg);}
+  .opt.wrong .opt-key{background:var(--bad); border-color:var(--bad); color:#fff;}
+
+  .verdict{font-size:18px; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:10px;}
+  .verdict.ok{color:var(--ok);}
+  .verdict.bad{color:var(--bad);}
+  .result-block{margin-top:22px; padding-top:20px; border-top:1px dashed #C9D0C2;}
+  .result-block h3{font-size:14px; color:var(--ink-soft); font-weight:700; margin-bottom:6px;}
+  .result-block p{font-size:15px;}
+
+  .actions{display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;}
+  .btn{
+    background:var(--navy-deep); color:#F1F3EE; border:1px solid var(--navy-deep);
+    padding:11px 22px; font-size:14px; font-weight:700; cursor:pointer; border-radius:4px; transition:all .2s;
+  }
+  .btn:hover{background:transparent; color:var(--navy-deep);}
+  .btn.ghost{background:transparent; color:var(--navy-deep);}
+  .btn.ghost:hover{background:var(--navy-deep); color:#F1F3EE;}
+  .source-link{font-size:13px; color:var(--amber-dark); align-self:center;}
+  .source-link:hover{text-decoration:underline;}
+
+  .score{margin-top:18px; font-size:13px; color:var(--ink-soft); text-align:center;}
+
+  .loading{text-align:center; padding:40px 0; color:var(--ink-soft);}
+  .error{color:#e74c3c; text-align:center; padding:20px; background:#fde8e8; border-radius:8px;}
+
+  @media (max-width:600px){
+    .wrap,.nav-wrap{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .steps .step{font-size:11.5px; padding:6px 4px;}
+  }
+
+  footer{background:var(--navy-deep); color:#9FB0C3; padding:34px 0; text-align:center; font-size:13px; font-family:'JetBrains Mono', monospace;}
+  footer span{color:var(--amber);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap nav-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">MD</div>
+      <div>
+        <div class="brand-name">محمدسجاد دباغ</div>
+        <div class="brand-sub">FLASHCARDS</div>
+      </div>
+    </a>
+    <nav>
+      <button class="burger" id="burgerBtn" aria-label="باز کردن منو">
+        <span></span><span></span><span></span>
+      </button>
+      <ul id="navLinks">
+        <li><a href="index.html">همه‌ی موضوعات</a></li>
+        <li><a href="https://mdabagh.github.io" class="nav-cta">مشاهده رزومه</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section id="hero">
+  <div class="wrap">
+    <div class="section-head">
+      <h1 class="section-title">فلش کارت</h1>
+      <div class="sheet-meta" id="deckMeta"></div>
+    </div>
+    <p>هر بار که صفحه را باز یا رفرش کنید، یک کارت تصادفی نمایش داده می‌شود: اول متن کارت را بخوانید، بعد به سؤال چهارگزینه‌ای جواب بدهید و در آخر نتیجه را همراه با توضیح ببینید.</p>
+  </div>
+</section>
+
+<main>
+  <div class="wrap">
+    <div class="steps" aria-hidden="true">
+      <div class="step" data-step="read">۱. مطالعه</div>
+      <div class="step" data-step="quiz">۲. سؤال</div>
+      <div class="step" data-step="result">۳. نتیجه</div>
+    </div>
+    <div id="app" aria-live="polite">
+      <div class="loading">در حال بارگذاری کارت‌ها...</div>
+    </div>
+    <div class="score" id="score"></div>
+  </div>
+</main>
+
+<footer>
+  © ۲۰۲۶ محمدسجاد دباغ — <span>ساخته شده با عشق</span> · تهران
+</footer>
+
+<script>
+class Flashcards {
+  constructor(root) {
+    this.root = root;
+    this.cards = [];
+    this.card = null;
+    this.letters = ['الف', 'ب', 'ج', 'د'];
+  }
+
+  toPersianNumber(num) {
+    const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    return num.toString().replace(/\d/g, d => persian[parseInt(d)]);
+  }
+
+  escape(text) {
+    const div = document.createElement('div');
+    div.textContent = text ?? '';
+    return div.innerHTML;
+  }
+
+  async loadJson(path) {
+    try {
+      const res = await fetch(path);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return null;
+  }
+
+  storage(key, value) {
+    try {
+      if (value === undefined) return JSON.parse(localStorage.getItem(key));
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {}
+    return null;
+  }
+
+  // Each deck lives in flashcards/<slug>.json; flashcards/index.json lists them.
+  // ?deck=<slug> limits the page to one deck.
+  async loadDecks() {
+    const params = new URLSearchParams(location.search);
+    const index = await this.loadJson('flashcards/index.json');
+    let slugs = index?.files || [];
+    if (params.get('deck')) slugs = slugs.filter(s => s === params.get('deck'));
+
+    const decks = (await Promise.all(slugs.map(s => this.loadJson(`flashcards/${s}.json`)))).filter(Boolean);
+    for (const deck of decks) {
+      const chapters = deck.chapters || {};
+      for (const card of deck.cards || []) {
+        this.cards.push({
+          ...card,
+          deck,
+          chapterTitle: chapters[card.chapter]?.title || card.chapter,
+          sourceUrl: deck.book ? `post.html?cat=books&slug=${deck.book}/${card.chapter}` : null
+        });
+      }
+    }
+
+    const meta = document.getElementById('deckMeta');
+    meta.textContent = decks.map(d => d.title).join(' · ') + ` — ${this.toPersianNumber(this.cards.length)} کارت`;
+  }
+
+  // Random pick that avoids cards seen recently, so refreshes feel varied.
+  pickCard() {
+    const recent = this.storage('flashcards:recent') || [];
+    const memory = Math.min(recent.length, Math.floor(this.cards.length / 2));
+    const avoid = new Set(recent.slice(-memory));
+    const pool = this.cards.filter(c => !avoid.has(c.id));
+    const list = pool.length ? pool : this.cards;
+    const card = list[Math.floor(Math.random() * list.length)];
+    this.storage('flashcards:recent', [...recent, card.id].slice(-50));
+    return card;
+  }
+
+  setStep(step) {
+    const order = ['read', 'quiz', 'result'];
+    document.querySelectorAll('.step').forEach(el => {
+      const i = order.indexOf(el.dataset.step);
+      el.classList.toggle('active', el.dataset.step === step);
+      el.classList.toggle('done', i < order.indexOf(step));
+    });
+  }
+
+  header(card) {
+    return `
+      <div class="card-meta">
+        <span class="badge">${this.escape(card.chapterTitle)}</span>
+        <span class="card-num">${this.escape(card.id)}</span>
+      </div>`;
+  }
+
+  renderRead() {
+    const c = this.card;
+    this.setStep('read');
+    this.root.innerHTML = `
+      <article class="card">
+        ${this.header(c)}
+        <h2>${this.escape(c.topic)}</h2>
+        <p class="content">${this.escape(c.content)}</p>
+        <div class="actions">
+          <button class="btn" id="toQuiz">خواندم، برو به سؤال ←</button>
+        </div>
+      </article>`;
+    document.getElementById('toQuiz').addEventListener('click', () => this.renderQuiz());
+  }
+
+  renderQuiz() {
+    const c = this.card;
+    this.setStep('quiz');
+    this.root.innerHTML = `
+      <article class="card">
+        ${this.header(c)}
+        <p class="question">${this.escape(c.question)}</p>
+        <div class="options">
+          ${c.options.map((o, i) => `
+            <button class="opt" data-i="${i}">
+              <span class="opt-key">${this.letters[i]}</span><span>${this.escape(o)}</span>
+            </button>`).join('')}
+        </div>
+      </article>`;
+    this.root.querySelectorAll('.opt').forEach(btn =>
+      btn.addEventListener('click', () => this.renderResult(Number(btn.dataset.i))));
+    this.root.querySelector('.opt').focus();
+  }
+
+  renderResult(chosen) {
+    const c = this.card;
+    const ok = chosen === c.answer;
+    this.setStep('result');
+
+    const score = this.storage('flashcards:score') || { right: 0, total: 0 };
+    score.total++;
+    if (ok) score.right++;
+    this.storage('flashcards:score', score);
+    this.renderScore(score);
+
+    this.root.innerHTML = `
+      <article class="card">
+        ${this.header(c)}
+        <div class="verdict ${ok ? 'ok' : 'bad'}">${ok ? '✓ درست جواب دادید' : '✗ جواب درست نبود'}</div>
+        <p class="question">${this.escape(c.question)}</p>
+        <div class="options">
+          ${c.options.map((o, i) => `
+            <button class="opt ${i === c.answer ? 'correct' : ''} ${i === chosen && !ok ? 'wrong' : ''}" disabled>
+              <span class="opt-key">${this.letters[i]}</span><span>${this.escape(o)}</span>
+            </button>`).join('')}
+        </div>
+        <div class="result-block">
+          <h3>توضیحات</h3>
+          <p>${this.escape(c.explanation)}</p>
+        </div>
+        <div class="actions">
+          <button class="btn" id="nextCard">کارت بعدی ←</button>
+          <button class="btn ghost" id="reread">مرور دوباره‌ی متن</button>
+          ${c.sourceUrl ? `<a class="source-link" href="${c.sourceUrl}">خواندن این فصل</a>` : ''}
+        </div>
+      </article>`;
+    document.getElementById('nextCard').addEventListener('click', () => location.reload());
+    document.getElementById('reread').addEventListener('click', () => this.renderRead());
+  }
+
+  renderScore(score) {
+    if (!score || !score.total) return;
+    document.getElementById('score').textContent =
+      `امتیاز شما تا اینجا: ${this.toPersianNumber(score.right)} درست از ${this.toPersianNumber(score.total)} سؤال`;
+  }
+
+  async init() {
+    await this.loadDecks();
+    if (!this.cards.length) {
+      this.root.innerHTML = '<div class="error">کارتی یافت نشد</div>';
+      return;
+    }
+    this.renderScore(this.storage('flashcards:score'));
+    this.card = this.pickCard();
+    this.renderRead();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const burger = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  if (burger && navLinks) burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  new Flashcards(document.getElementById('app')).init();
+});
+</script>
+
+</body>
+</html>

@@ -97,6 +97,8 @@
   nav ul{display:flex; align-items:center; gap:28px;}
   .nav-cta{background:var(--amber); color:var(--navy-deep) !important; padding:9px 18px; font-weight:700; font-size:13px; border:1px solid var(--amber); transition:all .2s ease; border-radius:4px;}
   .nav-cta:hover{background:transparent; color:var(--amber) !important;}
+  .nav-link{color:#C6D2DE; font-size:14px; transition:color .2s ease;}
+  .nav-link:hover{color:var(--amber);}
   .burger{display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; padding:8px;}
   .burger span{width:22px; height:2px; background:#F1F3EE; display:block; transition:all .2s ease;}
   #navLinks{display:flex; align-items:center; gap:28px;}
@@ -155,6 +157,7 @@
   #books-section{background:var(--paper-alt);}
   #articles-section{background:var(--paper);}
   #til-section{background:var(--paper-alt);}
+  #flashcards-section{background:var(--paper);}
 
   .loading{text-align:center; padding:40px 0; color:var(--ink-soft);}
   .loading::after{content:'...'; animation:dots 1.5s steps(4) infinite;}
@@ -182,6 +185,7 @@
         <span></span><span></span><span></span>
       </button>
       <ul id="navLinks">
+        <li><a href="flashcards.html" class="nav-link">فلش کارت</a></li>
         <li><a href="https://mdabagh.github.io" class="nav-cta">مشاهده رزومه</a></li>
       </ul>
     </nav>
@@ -211,6 +215,26 @@
     </div>
     <div class="proj-grid" id="booksGrid">
       <div class="loading">بارگذاری کتاب‌ها</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLASHCARDS ================= -->
+<section id="flashcards-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="section-title">فلش کارت</h2>
+      </div>
+    </div>
+    <div class="proj-grid">
+      <a class="proj-card reveal" href="flashcards.html?deck=design-system">
+        <span class="proj-num">۰۱</span>
+        <span class="badge">System Design Interview</span>
+        <h3>مرور کتاب System Design Interview</h3>
+        <p>با هر بار باز کردن صفحه، یک کارت تصادفی از فصل‌های کتاب را بخوانید، به سؤال چهارگزینه‌ای جواب بدهید و نتیجه را همراه با توضیح ببینید.</p>
+        <span class="read-link">شروع مرور ←</span>
+      </a>
     </div>
   </div>
 </section>
@@ -486,4 +510,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 
 </body>
-</html>
+</html>
