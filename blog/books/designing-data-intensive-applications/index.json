@@ -1,0 +1,16 @@
+{
+    "files": [
+        "0-about-this-book",
+        "1-reliable-scalable-maintainable",
+        "2-data-models-query-languages",
+        "3-storage-retrieval",
+        "4-encoding-evolution",
+        "5-replication",
+        "6-partitioning",
+        "7-transactions",
+        "8-trouble-distributed-systems",
+        "9-consistency-consensus",
+        "10-batch-processing",
+        "11-stream-processing"
+    ]
+}

@@ -284,7 +284,7 @@ GET /users/12 - Retrieve user object for id = 12
 >
 > [مستندات رسمی Replication در Galera Cluster](https://mariadb.com/docs/galera-cluster/readme/about-galera-replication)
 >
-> [راهنمای جامع کلاسترینگ Galera در MariaDB](post.html?cat=books&slug=galera-replication)
+> [راهنمای جامع کلاسترینگ Galera در MariaDB](post.html?cat=article&slug=galera-replication)
 
 شکل ۱-۶ طراحی سیستم پس از افزودن بالانسر بار و همانندسازی پایگاه داده را نشان می‌دهد (صفحه ۱۴).
 
@@ -381,7 +381,7 @@ GET /users/12 - Retrieve user object for id = 12
 
 > ***یادداشت شخصی***
 >
-> [ترجمه Scaling Memcache at Facebook](post.html?cat=books&slug=scaling-memcache-at-facebook)
+> [ترجمه Scaling Memcache at Facebook](post.html?cat=article&slug=scaling-memcache-at-facebook)
 
 
 - **کاهش اثر خرابی‌ها (Mitigating Failures):** یک سرور کش تنها، می‌تواند به‌عنوان یک نقطه‌ی شکست واحد (Single Point of Failure یا SPOF) عمل کند. طبق تعریف ویکی‌پدیا، "نقطه‌ی شکست واحد بخشی از یک سیستم است که اگر از کار بیفتد، کل سیستم را متوقف می‌کند" [۸]. به همین دلیل، استفاده از چند سرور کش در مراکز داده‌ی مختلف برای جلوگیری از SPOF توصیه می‌شود. رویکرد توصیه‌شده‌ی دیگر، اختصاص‌دادن حافظه‌ی بیشتر از میزان موردنیاز (overprovisioning) به میزان درصد مشخصی است. این کار در صورت افزایش مصرف حافظه، یک حاشیه‌ی اطمینان (buffer) ایجاد می‌کند.

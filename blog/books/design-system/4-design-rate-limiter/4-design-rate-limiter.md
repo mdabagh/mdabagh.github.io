@@ -169,7 +169,7 @@ Rate Limiting را می‌توان با الگوریتم‌های مختلفی �
 
 > ***یادداشت شخصی***
 >
-> 🔗 **ترجمه مقاله Stripe:** [ترجمه Rate Limiting در Stripe](post.html?cat=books&slug=stripe-rate-limiters)
+> 🔗 **ترجمه مقاله Stripe:** [ترجمه Rate Limiting در Stripe](post.html?cat=article&slug=stripe-rate-limiters)
 >
 > این مقاله توضیح می‌دهد Stripe چگونه ۴ نوع مختلف Rate Limiting را در مقیاس واقعی پیاده‌سازی کرده است.
 
@@ -325,7 +325,7 @@ Rate Limiting را می‌توان با الگوریتم‌های مختلفی �
 
 > ***یادداشت شخصی***
 >
-> 🔗 **ترجمه مقاله:** [ترجمه Rate Limiting بهتر با Redis Sorted Sets](post.html?cat=books&slug=better-rate-limiting-redis)
+> 🔗 **ترجمه مقاله:** [ترجمه Rate Limiting بهتر با Redis Sorted Sets](post.html?cat=article&slug=better-rate-limiting-redis)
 >
 > این مقاله ClassDojo نشان می‌دهد چگونه از Sorted Sets Redis برای پیاده‌سازی Rate Limiting توزیع شده با Sliding Window استفاده کنید.
 
@@ -550,7 +550,7 @@ Rate Limiter هدرهای HTTP زیر را به کلاینت‌ها برمی‌�
 
 > ***یادداشت شخصی***
 >
-> 🔗 **ترجمه مقاله Cloudflare:** [ترجمه Rate Limiting در Cloudflare](post.html?cat=books&slug=cloudflare-rate-limiting)
+> 🔗 **ترجمه مقاله Cloudflare:** [ترجمه Rate Limiting در Cloudflare](post.html?cat=article&slug=cloudflare-rate-limiting)
 >
 > این مقاله Cloudflare توضیح می‌دهد چگونه Rate Limiting را برای میلیون‌ها دامنه با استفاده از anycast و Sliding Window پیاده‌سازی کرده‌اند.
 
@@ -615,7 +615,7 @@ Rate Limiter هدرهای HTTP زیر را به کلاینت‌ها برمی‌�
 
 > ***یادداشت شخصی***
 >
-> 🔗 **ترجمه مقاله:** [ترجمه Rate Limiting با Iptables](post.html?cat=books&slug=rate-limit-iptables)
+> 🔗 **ترجمه مقاله:** [ترجمه Rate Limiting با Iptables](post.html?cat=article&slug=rate-limit-iptables)
 >
 > این مقاله نشان می‌دهد چگونه Rate Limiting را در لایه ۳ شبکه با استفاده از iptables در لینوکس اعمال کنید.
 

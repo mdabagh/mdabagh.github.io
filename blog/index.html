@@ -154,6 +154,7 @@
   #hero .sheet-meta{color:#9FB0C3;}
   #hero p{font-size:15.5px; color:#C6D2DE; max-width:60ch; margin-top:16px;}
 
+  section[id$="-section"]{scroll-margin-top:80px;}
   #books-section{background:var(--paper-alt);}
   #articles-section{background:var(--paper);}
   #til-section{background:var(--paper-alt);}
@@ -185,7 +186,10 @@
         <span></span><span></span><span></span>
       </button>
       <ul id="navLinks">
-        <li><a href="flashcards.html" class="nav-link">فلش کارت</a></li>
+        <li><a href="#books-section">کتاب‌ها</a></li>
+        <li><a href="#articles-section">مقالات</a></li>
+        <li><a href="#til-section">یادداشت‌ها</a></li>
+        <li><a href="#flashcards-section">فلش کارت</a></li>
         <li><a href="https://mdabagh.github.io" class="nav-cta">مشاهده رزومه</a></li>
       </ul>
     </nav>
@@ -219,26 +223,6 @@
   </div>
 </section>
 
-<!-- ================= FLASHCARDS ================= -->
-<section id="flashcards-section">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div>
-        <h2 class="section-title">فلش کارت</h2>
-      </div>
-    </div>
-    <div class="proj-grid">
-      <a class="proj-card reveal" href="flashcards.html?deck=design-system">
-        <span class="proj-num">۰۱</span>
-        <span class="badge">System Design Interview</span>
-        <h3>مرور کتاب System Design Interview</h3>
-        <p>با هر بار باز کردن صفحه، یک کارت تصادفی از فصل‌های کتاب را بخوانید، به سؤال چهارگزینه‌ای جواب بدهید و نتیجه را همراه با توضیح ببینید.</p>
-        <span class="read-link">شروع مرور ←</span>
-      </a>
-    </div>
-  </div>
-</section>
-
 <!-- ================= ARTICLES ================= -->
 <section id="articles-section">
   <div class="wrap">
@@ -265,6 +249,26 @@
     </div>
     <div class="proj-grid" id="tilGrid">
       <div class="loading">بارگذاری یادداشت‌ها</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLASHCARDS ================= -->
+<section id="flashcards-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="section-title">فلش کارت</h2>
+      </div>
+    </div>
+    <div class="proj-grid">
+      <a class="proj-card reveal" href="flashcards.html?deck=design-system">
+        <span class="proj-num">۰۱</span>
+        <span class="badge">System Design Interview</span>
+        <h3>مرور کتاب System Design Interview</h3>
+        <p>با هر بار باز کردن صفحه، یک کارت تصادفی از فصل‌های کتاب را بخوانید، به سؤال چهارگزینه‌ای جواب بدهید و نتیجه را همراه با توضیح ببینید.</p>
+        <span class="read-link">شروع مرور ←</span>
+      </a>
     </div>
   </div>
 </section>
@@ -510,4 +514,4 @@ document.addEventListener('DOMContentLoaded', async () => {
 </script>
 
 </body>
-</html>
+</html>

@@ -266,7 +266,10 @@
         <span></span><span></span><span></span>
       </button>
       <ul id="navLinks">
-        <li><a href="index.html">همه‌ی موضوعات</a></li>
+        <li><a href="index.html#books-section">کتاب‌ها</a></li>
+        <li><a href="index.html#articles-section">مقالات</a></li>
+        <li><a href="index.html#til-section">یادداشت‌ها</a></li>
+        <li><a href="flashcards.html">فلش کارت</a></li>
         <li><a href="https://mdabagh.github.io" class="nav-cta">مشاهده رزومه</a></li>
       </ul>
     </nav>
@@ -413,12 +416,32 @@ class PostViewer {
     `;
   }
 
+  // پست‌هایی که بین دسته‌ها جابه‌جا شده‌اند (مثلاً از books به article) با لینک قدیمی هم باز شوند
+  async resolveMovedPost() {
+    const base = this.slug.split('/')[0];
+    const exists = async (cat) => {
+      try { return (await fetch(`${cat}/${base}/index.json`, { method: 'HEAD' })).ok; }
+      catch (e) { return false; }
+    };
+    if (await exists(this.cat)) return;
+    for (const cat of ['books', 'article', 'TIL']) {
+      if (cat !== this.cat && await exists(cat)) {
+        this.cat = cat;
+        const params = new URLSearchParams(window.location.search);
+        params.set('cat', cat);
+        history.replaceState(null, '', `${window.location.pathname}?${params.toString()}${window.location.hash}`);
+        return;
+      }
+    }
+  }
+
   async load() {
     if (!this.cat || !this.slug) {
       this.showError('دسته‌بندی یا اسلاگ پست در آدرس مشخص نشده');
       return;
     }
 
+    await this.resolveMovedPost();
     document.getElementById('backLink').href = `category.html?cat=${this.cat}`;
 
     try {

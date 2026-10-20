@@ -295,19 +295,19 @@ serverIndex = hash(key) % N
 
 [۲] Consistent Hashing: https://tom-e-white.com/2007/11/consistent-hashing.html
 > ***یادداشت شخصی***
-> 🔗 [ترجمه کامل مقاله Tom White](post.html?cat=books&slug=consistent-hashing-tom-white) - بهترین توضیح ساده و عملی از هشینگ سازگار با پیاده‌سازی Java
+> 🔗 [ترجمه کامل مقاله Tom White](post.html?cat=article&slug=consistent-hashing-tom-white) - بهترین توضیح ساده و عملی از هشینگ سازگار با پیاده‌سازی Java
 
 [۳] Dynamo: Amazon's Highly Available Key-value Store: https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf
 > ***یادداشت شخصی***
-> 🔗 [ترجمه کامل مقاله Dynamo](post.html?cat=books&slug=dynamo-paper) - مقاله اصلی آمازون که هشینگ سازگار را برای پارتیشن‌بندی داده معرفی کرد
+> 🔗 [ترجمه کامل مقاله Dynamo](post.html?cat=article&slug=dynamo-paper) - مقاله اصلی آمازون که هشینگ سازگار را برای پارتیشن‌بندی داده معرفی کرد
 
 [۴] Cassandra - A Decentralized Structured Storage System: http://www.cs.cornell.edu/Projects/ladis2009/papers/Lakshman-ladis2009.PDF
 > ***یادداشت شخصی***
-> 🔗 [ترجمه کامل مقاله Cassandra](post.html?cat=books&slug=cassandra-paper) - سیستم NoSQL فیسبوک که از هشینگ سازگار برای پارتیشن‌بندی استفاده می‌کند
+> 🔗 [ترجمه کامل مقاله Cassandra](post.html?cat=article&slug=cassandra-paper) - سیستم NoSQL فیسبوک که از هشینگ سازگار برای پارتیشن‌بندی استفاده می‌کند
 
 [۵] How Discord Scaled Elixir to 5,000,000 Concurrent Users: https://blog.discord.com/scaling-elixir-f9b8e1e7c29b
 > ***یادداشت شخصی***
-> 🔗 [ترجمه کامل مقاله Discord](post.html?cat=books&slug=discord-scaling) - چگونه Discord تریلیون‌ها پیام را با هشینگ سازگار ایندکس می‌کند
+> 🔗 [ترجمه کامل مقاله Discord](post.html?cat=article&slug=discord-scaling) - چگونه Discord تریلیون‌ها پیام را با هشینگ سازگار ایندکس می‌کند
 
 [۶] CS168: The Modern Algorithmic Toolbox Lecture #1: Introduction and Consistent Hashing: http://theory.stanford.edu/~tim/s16/l/l1.pdf
 > ***یادداشت شخصی***
@@ -315,4 +315,4 @@ serverIndex = hash(key) % N
 
 [۷] Maglev: A Fast and Reliable Software Network Load Balancer: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/44824.pdf
 > ***یادداشت شخصی***
-> 🔗 [ترجمه کامل مقاله Maglev](post.html?cat=books&slug=maglev-paper) - متعادل‌کننده بار شبکه گوگل که از هشینگ سازگار استفاده می‌کند
+> 🔗 [ترجمه کامل مقاله Maglev](post.html?cat=article&slug=maglev-paper) - متعادل‌کننده بار شبکه گوگل که از هشینگ سازگار استفاده می‌کند
