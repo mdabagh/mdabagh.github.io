@@ -143,8 +143,9 @@
     padding:4px 10px; border:1px solid var(--amber-dark); color:var(--amber-dark); margin-bottom:12px;
     border-radius:3px; align-self:flex-start;
   }
+  .badges{display:flex; gap:6px; flex-wrap:wrap;}
   .read-link{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber-dark); display:block; text-align:left; width:100%;}
-  
+
   @media (max-width:820px){.proj-grid{grid-template-columns:1fr;}}
 
   /* ---------- SECTIONS ---------- */
@@ -158,7 +159,8 @@
   #books-section{background:var(--paper-alt);}
   #articles-section{background:var(--paper);}
   #til-section{background:var(--paper-alt);}
-  #flashcards-section{background:var(--paper);}
+  #cheatsheets-section{background:var(--paper);}
+  #flashcards-section{background:var(--paper-alt);}
 
   .loading{text-align:center; padding:40px 0; color:var(--ink-soft);}
   .loading::after{content:'...'; animation:dots 1.5s steps(4) infinite;}
@@ -189,6 +191,7 @@
         <li><a href="#books-section">کتاب‌ها</a></li>
         <li><a href="#articles-section">مقالات</a></li>
         <li><a href="#til-section">یادداشت‌ها</a></li>
+        <li><a href="#cheatsheets-section">چیت شیت</a></li>
         <li><a href="#flashcards-section">فلش کارت</a></li>
         <li><a href="https://mdabagh.github.io" class="nav-cta">مشاهده رزومه</a></li>
       </ul>
@@ -253,6 +256,21 @@
   </div>
 </section>
 
+<!-- ================= CHEAT SHEETS ================= -->
+<section id="cheatsheets-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="section-title">چیت شیت</h2>
+      </div>
+      <div class="sheet-meta" id="cheatsheetsCount">۰ مورد</div>
+    </div>
+    <div class="proj-grid" id="cheatsheetsGrid">
+      <div class="loading">بارگذاری چیت شیت‌ها</div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= FLASHCARDS ================= -->
 <section id="flashcards-section">
   <div class="wrap">
@@ -284,6 +302,7 @@ class BlogManager {
     this.books = [];
     this.articles = [];
     this.til = [];
+    this.cheatsheets = [];
   }
 
   toPersianNumber(num) {
@@ -398,6 +417,28 @@ class BlogManager {
     return til;
   }
 
+  // Load cheat sheets: cheatsheets/index.json lists slugs, each sheet is cheatsheets/<slug>.json
+  async loadCheatsheets() {
+    const files = await this.scanDirectory('cheatsheets');
+    const sheets = await Promise.all(files.map(slug => this.loadJson(`cheatsheets/${slug}.json`)));
+
+    this.cheatsheets = files.map((slug, i) => {
+      const s = sheets[i];
+      if (!s) return null;
+      const terms = (s.sections || []).reduce((n, sec) =>
+        n + sec.blocks.filter(b => b.type === 'terms').reduce((m, b) => m + b.items.length, 0), 0);
+      return {
+        slug,
+        title: s.title || slug,
+        summary: s.summary || '',
+        chapters: (s.sections || []).length,
+        terms,
+        url: `cheatsheet.html?sheet=${slug}`
+      };
+    }).filter(Boolean);
+    return this.cheatsheets;
+  }
+
   renderBooks() {
     const grid = document.getElementById('booksGrid');
     const count = document.getElementById('booksCount');
@@ -471,6 +512,34 @@ class BlogManager {
     this.initReveal();
   }
 
+  renderCheatsheets() {
+    const grid = document.getElementById('cheatsheetsGrid');
+    const count = document.getElementById('cheatsheetsCount');
+    if (!grid) return;
+
+    if (this.cheatsheets.length === 0) {
+      grid.innerHTML = '<div class="error" style="grid-column:1/-1;">چیت شیتی یافت نشد</div>';
+      return;
+    }
+
+    count.textContent = `${this.toPersianNumber(this.cheatsheets.length)} مورد`;
+
+    grid.innerHTML = this.cheatsheets.map((sheet, i) => `
+      <a class="proj-card reveal" href="${sheet.url}">
+        <span class="proj-num">${this.toPersianNumber(i + 1).padStart(2, '۰')}</span>
+        <span class="badges">
+          <span class="badge">${this.toPersianNumber(sheet.chapters)} فصل</span>
+          <span class="badge">${this.toPersianNumber(sheet.terms)} اصطلاح</span>
+        </span>
+        <h3>${sheet.title}</h3>
+        <p>${sheet.summary}</p>
+        <span class="read-link">مشاهده چیت شیت ←</span>
+      </a>
+    `).join('');
+
+    this.initReveal();
+  }
+
   initReveal() {
     const revealEls = document.querySelectorAll('.reveal:not(.in)');
     const io = new IntersectionObserver((entries) => {
@@ -488,19 +557,21 @@ class BlogManager {
     await Promise.all([
       this.loadBooks(),
       this.loadArticles(),
-      this.loadTil()
+      this.loadTil(),
+      this.loadCheatsheets()
     ]);
 
     this.renderBooks();
     this.renderArticles();
     this.renderTil();
+    this.renderCheatsheets();
   }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
   const burger = document.getElementById('burgerBtn');
   const navLinks = document.getElementById('navLinks');
-  
+
   if (burger && navLinks) {
     burger.addEventListener('click', () => navLinks.classList.toggle('open'));
     navLinks.querySelectorAll('a').forEach(a => {

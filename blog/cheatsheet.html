@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230E2A47'/%3E%3Crect x='4' y='4' width='56' height='56' fill='none' stroke='%23F2A541' stroke-width='3'/%3E%3Ctext x='32' y='40' font-family='JetBrains Mono, monospace' font-size='24' font-weight='700' fill='%23F2A541' text-anchor='middle'%3EMD%3C/text%3E%3C/svg%3E">
+<title>چیت شیت — بلاگ محمدسجاد دباغ</title>
+<meta name="description" content="چیت شیت‌های فنی: اصطلاحات کلیدی، مفاهیم مهم و خلاصه‌ی نموداری کتاب‌های مهندسی نرم‌افزار.">
+<meta name="author" content="محمدسجاد دباغ">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://mdabagh.github.io/blog/cheatsheet.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="بلاگ محمدسجاد دباغ">
+<meta property="og:title" content="چیت شیت — بلاگ محمدسجاد دباغ">
+<meta property="og:description" content="اصطلاحات، مفاهیم و خلاصه‌ی نموداری کتاب‌های مهندسی نرم‌افزار در یک صفحه.">
+<meta property="og:url" content="https://mdabagh.github.io/blog/cheatsheet.html">
+<meta property="og:locale" content="fa_IR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0E2A47;
+    --navy-mid:#163B63;
+    --navy-line:#2C5580;
+    --paper:#F1F3EE;
+    --paper-alt:#E7EBE3;
+    --card:#FFFFFF;
+    --line:#C9D0C2;
+    --ink:#10243D;
+    --ink-soft:#51637A;
+    --amber:#F2A541;
+    --amber-dark:#C97F1E;
+    --amber-wash:#FBF1E2;
+    --cyan-line:#8FC1DE;
+    --teal:#3F8F86;
+    --teal-wash:#E2F0EE;
+    --bad:#B83A2E;
+    --bad-wash:#F8E4E1;
+    --maxw:1180px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  body{font-family:'Vazirmatn', sans-serif; background:var(--paper); color:var(--ink); line-height:1.85; overflow-x:hidden;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  button,input{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:3px;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  code{font-family:'JetBrains Mono', monospace; font-size:.88em; background:var(--paper-alt); padding:1px 5px; border-radius:3px; direction:ltr; unicode-bidi:isolate;}
+
+  /* ---------- NAV ---------- */
+  header{position:fixed; top:0; right:0; left:0; z-index:100; background:rgba(14,42,71,0.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--navy-line);}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .brand{display:flex; align-items:center; gap:12px; color:#F1F3EE;}
+  .brand-mark{width:34px; height:34px; border:1.5px solid var(--amber); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono', monospace; font-weight:700; font-size:12px; color:var(--amber); flex-shrink:0;}
+  .brand-name{font-weight:700; font-size:15px;}
+  .brand-sub{font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--cyan-line); letter-spacing:0.5px;}
+  #navLinks{display:flex; align-items:center; gap:28px; color:#C6D2DE; font-size:14px;}
+  #navLinks a:hover{color:var(--amber);}
+  #navLinks a.current{color:var(--amber);}
+  .nav-cta{background:var(--amber); color:var(--navy-deep) !important; padding:9px 18px; font-weight:700; font-size:13px; border:1px solid var(--amber); transition:all .2s ease; border-radius:4px;}
+  .nav-cta:hover{background:transparent; color:var(--amber) !important;}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; padding:8px;}
+  .burger span{width:22px; height:2px; background:#F1F3EE; display:block;}
+  @media (max-width: 860px){
+    .burger{display:flex;}
+    #navLinks{position:absolute; top:64px; right:0; left:0; background:var(--navy-deep); flex-direction:column; align-items:flex-start; padding:20px 28px; gap:18px; border-bottom:1px solid var(--navy-line); display:none;}
+    #navLinks.open{display:flex;}
+    #navLinks a{width:100%;}
+  }
+
+  /* ---------- HERO ---------- */
+  #hero{background:var(--navy-deep); color:#EDF1F5; position:relative; overflow:hidden;}
+  #hero::before{content:''; position:absolute; inset:0; pointer-events:none; opacity:.14;
+    background-image:linear-gradient(var(--navy-line) 1px, transparent 1px), linear-gradient(90deg, var(--navy-line) 1px, transparent 1px);
+    background-size:36px 36px;}
+  #hero .wrap{padding-top:118px; padding-bottom:40px; position:relative;}
+  .eyebrow{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber); letter-spacing:2px; display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .eyebrow::before{content:''; width:26px; height:1px; background:var(--amber);}
+  .hero-head{display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; border-bottom:2px solid var(--navy-line); padding-bottom:16px;}
+  .hero-head h1{font-weight:900; font-size:clamp(1.7rem, 4.2vw, 2.6rem); line-height:1.3; direction:ltr; text-align:right;}
+  .hero-sub{font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--cyan-line); margin-top:4px;}
+  .hero-stats{display:flex; gap:0; border:1px solid var(--navy-line);}
+  .hero-stats div{padding:8px 16px; border-left:1px solid var(--navy-line); text-align:center;}
+  .hero-stats div:last-child{border-left:none;}
+  .hero-stats b{display:block; font-size:20px; color:var(--amber); font-weight:800; line-height:1.4;}
+  .hero-stats span{font-size:11.5px; color:#AEBCCB;}
+  #hero p.lead{font-size:15px; color:#C6D2DE; max-width:68ch; margin-top:16px;}
+  .hero-actions{display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 18px; font-size:13.5px; font-weight:700; border:1.5px solid var(--amber); cursor:pointer; transition:all .2s ease; border-radius:4px; background:transparent;}
+  .btn-primary{background:var(--amber); color:var(--navy-deep);}
+  .btn-primary:hover{background:transparent; color:var(--amber);}
+  .btn-ghost{color:#EDF1F5; border-color:#4C6079;}
+  .btn-ghost:hover{border-color:#EDF1F5;}
+
+  /* ---------- TOOLBAR (sticky) ---------- */
+  .toolbar{position:sticky; top:64px; z-index:50; background:rgba(241,243,238,0.96); backdrop-filter:blur(6px); border-bottom:1px solid var(--line);}
+  .toolbar .wrap{display:flex; align-items:center; gap:14px; padding-top:10px; padding-bottom:10px;}
+  .search{position:relative; flex:0 0 260px;}
+  .search input{width:100%; border:1px solid var(--line); background:var(--card); padding:8px 12px 8px 34px; font-size:13.5px; color:var(--ink); border-radius:4px;}
+  .search input:focus{outline:none; border-color:var(--amber-dark);}
+  .search .kbd{position:absolute; left:8px; top:50%; transform:translateY(-50%); font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--ink-soft); border:1px solid var(--line); padding:0 5px; border-radius:3px;}
+  .chips{display:flex; gap:6px; overflow-x:auto; scrollbar-width:thin; padding-bottom:2px; flex:1;}
+  .chip{flex-shrink:0; font-size:12px; padding:5px 10px; border:1px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:3px; white-space:nowrap; transition:all .15s;}
+  .chip b{font-family:'JetBrains Mono', monospace; color:var(--amber-dark); font-weight:600; margin-inline-end:6px;}
+  .chip span{unicode-bidi:isolate;}
+  .chip:hover,.chip.active{border-color:var(--amber-dark); color:var(--ink); background:var(--amber-wash);}
+  .chip.dim{opacity:.35;}
+  .search-meta{font-size:12px; color:var(--ink-soft); white-space:nowrap;}
+  @media (max-width:760px){
+    .toolbar .wrap{flex-direction:column; align-items:stretch; gap:8px;}
+    .search{flex:none;}
+  }
+
+  /* ---------- SECTIONS ---------- */
+  main .wrap{padding-top:34px; padding-bottom:80px;}
+  .sheet-section{scroll-margin-top:150px; padding:28px 0 36px; border-bottom:1px dashed var(--line);}
+  .sheet-section:last-child{border-bottom:0;}
+  .sec-head{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; border-bottom:2px solid var(--ink); padding-bottom:10px; margin-bottom:14px;}
+  .sec-num{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber-dark); letter-spacing:1px; display:block;}
+  .sec-head h2{font-size:clamp(1.25rem, 2.6vw, 1.6rem); font-weight:800; line-height:1.4;}
+  .sec-en{font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--ink-soft); direction:ltr;}
+  .sec-lead{font-size:14.5px; color:var(--ink-soft); max-width:80ch; margin-bottom:20px;}
+
+  .grid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px;}
+  .block{background:var(--card); border:1px solid var(--line); padding:18px 20px; position:relative; min-width:0;}
+  .block::before{content:''; position:absolute; top:-1px; right:-1px; width:48px; height:3px; background:var(--amber);}
+  .block.wide{grid-column:1 / -1;}
+  .block h3{font-size:14px; font-weight:800; margin-bottom:12px; display:flex; align-items:center; gap:8px;}
+  .block h3 .tag{font-family:'JetBrains Mono', monospace; font-size:9.5px; font-weight:600; color:var(--amber-dark); border:1px solid var(--amber-dark); padding:0 6px; border-radius:2px; letter-spacing:.5px;}
+  .note{font-size:13px; color:var(--ink-soft); margin-top:12px; padding-top:10px; border-top:1px dashed var(--line);}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr;} }
+
+  /* flow */
+  .flow{display:flex; flex-wrap:wrap; align-items:stretch; gap:8px 0; direction:ltr;}
+  .flow .node{flex:1 1 130px; border:1.5px solid var(--navy-line); background:#F7F9FB; padding:9px 10px; text-align:center; border-radius:4px; display:flex; flex-direction:column; justify-content:center;}
+  .flow .node .l{font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:700; color:var(--navy-deep); line-height:1.45;}
+  .flow .node .s{font-size:11.5px; color:var(--ink-soft); direction:rtl; line-height:1.6; margin-top:3px;}
+  .flow .node.bad{border-color:var(--bad); background:var(--bad-wash);}
+  .flow .node.bad .l{color:var(--bad);}
+  .flow .arrow{flex:0 0 26px; display:flex; align-items:center; justify-content:center; color:var(--amber-dark); font-weight:700; font-size:16px;}
+  .flow .loop{flex-basis:100%; text-align:center; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--teal); margin-top:4px;}
+
+  /* stack */
+  .stack{direction:ltr; display:flex; flex-direction:column; gap:0;}
+  .stack .layer{display:grid; grid-template-columns:150px 1fr; border:1px solid var(--line); background:#F7F9FB;}
+  .stack .layer + .down{height:16px; display:flex; justify-content:center; align-items:center; color:var(--amber-dark); font-size:12px; line-height:1;}
+  .stack .ll{background:var(--navy-deep); color:#EDF1F5; font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:600; padding:8px 10px; display:flex; align-items:center;}
+  .stack .li{display:flex; flex-wrap:wrap; gap:6px; padding:7px 10px; align-items:center;}
+  .stack .li span{font-size:12px; border:1px solid var(--cyan-line); background:#fff; padding:2px 8px; border-radius:3px; unicode-bidi:plaintext;}
+  @media (max-width:560px){ .stack .layer{grid-template-columns:1fr;} }
+
+  /* table */
+  .tbl-wrap{overflow-x:auto;}
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th{background:var(--navy-deep); color:#EDF1F5; font-weight:700; text-align:right; padding:8px 10px; font-size:12.5px;}
+  td{padding:8px 10px; border-bottom:1px solid var(--paper-alt); vertical-align:top;}
+  tbody tr:nth-child(even) td{background:#FAFBF8;}
+  td:first-child{font-weight:700;}
+  table.mono td{font-family:'JetBrains Mono', 'Vazirmatn', monospace; font-size:12.5px; unicode-bidi:plaintext; text-align:right;}
+  table.cmp td:first-child{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--navy-deep); white-space:nowrap;}
+
+  /* bars */
+  .bars{direction:ltr; display:grid; gap:5px;}
+  .bar-row{display:grid; grid-template-columns:minmax(150px, 230px) 1fr 70px; gap:10px; align-items:center; font-size:12px;}
+  .bar-row .bl{font-family:'JetBrains Mono', monospace; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .bar-row .track{height:12px; background:var(--paper-alt); border-radius:2px; overflow:hidden;}
+  .bar-row .track,.bar-row .fill{display:block;}
+  .bar-row .fill{height:100%; border-radius:2px;}
+  .bar-row .bv{font-family:'JetBrains Mono', monospace; font-weight:700; text-align:right; color:var(--navy-deep);}
+  .bar-legend{display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--ink-soft); margin-top:10px; direction:rtl;}
+  .bar-legend i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-left:5px; vertical-align:-1px;}
+  @media (max-width:560px){ .bars{gap:9px;} .bar-row{grid-template-columns:1fr 64px; row-gap:3px;} .bar-row .track{grid-column:1 / -1; grid-row:2;} }
+
+  /* ring */
+  .ring-wrap{display:flex; gap:20px; align-items:center; flex-wrap:wrap;}
+  .ring-wrap svg{width:300px; max-width:100%; height:auto; flex-shrink:0; margin:0 auto;}
+  .ring-wrap .note{flex:1 1 220px; border-top:0; margin-top:0; padding-top:0;}
+  .ring-legend{display:grid; gap:6px; margin-top:10px; font-size:12.5px;}
+  .ring-legend div{display:flex; align-items:center; gap:8px; direction:ltr; justify-content:flex-end;}
+
+  /* bits */
+  .bits{direction:ltr; display:flex; border:1.5px solid var(--navy-deep); border-radius:3px; overflow:hidden;}
+  .bits .f{min-width:62px; padding:8px 6px; text-align:center; border-left:1px solid var(--navy-line); display:flex; flex-direction:column; gap:2px;}
+  .bits .f:first-child{border-left:0;}
+  .bits .f .n{font-family:'JetBrains Mono', monospace; font-weight:700; font-size:16px;}
+  .bits .f .l{font-family:'JetBrains Mono', monospace; font-size:11px;}
+  .bits .f .s{font-size:11px; opacity:.85; direction:rtl; line-height:1.5;}
+  @media (max-width:640px){ .bits{flex-direction:column;} .bits .f{border-left:0; border-top:1px solid var(--navy-line); flex:none !important; flex-direction:row; justify-content:space-between; text-align:right;} .bits .f:first-child{border-top:0;} }
+
+  /* list */
+  .list li{position:relative; padding-right:24px; font-size:13.5px; margin-bottom:7px; unicode-bidi:plaintext; text-align:right;}
+  .list li::before{position:absolute; right:0; top:0; font-weight:800; font-size:13px;}
+  .list.check li::before{content:'✓'; color:var(--teal);}
+  .list.q li::before{content:'؟'; color:var(--amber-dark); font-size:15px;}
+
+  /* formula */
+  .formula{background:var(--navy-deep); color:#DCE5EE; border-radius:4px; padding:12px 16px; font-size:12.5px; line-height:1.9; display:grid; gap:6px;}
+  .formula .fl{display:flex; flex-wrap:wrap; gap:2px 14px; align-items:baseline; justify-content:space-between;}
+  .formula .fl + .fl{border-top:1px solid rgba(143,193,222,0.15); padding-top:6px;}
+  .formula .c{font-family:'JetBrains Mono', monospace; direction:ltr; unicode-bidi:isolate; white-space:pre-wrap; order:2;}
+  .formula .n{font-family:'Vazirmatn', sans-serif; color:var(--cyan-line); font-size:12.5px; order:1;}
+  .formula .fl.only-c{justify-content:flex-end;}
+  .formula .hl{color:var(--amber);}
+
+  /* terms */
+  .terms{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:10px;}
+  .term{border:1px solid var(--line); padding:11px 13px; background:#FCFCFA; border-radius:3px;}
+  .term .t{font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:700; color:var(--navy-deep); direction:ltr; text-align:right;}
+  .term .fa{font-size:11.5px; color:var(--amber-dark); font-weight:600; margin-bottom:4px;}
+  .term .d{font-size:13px; color:var(--ink); line-height:1.8;}
+
+  mark{background:#FCE3B4; color:inherit; padding:0 1px; border-radius:2px;}
+  .hidden{display:none !important;}
+  .empty{text-align:center; padding:50px 0; color:var(--ink-soft);}
+
+  /* index of sheets */
+  .sheet-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  .sheet-card{display:flex; flex-direction:column; background:var(--card); border:1px solid var(--line); padding:26px; transition:border-color .2s, transform .2s;}
+  .sheet-card:hover{border-color:var(--amber-dark); transform:translateY(-3px);}
+  .sheet-card h3{font-size:17px; margin:8px 0;}
+  .sheet-card p{font-size:13.5px; color:var(--ink-soft); flex-grow:1; margin-bottom:12px;}
+  .sheet-card .go{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--amber-dark); text-align:left;}
+  @media (max-width:820px){ .sheet-grid{grid-template-columns:1fr;} }
+
+  .loading{text-align:center; padding:60px 0; color:var(--ink-soft);}
+  .error{color:#e74c3c; text-align:center; padding:20px; background:#fde8e8; border-radius:8px; margin:20px 0;}
+
+  footer{background:var(--navy-deep); color:#9FB0C3; padding:34px 0; text-align:center; font-size:13px; font-family:'JetBrains Mono', monospace;}
+  footer span{color:var(--amber);}
+
+  @media (max-width:600px){ .wrap{padding:0 16px;} .block{padding:16px 14px;} }
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    @page{size:A4; margin:12mm;}
+    header,.toolbar,.hero-actions,footer{display:none !important;}
+    body{background:#fff; font-size:11px;}
+    #hero{background:#fff; color:var(--ink);}
+    #hero::before{display:none;}
+    #hero .wrap{padding:0 0 10px;}
+    .hero-head{border-bottom-color:var(--ink);}
+    .hero-stats div{border-color:var(--line);} .hero-stats span{color:var(--ink-soft);}
+    #hero p.lead{color:var(--ink-soft);}
+    main .wrap{padding-top:10px;}
+    .sheet-section{padding:14px 0; break-inside:auto;}
+    .block{break-inside:avoid; padding:10px 12px;}
+    .formula{background:#fff; color:var(--ink); border:1px solid var(--line);}
+    .formula div:first-child{color:var(--ink-soft);}
+    .grid{gap:10px;}
+    th{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .stack .ll,.bar-row .fill,.bits .f,.flow .node.bad{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">MD</div>
+      <div>
+        <div class="brand-name">محمدسجاد دباغ</div>
+        <div class="brand-sub">CHEAT SHEET</div>
+      </div>
+    </a>
+    <nav>
+      <button class="burger" id="burgerBtn" aria-label="باز کردن منو"><span></span><span></span><span></span></button>
+      <ul id="navLinks">
+        <li><a href="index.html#books-section">کتاب‌ها</a></li>
+        <li><a href="index.html#articles-section">مقالات</a></li>
+        <li><a href="index.html#til-section">یادداشت‌ها</a></li>
+        <li><a href="index.html#cheatsheets-section" class="current">چیت شیت</a></li>
+        <li><a href="flashcards.html">فلش کارت</a></li>
+        <li><a href="https://mdabagh.github.io" class="nav-cta">مشاهده رزومه</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section id="hero">
+  <div class="wrap" id="heroInner">
+    <div class="eyebrow">CHEAT SHEET</div>
+    <div class="hero-head"><h1>چیت شیت</h1></div>
+    <p class="lead">خلاصه‌ی یک‌صفحه‌ای کتاب‌ها و مباحث فنی: اصطلاحات کلیدی، مفاهیم مهم و نمودارهایی برای مرور سریع.</p>
+  </div>
+</section>
+
+<div class="toolbar hidden" id="toolbar">
+  <div class="wrap">
+    <label class="search">
+      <input type="search" id="q" placeholder="جستجو در اصطلاحات و مفاهیم…" aria-label="جستجو">
+      <span class="kbd">/</span>
+    </label>
+    <nav class="chips" id="chips" aria-label="فصل‌ها"></nav>
+    <span class="search-meta hidden" id="searchMeta"></span>
+  </div>
+</div>
+
+<main>
+  <div class="wrap" id="app"><div class="loading">در حال بارگذاری…</div></div>
+</main>
+
+<footer>
+  © ۲۰۲۶ محمدسجاد دباغ — <span>ساخته شده با عشق</span> · تهران
+</footer>
+
+<script>
+class CheatSheet {
+  constructor(root) {
+    this.root = root;
+    this.sheet = null;
+  }
+
+  // ---------- helpers ----------
+  fa(num) {
+    const p = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    return String(num).replace(/\d/g, d => p[+d]);
+  }
+  esc(text) {
+    const div = document.createElement('div');
+    div.textContent = text ?? '';
+    return div.innerHTML;
+  }
+  // escape + `code` + **bold**
+  fmt(text) {
+    return this.esc(text)
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+  }
+  async loadJson(path) {
+    try {
+      const res = await fetch(path);
+      if (res.ok) return await res.json();
+    } catch (e) {}
+    return null;
+  }
+
+  // ---------- block renderers ----------
+  title(b, tag) {
+    if (!b.title) return '';
+    return `<h3>${this.fmt(b.title)}${tag ? `<span class="tag">${tag}</span>` : ''}</h3>`;
+  }
+  note(b) { return b.note ? `<p class="note">${this.fmt(b.note)}</p>` : ''; }
+
+  flow(b) {
+    const nodes = b.steps.map(s => `
+      <div class="node unit ${s.bad ? 'bad' : ''}">
+        <span class="l">${this.fmt(s.l)}</span>
+        ${s.s ? `<span class="s">${this.fmt(s.s)}</span>` : ''}
+      </div>`).join('<span class="arrow" aria-hidden="true">→</span>');
+    return `${this.title(b, 'FLOW')}<div class="flow">${nodes}${b.loop ? '<div class="loop">↺ loop</div>' : ''}</div>${this.note(b)}`;
+  }
+
+  stack(b) {
+    const layers = b.layers.map(l => `
+      <div class="layer unit">
+        <div class="ll">${this.fmt(l.l)}</div>
+        <div class="li">${l.items.map(i => `<span>${this.fmt(i)}</span>`).join('')}</div>
+      </div>`).join('<div class="down" aria-hidden="true">▼</div>');
+    return `${this.title(b, 'ARCH')}<div class="stack">${layers}</div>${this.note(b)}`;
+  }
+
+  table(b) {
+    const cls = [b.mono ? 'mono' : '', b.head.length >= 4 && !b.mono ? 'cmp' : ''].join(' ');
+    return `${this.title(b)}
+      <div class="tbl-wrap"><table class="${cls}">
+        <thead><tr>${b.head.map(h => `<th>${this.fmt(h)}</th>`).join('')}</tr></thead>
+        <tbody>${b.rows.map(r => `<tr class="unit">${r.map(c => `<td>${this.fmt(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>${this.note(b)}`;
+  }
+
+  bars(b) {
+    const logs = b.items.map(i => Math.log10(i.v));
+    const min = Math.min(...logs), max = Math.max(...logs);
+    // colour by order of magnitude bucket: ns / µs / ms
+    const band = v => v < 1000 ? ['#3F8F86', 'ns'] : v < 1e6 ? ['#2C5580', 'µs'] : ['#C97F1E', 'ms'];
+    const rows = b.items.map((i, k) => {
+      const w = 6 + ((logs[k] - min) / (max - min || 1)) * 94;
+      const [c] = band(i.v);
+      return `<div class="bar-row unit">
+        <span class="bl" title="${this.esc(i.l)}">${this.esc(i.l)}</span>
+        <span class="track"><span class="fill" style="width:${w.toFixed(1)}%; background:${c}"></span></span>
+        <span class="bv">${this.esc(i.d)}</span>
+      </div>`;
+    }).join('');
+    const legend = `<div class="bar-legend">
+      <span><i style="background:#3F8F86"></i>نانوثانیه (حافظه و CPU)</span>
+      <span><i style="background:#2C5580"></i>میکروثانیه (شبکه‌ی داخلی)</span>
+      <span><i style="background:#C97F1E"></i>میلی‌ثانیه (دیسک و راه دور)</span>
+    </div>`;
+    return `${this.title(b, 'LOG SCALE')}<div class="bars">${rows}</div>${legend}${this.note(b)}`;
+  }
+
+  ring(b) {
+    const C = 160, R = 112;
+    const pt = (a, r = R) => {
+      const rad = a * Math.PI / 180;
+      return [C + r * Math.sin(rad), C - r * Math.cos(rad)];
+    };
+    const servers = [...b.servers].sort((x, y) => x.a - y.a);
+    const owner = a => servers.find(s => s.a >= a) || servers[0];
+    let arcs = '', keys = '', srv = '';
+    for (const k of b.keys) {
+      const s = owner(k.a);
+      const span = ((s.a - k.a) + 360) % 360;
+      const [x1, y1] = pt(k.a, R - 16), [x2, y2] = pt(s.a, R - 16);
+      arcs += `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${R - 16} ${R - 16} 0 ${span > 180 ? 1 : 0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" fill="none" stroke="var(--teal)" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#arr)"/>`;
+      const [kx, ky] = pt(k.a);
+      const [lx, ly] = pt(k.a, R + 22);
+      keys += `<circle cx="${kx.toFixed(1)}" cy="${ky.toFixed(1)}" r="6" fill="var(--teal)" stroke="#fff" stroke-width="2"/>
+        <text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" fill="var(--teal)" font-family="JetBrains Mono, monospace" font-weight="700">${this.esc(k.id)}</text>`;
+    }
+    for (const s of servers) {
+      const [sx, sy] = pt(s.a);
+      const [lx, ly] = pt(s.a, R + 24);
+      srv += `<rect x="${(sx - 9).toFixed(1)}" y="${(sy - 9).toFixed(1)}" width="18" height="18" rx="2" fill="var(--amber)" stroke="var(--navy-deep)" stroke-width="1.5"/>
+        <text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="12.5" fill="var(--navy-deep)" font-family="JetBrains Mono, monospace" font-weight="700">${this.esc(s.id)}</text>`;
+    }
+    const svg = `<svg viewBox="0 0 320 320" role="img" aria-label="حلقه‌ی هش با سرورها و کلیدها">
+      <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--teal)"/></marker></defs>
+      <circle cx="${C}" cy="${C}" r="${R}" fill="none" stroke="var(--navy-line)" stroke-width="2"/>
+      <text x="${C}" y="${C - 4}" text-anchor="middle" font-size="11" fill="var(--ink-soft)" font-family="JetBrains Mono, monospace">hash ring</text>
+      <text x="${C}" y="${C + 12}" text-anchor="middle" font-size="10" fill="var(--ink-soft)" font-family="JetBrains Mono, monospace">0 … 2^160−1</text>
+      ${arcs}${srv}${keys}
+    </svg>`;
+    const legend = `<div class="ring-legend">${b.keys.map(k => `<div class="unit"><span class="mono">${this.esc(k.id)} → ${this.esc(owner(k.a).id)}</span></div>`).join('')}</div>`;
+    return `${this.title(b, 'DIAGRAM')}<div class="ring-wrap">${svg}<div class="note">${this.fmt(b.note || '')}${legend}</div></div>`;
+  }
+
+  bits(b) {
+    const shades = ['#51637A', '#0E2A47', '#2C5580', '#3F8F86', '#C97F1E'];
+    const fields = b.fields.map((f, i) => `
+      <div class="f unit" style="flex:${Math.max(f.n, 6)} 1 0; background:${shades[i % shades.length]}; color:#fff">
+        <span class="n">${f.n}</span><span class="l">${this.esc(f.l)}</span>${f.s ? `<span class="s">${this.fmt(f.s)}</span>` : ''}
+      </div>`).join('');
+    return `${this.title(b, `${b.fields.reduce((s, f) => s + f.n, 0)} BITS`)}<div class="bits">${fields}</div>${this.note(b)}`;
+  }
+
+  list(b) {
+    return `${this.title(b)}<ul class="list ${b.style || 'check'}">${b.items.map(i => `<li class="unit">${this.fmt(i)}</li>`).join('')}</ul>${this.note(b)}`;
+  }
+
+  // lines: "code" | {c: "code", n: "persian note"} | {n: "persian note"}
+  formula(b) {
+    const code = c => this.esc(c).replace(/(≈|=|→|⇒|&gt;|≤)(\s*)([^=≈→⇒≤]*)$/, '$1$2<span class="hl">$3</span>');
+    const lines = b.lines.map(l => {
+      const o = typeof l === 'string' ? { c: l } : l;
+      return `<div class="fl unit ${o.n ? '' : 'only-c'}">
+        ${o.n ? `<span class="n">${this.fmt(o.n)}</span>` : ''}
+        ${o.c ? `<span class="c">${code(o.c)}</span>` : ''}
+      </div>`;
+    }).join('');
+    return `${this.title(b, 'CALC')}<div class="formula">${lines}</div>${this.note(b)}`;
+  }
+
+  terms(b) {
+    return `${this.title(b, `${this.fa(b.items.length)} اصطلاح`)}<div class="terms">${b.items.map(t => `
+      <div class="term unit">
+        <div class="t">${this.esc(t.t)}</div>
+        ${t.fa ? `<div class="fa">${this.esc(t.fa)}</div>` : ''}
+        <div class="d">${this.fmt(t.d)}</div>
+      </div>`).join('')}</div>`;
+  }
+
+  isWide(b) {
+    return ['flow', 'stack', 'terms', 'bars', 'ring'].includes(b.type) || (b.type === 'table' && b.head.length >= 4) || !!b.wide;
+  }
+
+  // Half-width blocks pair up in a 2-column grid; one left without a partner spans the row.
+  blocks(list) {
+    const valid = list.filter(b => typeof this[b.type] === 'function');
+    const wide = valid.map(b => this.isWide(b));
+    let col = 0;
+    valid.forEach((b, i) => {
+      if (wide[i]) { col = 0; return; }
+      if (col === 0 && (i + 1 >= valid.length || wide[i + 1])) wide[i] = true;
+      else col = (col + 1) % 2;
+    });
+    return valid.map((b, i) =>
+      `<div class="block ${wide[i] ? 'wide' : ''}" data-type="${b.type}">${this[b.type](b)}</div>`).join('');
+  }
+
+  // ---------- page ----------
+  renderSheet(slug) {
+    const s = this.sheet;
+    const terms = s.sections.reduce((n, sec) => n + sec.blocks.filter(b => b.type === 'terms').reduce((m, b) => m + b.items.length, 0), 0);
+    const diagrams = s.sections.reduce((n, sec) => n + sec.blocks.filter(b => ['flow', 'stack', 'bars', 'ring', 'bits'].includes(b.type)).length, 0);
+
+    document.title = `${s.title} — چیت شیت`;
+    document.querySelector('meta[name="description"]').setAttribute('content', s.summary || '');
+    document.querySelector('link[rel="canonical"]').setAttribute('href', `https://mdabagh.github.io/blog/cheatsheet.html?sheet=${slug}`);
+
+    document.getElementById('heroInner').innerHTML = `
+      <div class="eyebrow">CHEAT SHEET / ${this.esc(slug.toUpperCase())}</div>
+      <div class="hero-head">
+        <div>
+          <h1>${this.esc(s.title)}</h1>
+          ${s.subtitle ? `<div class="hero-sub">${this.esc(s.subtitle)}</div>` : ''}
+        </div>
+        <div class="hero-stats">
+          <div><b>${this.fa(s.sections.length)}</b><span>فصل</span></div>
+          <div><b>${this.fa(terms)}</b><span>اصطلاح</span></div>
+          <div><b>${this.fa(diagrams)}</b><span>نمودار</span></div>
+        </div>
+      </div>
+      <p class="lead">${this.fmt(s.summary)}</p>
+      <div class="hero-actions">
+        ${s.flashcards ? `<a class="btn btn-primary" href="flashcards.html?deck=${encodeURIComponent(s.flashcards)}">مرور با فلش کارت ←</a>` : ''}
+        ${s.book ? `<a class="btn btn-ghost" href="book.html?cat=books&slug=${encodeURIComponent(s.book)}">یادداشت‌های فصل‌به‌فصل</a>` : ''}
+        <button class="btn btn-ghost" onclick="window.print()">چاپ / PDF</button>
+      </div>`;
+
+    document.getElementById('chips').innerHTML = s.sections.map(sec =>
+      `<a class="chip" href="#${sec.id}" data-id="${sec.id}"><b>${this.esc(sec.num)}</b><span>${this.esc(sec.title)}</span></a>`).join('');
+    document.getElementById('toolbar').classList.remove('hidden');
+
+    this.root.innerHTML = s.sections.map(sec => `
+      <section class="sheet-section" id="${sec.id}">
+        <div class="sec-head">
+          <div>
+            <span class="sec-num">CH ${this.esc(sec.num)}</span>
+            <h2>${this.esc(sec.title)}</h2>
+          </div>
+          <span class="sec-en">${this.esc(sec.en)}</span>
+        </div>
+        ${sec.lead ? `<p class="sec-lead">${this.fmt(sec.lead)}</p>` : ''}
+        <div class="grid">${this.blocks(sec.blocks)}</div>
+      </section>`).join('') +
+      `<div class="empty hidden" id="noResult">موردی پیدا نشد.</div>`;
+
+    this.bindSearch();
+    this.bindScrollSpy();
+    if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+  }
+
+  renderIndex(slugs, sheets) {
+    document.getElementById('heroInner').insertAdjacentHTML('beforeend',
+      `<div class="hero-stats" style="margin-top:20px; display:inline-flex"><div><b>${this.fa(sheets.length)}</b><span>چیت شیت</span></div></div>`);
+    this.root.innerHTML = sheets.length ? `<div class="sheet-grid">${sheets.map((s, i) => `
+      <a class="sheet-card" href="cheatsheet.html?sheet=${encodeURIComponent(slugs[i])}">
+        <span class="mono" style="font-size:11px; color:var(--amber-dark)">${this.fa(String(i + 1).padStart(2, '0'))}</span>
+        <h3>${this.esc(s.title)}</h3>
+        <p>${this.esc(s.summary)}</p>
+        <span class="go">مشاهده چیت شیت ←</span>
+      </a>`).join('')}</div>` : '<div class="error">چیت شیتی یافت نشد</div>';
+  }
+
+  // ---------- search ----------
+  bindSearch() {
+    const input = document.getElementById('q');
+    const meta = document.getElementById('searchMeta');
+    const units = [...this.root.querySelectorAll('.unit')];
+    units.forEach(u => u.dataset.html = u.innerHTML);
+    const norm = t => t.toLowerCase().replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/‌/g, ' ');
+
+    const run = () => {
+      const q = norm(input.value.trim());
+      let hits = 0;
+      units.forEach(u => {
+        u.innerHTML = u.dataset.html;
+        if (!q) { u.classList.remove('hidden'); return; }
+        const ok = norm(u.textContent).includes(q);
+        u.classList.toggle('hidden', !ok);
+        if (ok) { hits++; this.highlight(u, q, norm); }
+      });
+      this.root.querySelectorAll('.block').forEach(b => {
+        const hasUnits = b.querySelector('.unit');
+        const visible = !q || (hasUnits ? b.querySelector('.unit:not(.hidden)') : norm(b.textContent).includes(q));
+        b.classList.toggle('hidden', !visible);
+        // keep diagrams whole: if any step matches, show every step
+        if (q && visible && ['flow', 'stack', 'bits', 'ring', 'bars'].includes(b.dataset.type)) {
+          b.querySelectorAll('.unit.hidden').forEach(u => u.classList.remove('hidden'));
+        }
+      });
+      this.root.querySelectorAll('.sheet-section').forEach(sec => {
+        const show = !q || sec.querySelector('.block:not(.hidden)');
+        sec.classList.toggle('hidden', !show);
+        document.querySelector(`.chip[data-id="${sec.id}"]`)?.classList.toggle('dim', !show);
+      });
+      meta.classList.toggle('hidden', !q);
+      meta.textContent = `${this.fa(hits)} نتیجه`;
+      document.getElementById('noResult').classList.toggle('hidden', !q || hits > 0);
+    };
+
+    let t;
+    input.addEventListener('input', () => { clearTimeout(t); t = setTimeout(run, 120); });
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && document.activeElement !== input) { e.preventDefault(); input.focus(); }
+      if (e.key === 'Escape' && document.activeElement === input) { input.value = ''; run(); input.blur(); }
+    });
+  }
+
+  // wrap matches in <mark>, text nodes only
+  highlight(el, q, norm) {
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const n of nodes) {
+      const i = norm(n.nodeValue).indexOf(q);
+      if (i < 0) continue;
+      const m = document.createElement('mark');
+      const mid = n.splitText(i);
+      mid.splitText(q.length);
+      m.textContent = mid.nodeValue;
+      mid.replaceWith(m);
+    }
+  }
+
+  bindScrollSpy() {
+    const chips = document.getElementById('chips');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        chips.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.id === e.target.id));
+        const active = chips.querySelector('.chip.active');
+        if (active) chips.scrollTo({ left: active.offsetLeft - chips.clientWidth / 2 + active.clientWidth / 2, behavior: 'smooth' });
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    this.root.querySelectorAll('.sheet-section').forEach(s => io.observe(s));
+  }
+
+  async init() {
+    const slug = new URLSearchParams(location.search).get('sheet');
+    if (slug) {
+      this.sheet = await this.loadJson(`cheatsheets/${slug}.json`);
+      if (!this.sheet) { this.root.innerHTML = '<div class="error">چیت شیت یافت نشد</div>'; return; }
+      this.renderSheet(slug);
+      return;
+    }
+    const slugs = (await this.loadJson('cheatsheets/index.json'))?.files || [];
+    const sheets = (await Promise.all(slugs.map(s => this.loadJson(`cheatsheets/${s}.json`))));
+    const ok = slugs.filter((_, i) => sheets[i]);
+    this.renderIndex(ok, sheets.filter(Boolean));
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const burger = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  if (burger && navLinks) {
+    burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+  }
+  new CheatSheet(document.getElementById('app')).init();
+});
+</script>
+
+</body>
+</html>

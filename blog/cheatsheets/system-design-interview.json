@@ -1,0 +1,1792 @@
+{
+  "title": "System Design Interview",
+  "subtitle": "An Insider's Guide — Alex Xu (جلد ۱)",
+  "summary": "اصطلاحات کلیدی، مفاهیم مهم و خلاصه‌ی نموداری همه‌ی فصل‌های کتاب در یک صفحه؛ برای مرور سریع پیش از مصاحبه.",
+  "book": "design-system",
+  "flashcards": "design-system",
+  "updated": "2026-10-21",
+  "sections": [
+    {
+      "id": "scale",
+      "num": "01",
+      "title": "مقیاس از صفر تا میلیون‌ها کاربر",
+      "en": "Scale From Zero To Millions Of Users",
+      "lead": "مقیاس‌پذیری فرایندی تکراری است: از یک سرور شروع کن و هر بار گلوگاه بعدی را بردار.",
+      "blocks": [
+        {
+          "type": "stack",
+          "title": "معماری نهایی فصل (از بالا به پایین)",
+          "layers": [
+            {
+              "l": "Users",
+              "items": [
+                "Web browser",
+                "Mobile app"
+              ]
+            },
+            {
+              "l": "Edge",
+              "items": [
+                "GeoDNS",
+                "CDN (static: JS/CSS/images)"
+              ]
+            },
+            {
+              "l": "Load Balancer",
+              "items": [
+                "Public IP → Private IPs"
+              ]
+            },
+            {
+              "l": "Stateless Web Tier",
+              "items": [
+                "Web servers",
+                "Autoscaling"
+              ]
+            },
+            {
+              "l": "Shared State / Cache",
+              "items": [
+                "NoSQL (session)",
+                "Cache (Memcached/Redis)"
+              ]
+            },
+            {
+              "l": "Data Tier",
+              "items": [
+                "Master (write)",
+                "Slaves (read)",
+                "Shards"
+              ]
+            },
+            {
+              "l": "Async",
+              "items": [
+                "Message Queue",
+                "Workers"
+              ]
+            },
+            {
+              "l": "Ops",
+              "items": [
+                "Logging",
+                "Metrics",
+                "CI / Automation"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "اصطلاحات",
+          "items": [
+            {
+              "t": "Vertical Scaling",
+              "fa": "مقیاس عمودی / Scale up",
+              "d": "افزودن CPU و RAM به همان سرور. ساده است اما سقف سخت‌افزاری دارد و Failover/Redundancy ندارد."
+            },
+            {
+              "t": "Horizontal Scaling",
+              "fa": "مقیاس افقی / Scale out",
+              "d": "افزودن سرورهای بیشتر؛ برای اپلیکیشن‌های بزرگ مطلوب‌تر است."
+            },
+            {
+              "t": "Load Balancer",
+              "fa": "متعادل‌کننده بار",
+              "d": "ترافیک را بین سرورهای یک مجموعه پخش می‌کند؛ کاربر فقط به IP عمومی LB وصل می‌شود."
+            },
+            {
+              "t": "Master / Slave Replication",
+              "fa": "همانندسازی",
+              "d": "Master فقط نوشتن، Slaveها خواندن. چون نسبت خواندن به نوشتن بالاست، Slave بیشتری داریم. مزایا: Performance، Reliability، High Availability."
+            },
+            {
+              "t": "Failover",
+              "fa": "جایگزینی در خرابی",
+              "d": "اگر Master بیفتد یک Slave به Master ترفیع (promote) می‌یابد؛ داده‌ی ناقص با data recovery script ترمیم می‌شود."
+            },
+            {
+              "t": "Cache / Read-through",
+              "fa": "حافظه‌ی نهان",
+              "d": "اول کش را بخوان؛ اگر نبود از DB بخوان، در کش بگذار و برگردان."
+            },
+            {
+              "t": "Eviction Policy",
+              "fa": "سیاست حذف",
+              "d": "LRU (محبوب‌ترین)، LFU، FIFO."
+            },
+            {
+              "t": "SPOF",
+              "fa": "نقطه‌ی شکست واحد",
+              "d": "جزئی که با خرابی‌اش کل سیستم می‌خوابد؛ راه‌حل: چند سرور در چند دیتاسنتر + Overprovisioning."
+            },
+            {
+              "t": "CDN",
+              "fa": "شبکه‌ی تحویل محتوا",
+              "d": "سرورهای پراکنده برای محتوای استاتیک. TTL مدت کش را تعیین می‌کند. باطل‌سازی: API یا Object versioning مثل image.png?v=2."
+            },
+            {
+              "t": "Stateless Web Tier",
+              "fa": "لایه‌ی وب بدون حالت",
+              "d": "Session را از وب‌سرور بیرون ببر و در Shared data store بگذار تا هر سرور بتواند هر درخواست را جواب دهد."
+            },
+            {
+              "t": "Sticky Session",
+              "fa": "نشست چسبنده",
+              "d": "همه‌ی درخواست‌های یک کاربر به یک سرور؛ افزودن/حذف سرور و Failover را سخت می‌کند."
+            },
+            {
+              "t": "GeoDNS",
+              "fa": "مسیریابی جغرافیایی",
+              "d": "دامنه را بر اساس موقعیت کاربر به IP نزدیک‌ترین دیتاسنتر ترجمه می‌کند."
+            },
+            {
+              "t": "Message Queue",
+              "fa": "صف پیام",
+              "d": "بافر پایدار برای ارتباط ناهمگام؛ Producer و Consumer را از هم جدا (Decouple) می‌کند."
+            },
+            {
+              "t": "Sharding",
+              "fa": "شاردینگ",
+              "d": "تقسیم DB به shardهای هم‌اسکیما؛ مثلاً user_id % 4. مهم‌ترین تصمیم: Sharding key با توزیع یکنواخت."
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "SQL یا NoSQL؟",
+          "head": [
+            "",
+            "Relational (SQL)",
+            "NoSQL"
+          ],
+          "rows": [
+            [
+              "نمونه",
+              "MySQL، PostgreSQL، Oracle",
+              "Cassandra، DynamoDB، HBase، Neo4j، CouchDB"
+            ],
+            [
+              "مدل",
+              "جدول و سطر، JOIN دارد",
+              "key-value، graph، column، document؛ معمولاً بدون JOIN"
+            ],
+            [
+              "وقتی مناسب است",
+              "پیش‌فرض اکثر پروژه‌ها (۴۰+ سال سابقه)",
+              "Latency خیلی پایین، داده‌ی بی‌ساختار، فقط serialize/deserialize، حجم عظیم"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "چالش‌های شاردینگ",
+          "head": [
+            "مشکل",
+            "راه‌حل"
+          ],
+          "rows": [
+            [
+              "Resharding / shard exhaustion",
+              "Consistent Hashing (فصل ۵)"
+            ],
+            [
+              "Celebrity / Hotspot key",
+              "یک shard برای هر سلبریتی یا پارتیشن بیشتر"
+            ],
+            [
+              "JOIN بین shardها",
+              "De-normalization"
+            ]
+          ]
+        },
+        {
+          "type": "list",
+          "style": "check",
+          "title": "خلاصه‌ی فصل در ۸ جمله",
+          "items": [
+            "لایه‌ی وب را Stateless نگه دار",
+            "در هر لایه Redundancy بساز",
+            "تا جای ممکن کش کن",
+            "از چند دیتاسنتر پشتیبانی کن",
+            "فایل‌های استاتیک را روی CDN بگذار",
+            "لایه‌ی داده را با Sharding مقیاس بده",
+            "لایه‌ها را به سرویس‌های مستقل بشکن",
+            "سیستم را مانیتور کن و اتوماسیون داشته باش"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "estimation",
+      "num": "02",
+      "title": "تخمین پشت پاکتی",
+      "en": "Back-of-the-envelope Estimation",
+      "lead": "به تعبیر Jeff Dean: ترکیب آزمایش فکری با اعداد عملکردی رایج تا بفهمیم کدام طراحی جواب می‌دهد. دقت مهم نیست، فرایند مهم است.",
+      "blocks": [
+        {
+          "type": "table",
+          "title": "توان‌های دو",
+          "head": [
+            "توان",
+            "تقریب",
+            "نام",
+            "واحد"
+          ],
+          "mono": true,
+          "rows": [
+            [
+              "2^10",
+              "هزار",
+              "Kilobyte",
+              "1 KB"
+            ],
+            [
+              "2^20",
+              "میلیون",
+              "Megabyte",
+              "1 MB"
+            ],
+            [
+              "2^30",
+              "میلیارد",
+              "Gigabyte",
+              "1 GB"
+            ],
+            [
+              "2^40",
+              "تریلیون",
+              "Terabyte",
+              "1 TB"
+            ],
+            [
+              "2^50",
+              "کوادریلیون",
+              "Petabyte",
+              "1 PB"
+            ]
+          ]
+        },
+        {
+          "type": "bars",
+          "title": "اعداد Latency (مقیاس لگاریتمی)",
+          "items": [
+            {
+              "l": "L1 cache reference",
+              "v": 0.5,
+              "d": "0.5 ns"
+            },
+            {
+              "l": "Branch mispredict",
+              "v": 5,
+              "d": "5 ns"
+            },
+            {
+              "l": "L2 cache reference",
+              "v": 7,
+              "d": "7 ns"
+            },
+            {
+              "l": "Mutex lock/unlock",
+              "v": 100,
+              "d": "100 ns"
+            },
+            {
+              "l": "Main memory reference",
+              "v": 100,
+              "d": "100 ns"
+            },
+            {
+              "l": "Compress 1KB (Zippy)",
+              "v": 10000,
+              "d": "10 µs"
+            },
+            {
+              "l": "Send 2KB over 1 Gbps",
+              "v": 20000,
+              "d": "20 µs"
+            },
+            {
+              "l": "Read 1MB seq. from memory",
+              "v": 250000,
+              "d": "250 µs"
+            },
+            {
+              "l": "Round trip in same DC",
+              "v": 500000,
+              "d": "500 µs"
+            },
+            {
+              "l": "Disk seek",
+              "v": 10000000,
+              "d": "10 ms"
+            },
+            {
+              "l": "Read 1MB seq. from network",
+              "v": 10000000,
+              "d": "10 ms"
+            },
+            {
+              "l": "Read 1MB seq. from disk",
+              "v": 30000000,
+              "d": "30 ms"
+            },
+            {
+              "l": "Packet CA → Netherlands → CA",
+              "v": 150000000,
+              "d": "150 ms"
+            }
+          ],
+          "note": "نتیجه: حافظه سریع و دیسک کند است؛ از Disk seek پرهیز کن؛ فشرده‌سازی ساده سریع است پس قبل از ارسال فشرده کن؛ انتقال بین دیتاسنترها زمان‌بر است."
+        },
+        {
+          "type": "table",
+          "title": "Availability و تعداد نُه‌ها",
+          "head": [
+            "Availability",
+            "Downtime / روز",
+            "Downtime / سال"
+          ],
+          "mono": true,
+          "rows": [
+            [
+              "99%",
+              "14.40 min",
+              "3.65 days"
+            ],
+            [
+              "99.9%",
+              "1.44 min",
+              "8.77 hours"
+            ],
+            [
+              "99.99%",
+              "8.64 s",
+              "52.60 min"
+            ],
+            [
+              "99.999%",
+              "864 ms",
+              "5.26 min"
+            ],
+            [
+              "99.9999%",
+              "86.40 ms",
+              "31.56 s"
+            ]
+          ],
+          "note": "SLA ارائه‌دهندگان ابری (AWS، Google، Azure) معمولاً ۹۹.۹٪ یا بالاتر است."
+        },
+        {
+          "type": "formula",
+          "title": "مثال: QPS و ذخیره‌سازی توییتر (اعداد فرضی)",
+          "lines": [
+            {
+              "n": "فرض: ۳۰۰M کاربر ماهانه، ۵۰٪ فعال روزانه، ۲ توییت در روز، ۱۰٪ با رسانه‌ی ۱MB، نگهداری ۵ سال"
+            },
+            "DAU = 300M × 50% = 150M",
+            "Tweet QPS = 150M × 2 / 86,400 ≈ 3,500",
+            "Peak QPS = 2 × QPS ≈ 7,000",
+            "Media/day = 150M × 2 × 10% × 1MB = 30 TB",
+            "5-year media = 30TB × 365 × 5 ≈ 55 PB"
+          ]
+        },
+        {
+          "type": "list",
+          "style": "check",
+          "title": "نکته‌ها",
+          "items": [
+            "گرد کن: ۹۹۹۸۷ ÷ ۹.۱ ≈ ۱۰۰,۰۰۰ ÷ ۱۰",
+            "فرضیات را بنویس تا بعداً به آن‌ها برگردی",
+            "واحد را همیشه بنویس: 5 MB نه 5",
+            "تخمین‌های رایج: QPS، Peak QPS، Storage، Cache، تعداد سرور",
+            "یک روز ≈ ۱۰^۵ ثانیه (۸۶,۴۰۰)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "framework",
+      "num": "03",
+      "title": "چارچوب ۴ مرحله‌ای مصاحبه",
+      "en": "A Framework for System Design Interviews",
+      "lead": "مسیر رسیدن به پاسخ مهم‌تر از خود پاسخ است. هیچ جواب «درست» یکتایی وجود ندارد؛ مصاحبه شبیه‌سازی کار دو همکار روی یک مسئله‌ی مبهم است.",
+      "blocks": [
+        {
+          "type": "flow",
+          "title": "چهار مرحله در یک جلسه‌ی ۴۵ دقیقه‌ای",
+          "steps": [
+            {
+              "l": "1. Understand & Scope",
+              "s": "۳ تا ۱۰ دقیقه · سؤال بپرس، فرضیات را بنویس"
+            },
+            {
+              "l": "2. High-level Design",
+              "s": "۱۰ تا ۱۵ دقیقه · Blueprint + تأیید مصاحبه‌گر"
+            },
+            {
+              "l": "3. Deep Dive",
+              "s": "۱۰ تا ۲۵ دقیقه · مؤلفه‌های اولویت‌دار"
+            },
+            {
+              "l": "4. Wrap up",
+              "s": "۳ تا ۵ دقیقه · Bottleneck، خطاها، بهبودها"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "style": "q",
+          "title": "سؤال‌های شروع (مرحله ۱)",
+          "items": [
+            "دقیقاً چه ویژگی‌هایی ساخته می‌شود؟",
+            "محصول چند کاربر دارد؟ (DAU)",
+            "مقیاس در ۳ ماه، ۶ ماه و یک سال بعد چقدر است؟",
+            "Tech stack شرکت چیست و از چه سرویس‌های موجودی می‌شود استفاده کرد؟"
+          ]
+        },
+        {
+          "type": "list",
+          "style": "check",
+          "title": "خروجی مرحله ۲",
+          "items": [
+            "نمودار جعبه‌ای: Client، API، Web server، Data store، Cache، CDN، Queue",
+            "تخمین پشت پاکتی برای سنجش سازگاری با مقیاس",
+            "API و Schema فقط اگر مسئله کوچک باشد (مثلاً بک‌اند پوکر، نه موتور جستجوی گوگل)",
+            "مرور چند Use case واقعی با صدای بلند"
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Dos & Don'ts",
+          "head": [
+            "انجام بده ✓",
+            "انجام نده ✗"
+          ],
+          "rows": [
+            [
+              "برای شفاف‌سازی سؤال بپرس؛ فرض نکن فرضت درست است",
+              "بدون شفاف‌سازی مستقیم سراغ راه‌حل نرو (مثل جیمی نباش)"
+            ],
+            [
+              "با صدای بلند فکر کن و مصاحبه‌گر را هم‌تیمی بدان",
+              "در سکوت فکر نکن"
+            ],
+            [
+              "در صورت امکان چند رویکرد پیشنهاد بده",
+              "اول کار وارد جزئیات یک مؤلفه نشو"
+            ],
+            [
+              "پس از توافق، اول حیاتی‌ترین مؤلفه‌ها را طراحی کن",
+              "نگو طراحی‌ات کامل است و بهبود نمی‌خواهد"
+            ],
+            [
+              "اگر گیر کردی Hint بخواه؛ هرگز تسلیم نشو",
+              "Over-engineering: لذت از خلوص طراحی و نادیده گرفتن Tradeoff"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rate-limiter",
+      "num": "04",
+      "title": "طراحی Rate Limiter",
+      "en": "Design A Rate Limiter",
+      "lead": "کنترل تعداد درخواست‌های یک کلاینت در بازه‌ی زمانی مشخص؛ مازاد آستانه رد می‌شود. مزایا: جلوگیری از DoS، کاهش هزینه، جلوگیری از Overload.",
+      "blocks": [
+        {
+          "type": "flow",
+          "title": "جریان درخواست در طراحی تفصیلی",
+          "steps": [
+            {
+              "l": "Client",
+              "s": "درخواست HTTP"
+            },
+            {
+              "l": "Rate Limiter Middleware",
+              "s": "قوانین از Cache، شمارنده از Redis"
+            },
+            {
+              "l": "API Servers",
+              "s": "اگر مجاز بود"
+            },
+            {
+              "l": "429 Too Many Requests",
+              "s": "اگر محدود شد: drop یا صف",
+              "bad": true
+            }
+          ],
+          "note": "قوانین روی دیسک‌اند؛ Workerها آن‌ها را مرتب به کش می‌برند. شمارنده‌ها با INCR و EXPIRE در Redis."
+        },
+        {
+          "type": "table",
+          "title": "مقایسه‌ی ۵ الگوریتم",
+          "head": [
+            "الگوریتم",
+            "ایده",
+            "مزیت",
+            "عیب",
+            "کاربر"
+          ],
+          "rows": [
+            [
+              "Token Bucket",
+              "سطل با ظرفیت ثابت، توکن با Refill rate؛ هر درخواست یک توکن",
+              "ساده، کم‌حافظه، اجازه‌ی burst",
+              "تنظیم bucket size و refill rate سخت",
+              "Amazon، Stripe"
+            ],
+            [
+              "Leaking Bucket",
+              "صف FIFO با Outflow rate ثابت",
+              "کم‌حافظه، خروجی پایدار",
+              "burst صف را با درخواست قدیمی پر می‌کند",
+              "Shopify"
+            ],
+            [
+              "Fixed Window Counter",
+              "شمارنده برای هر پنجره‌ی ثابت",
+              "ساده و کم‌حافظه",
+              "burst در لبه‌ی پنجره بیش از سهمیه عبور می‌دهد",
+              "—"
+            ],
+            [
+              "Sliding Window Log",
+              "timestampها در sorted set ردیس",
+              "بسیار دقیق",
+              "پرمصرف؛ timestamp ردشده‌ها هم می‌ماند",
+              "—"
+            ],
+            [
+              "Sliding Window Counter",
+              "جاری + قبلی × درصد همپوشانی",
+              "صاف کردن جهش، کم‌حافظه",
+              "تقریبی؛ برای پنجره‌ی سخت‌گیر مناسب نیست",
+              "—"
+            ]
+          ]
+        },
+        {
+          "type": "formula",
+          "title": "Sliding Window Counter",
+          "lines": [
+            "requests = current + previous × overlap%",
+            {
+              "n": "مثال: سقف ۷ در دقیقه، دقیقه‌ی قبل ۵، دقیقه‌ی جاری ۳، ۳۰٪ از دقیقه گذشته (همپوشانی ۷۰٪)"
+            },
+            {
+              "c": "3 + 5 × 0.7 = 6.5",
+              "n": "گرد به ۶ ⇒ درخواست پذیرفته می‌شود"
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "اصطلاحات",
+          "items": [
+            {
+              "t": "HTTP 429",
+              "fa": "Too Many Requests",
+              "d": "پاسخ استاندارد برای درخواست محدودشده."
+            },
+            {
+              "t": "X-Ratelimit-Remaining",
+              "fa": "باقی‌مانده",
+              "d": "تعداد درخواست مجاز باقی‌مانده در پنجره."
+            },
+            {
+              "t": "X-Ratelimit-Limit",
+              "fa": "سقف",
+              "d": "تعداد فراخوانی مجاز در هر پنجره."
+            },
+            {
+              "t": "X-Ratelimit-Retry-After",
+              "fa": "زمان انتظار",
+              "d": "چند ثانیه صبر کن تا دوباره بفرستی."
+            },
+            {
+              "t": "API Gateway",
+              "fa": "دروازه‌ی API",
+              "d": "سرویس مدیریت‌شده: Rate limiting، SSL termination، Auth، IP whitelisting."
+            },
+            {
+              "t": "Race Condition",
+              "fa": "شرایط رقابتی",
+              "d": "دو درخواست هم‌زمان شمارنده را می‌خوانند؛ راه‌حل: Lua script یا sorted set (قفل کند است)."
+            },
+            {
+              "t": "Synchronization",
+              "fa": "همگام‌سازی",
+              "d": "چند Rate limiter باید داده‌ی مشترک ببینند؛ راه‌حل: ذخیره‌ساز متمرکز مثل Redis، نه Sticky session."
+            },
+            {
+              "t": "Hard vs Soft",
+              "fa": "سخت و نرم",
+              "d": "Hard: هرگز بیش از آستانه. Soft: برای مدت کوتاه می‌تواند بیشتر شود."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "style": "check",
+          "title": "کجا و چگونه",
+          "items": [
+            "سمت کلاینت غیرقابل‌اعتماد است (قابل جعل)",
+            "Middleware یا API Gateway در معماری میکروسرویس",
+            "منابع مهندسی کم؟ API Gateway تجاری",
+            "لایه‌ی ۷ (HTTP) در این فصل؛ لایه‌ی ۳ هم با Iptables بر اساس IP",
+            "Flash sale و ترافیک انفجاری → Token Bucket",
+            "کلاینت: کش سمت کلاینت، احترام به سقف، Retry با back-off کافی"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "consistent-hashing",
+      "num": "05",
+      "title": "Consistent Hashing",
+      "en": "Design Consistent Hashing",
+      "lead": "در hash(key) % N با تغییر N تقریباً همه‌ی کلیدها جابه‌جا می‌شوند (طوفان Cache miss). در هشینگ یکپارچه به‌طور متوسط فقط k/n کلید.",
+      "blocks": [
+        {
+          "type": "ring",
+          "title": "حلقه‌ی هش و یافتن سرور (ساعت‌گرد)",
+          "servers": [
+            {
+              "id": "s0",
+              "a": 20
+            },
+            {
+              "id": "s1",
+              "a": 110
+            },
+            {
+              "id": "s2",
+              "a": 200
+            },
+            {
+              "id": "s3",
+              "a": 290
+            }
+          ],
+          "keys": [
+            {
+              "id": "k0",
+              "a": 345
+            },
+            {
+              "id": "k1",
+              "a": 70
+            },
+            {
+              "id": "k2",
+              "a": 160
+            },
+            {
+              "id": "k3",
+              "a": 245
+            }
+          ],
+          "note": "از موقعیت کلید ساعت‌گرد برو تا اولین سرور. با حذف s1 فقط k1 به s2 می‌رود؛ با افزودن سرور فقط کلیدهای بین آن و سرور قبلی (پادساعت‌گرد) جابه‌جا می‌شوند."
+        },
+        {
+          "type": "formula",
+          "title": "مقایسه",
+          "lines": [
+            {
+              "c": "serverIndex = hash(key) % N",
+              "n": "روش ساده: تغییر N ⇒ جابه‌جایی تقریباً همه‌ی کلیدها"
+            },
+            {
+              "c": "remap ≈ k / n",
+              "n": "هشینگ یکپارچه: k کلیدها، n اسلات‌ها"
+            },
+            {
+              "c": "SHA-1: 0 … 2^160 − 1",
+              "n": "دو سر فضای هش را وصل کن ⇒ Hash Ring"
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "اصطلاحات",
+          "items": [
+            {
+              "t": "Hash Ring",
+              "fa": "حلقه‌ی هش",
+              "d": "فضای هش که دو انتهایش به هم وصل شده؛ سرورها (با IP/نام) و کلیدها با یک تابع هش روی آن نگاشت می‌شوند."
+            },
+            {
+              "t": "Partition",
+              "fa": "پارتیشن",
+              "d": "فضای هش بین دو سرور مجاور. در روش پایه اندازه‌ها نابرابر می‌شوند."
+            },
+            {
+              "t": "Virtual Node",
+              "fa": "گره‌ی مجازی",
+              "d": "هر سرور با چند گره (s0_0، s0_1، …) روی حلقه؛ توزیع یکنواخت‌تر. ۱۰۰ گره ≈ ۱۰٪ و ۲۰۰ گره ≈ ۵٪ انحراف معیار؛ هزینه: فضای بیشتر."
+            },
+            {
+              "t": "Affected Keys",
+              "fa": "کلیدهای متأثر",
+              "d": "از سرور جدید/حذف‌شده پادساعت‌گرد تا سرور قبلی."
+            },
+            {
+              "t": "Hotspot Key",
+              "fa": "کلید داغ",
+              "d": "توزیع یکنواخت‌تر، احتمال تجمع سلبریتی‌ها روی یک shard را کم می‌کند."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "style": "check",
+          "title": "مزایا و استفاده‌ی واقعی",
+          "items": [
+            "کمترین بازتوزیع هنگام افزودن/حذف سرور",
+            "مقیاس افقی آسان، کاهش مشکل Hotspot",
+            "Amazon Dynamo، Apache Cassandra، Discord، Akamai CDN، Google Maglev"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kv-store",
+      "num": "06",
+      "title": "طراحی Key-Value Store",
+      "en": "Design A Key-Value Store",
+      "lead": "put(key, value) و get(key) در مقیاس توزیع‌شده؛ تقریباً هر تصمیم یک Tradeoff بین Consistency و Availability است.",
+      "blocks": [
+        {
+          "type": "table",
+          "title": "CAP Theorem — فقط ۲ از ۳",
+          "head": [
+            "نوع",
+            "تضمین",
+            "رفتار هنگام Partition"
+          ],
+          "rows": [
+            [
+              "CP",
+              "Consistency + Partition tolerance",
+              "عملیات نوشتن را مسدود می‌کند تا ناسازگاری نشود (مثل سیستم بانکی)"
+            ],
+            [
+              "AP",
+              "Availability + Partition tolerance",
+              "به خواندن/نوشتن ادامه می‌دهد؛ داده ممکن است کهنه باشد، بعداً همگام می‌شود"
+            ],
+            [
+              "CA",
+              "Consistency + Availability",
+              "در دنیای واقعی وجود ندارد؛ Network partition اجتناب‌ناپذیر است"
+            ]
+          ]
+        },
+        {
+          "type": "formula",
+          "title": "Quorum Consensus",
+          "lines": [
+            {
+              "n": "N تعداد رپلیکا، W تأیید لازم برای نوشتن، R پاسخ لازم برای خواندن"
+            },
+            {
+              "c": "W + R > N",
+              "n": "Strong consistency (معمولاً N=3، W=R=2)"
+            },
+            {
+              "c": "R = 1, W = N",
+              "n": "بهینه برای خواندن سریع"
+            },
+            {
+              "c": "W = 1, R = N",
+              "n": "بهینه برای نوشتن سریع"
+            },
+            {
+              "c": "W + R ≤ N",
+              "n": "Strong consistency تضمین نمی‌شود"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "مسئله ← تکنیک",
+          "head": [
+            "هدف / مسئله",
+            "تکنیک"
+          ],
+          "rows": [
+            [
+              "ذخیره‌ی داده‌ی بزرگ",
+              "Consistent Hashing برای پخش بار"
+            ],
+            [
+              "High availability در خواندن",
+              "Replication روی N سرور (دیتاسنترهای مختلف)"
+            ],
+            [
+              "High availability در نوشتن",
+              "Versioning + Vector clocks برای حل تعارض"
+            ],
+            [
+              "پارتیشن‌بندی داده",
+              "Consistent Hashing"
+            ],
+            [
+              "Incremental scalability",
+              "Consistent Hashing"
+            ],
+            [
+              "Heterogeneity (سرورهای ناهمسان)",
+              "Virtual nodes متناسب با ظرفیت"
+            ],
+            [
+              "Tunable consistency",
+              "Quorum (N، W، R)"
+            ],
+            [
+              "خرابی موقت",
+              "Sloppy quorum + Hinted handoff"
+            ],
+            [
+              "خرابی دائم",
+              "Merkle tree (Anti-entropy)"
+            ],
+            [
+              "قطعی دیتاسنتر",
+              "Cross-datacenter replication"
+            ],
+            [
+              "تشخیص خرابی",
+              "Gossip protocol"
+            ]
+          ]
+        },
+        {
+          "type": "flow",
+          "title": "مسیر نوشتن (Cassandra-style)",
+          "steps": [
+            {
+              "l": "Write request",
+              "s": ""
+            },
+            {
+              "l": "Commit log",
+              "s": "روی دیسک، برای دوام"
+            },
+            {
+              "l": "Memtable",
+              "s": "کش درون‌حافظه"
+            },
+            {
+              "l": "SSTable",
+              "s": "flush وقتی Memtable پر شد"
+            }
+          ]
+        },
+        {
+          "type": "flow",
+          "title": "مسیر خواندن",
+          "steps": [
+            {
+              "l": "Memtable",
+              "s": "اگر بود برگردان"
+            },
+            {
+              "l": "Bloom filter",
+              "s": "کدام SSTable کلید را دارد؟"
+            },
+            {
+              "l": "SSTables",
+              "s": "خواندن داده"
+            },
+            {
+              "l": "Result",
+              "s": ""
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "اصطلاحات",
+          "items": [
+            {
+              "t": "Strong / Weak / Eventual Consistency",
+              "fa": "سطوح سازگاری",
+              "d": "Strong: همیشه آخرین نسخه. Weak: ممکن است نبیند. Eventual: با گذشت زمان همه همگام می‌شوند (Dynamo، Cassandra)."
+            },
+            {
+              "t": "Vector Clock",
+              "fa": "ساعت برداری",
+              "d": "زوج‌های [server, version] روی هر داده برای تشخیص نسخه‌ی جد/فرزند و تعارض. عیب: پیچیدگی سمت کلاینت و رشد اندازه."
+            },
+            {
+              "t": "Gossip Protocol",
+              "fa": "پروتکل شایعه",
+              "d": "هر نود heartbeat counter خود را به نودهای تصادفی می‌فرستد؛ اگر counter یک نود مدتی زیاد نشد، آفلاین است."
+            },
+            {
+              "t": "Sloppy Quorum",
+              "fa": "کوئورام شل",
+              "d": "به جای اجبار به N سرور ثابت، از اولین W/R سرور سالم روی حلقه استفاده می‌کند."
+            },
+            {
+              "t": "Hinted Handoff",
+              "fa": "تحویل با اشاره",
+              "d": "سرور جایگزین نوشتن‌ها را نگه می‌دارد و وقتی سرور اصلی برگشت تحویل می‌دهد."
+            },
+            {
+              "t": "Merkle Tree",
+              "fa": "درخت مرکل",
+              "d": "درخت هش برای مقایسه‌ی سریع رپلیکاها و همگام‌سازی فقط بخش‌های متفاوت."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unique-id",
+      "num": "07",
+      "title": "تولید شناسه‌ی یکتای توزیع‌شده",
+      "en": "Design A Unique ID Generator In Distributed Systems",
+      "lead": "الزامات: یکتا، فقط عددی، ۶۴ بیتی، مرتب بر اساس زمان، بیش از ۱۰,۰۰۰ شناسه در ثانیه.",
+      "blocks": [
+        {
+          "type": "table",
+          "title": "چهار رویکرد",
+          "head": [
+            "رویکرد",
+            "ایده",
+            "مشکل"
+          ],
+          "rows": [
+            [
+              "Multi-master replication",
+              "auto_increment با گام k (تعداد سرورها)",
+              "مقیاس سخت بین دیتاسنترها؛ با زمان مرتب نیست"
+            ],
+            [
+              "UUID",
+              "عدد ۱۲۸ بیتی مستقل روی هر سرور",
+              "۱۲۸ بیت (نه ۶۴)، غیرعددی، مرتب‌نشده با زمان"
+            ],
+            [
+              "Ticket Server",
+              "یک سرور متمرکز auto_increment (Flickr)",
+              "SPOF"
+            ],
+            [
+              "Twitter Snowflake ✓",
+              "تقسیم ۶۴ بیت به بخش‌ها",
+              "نیاز به همگامی ساعت (NTP)"
+            ]
+          ]
+        },
+        {
+          "type": "bits",
+          "title": "ساختار Snowflake (۶۴ بیت)",
+          "fields": [
+            {
+              "l": "sign",
+              "n": 1,
+              "s": "همیشه ۰"
+            },
+            {
+              "l": "timestamp",
+              "n": 41,
+              "s": "میلی‌ثانیه از epoch ≈ ۶۹ سال"
+            },
+            {
+              "l": "datacenter",
+              "n": 5,
+              "s": "۳۲ دیتاسنتر"
+            },
+            {
+              "l": "machine",
+              "n": 5,
+              "s": "۳۲ ماشین"
+            },
+            {
+              "l": "sequence",
+              "n": 12,
+              "s": "۴۰۹۶ در هر ms، هر ms ریست"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "url-shortener",
+      "num": "08",
+      "title": "طراحی URL Shortener",
+      "en": "Design A URL Shortener",
+      "lead": "تبدیل URL بلند به کوتاه و Redirect. فرض: ۱۰۰ میلیون URL در روز، نسبت خواندن به نوشتن ۱۰ به ۱، نگهداری ۱۰ سال.",
+      "blocks": [
+        {
+          "type": "formula",
+          "title": "تخمین",
+          "lines": [
+            "Write = 100M / 86,400 ≈ 1,160 /s",
+            "Read = 1,160 × 10 ≈ 11,600 /s",
+            "Records (10y) = 100M × 365 × 10 = 365 B",
+            "Storage = 365B × 100 bytes ≈ 365 TB",
+            {
+              "c": "62^7 ≈ 3.5 trillion > 365 B",
+              "n": "پس طول ۷ کاراکتر از [0-9a-zA-Z] کافی است"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "301 یا 302؟",
+          "head": [
+            "کد",
+            "معنا",
+            "اثر"
+          ],
+          "rows": [
+            [
+              "301",
+              "Moved Permanently",
+              "مرورگر کش می‌کند؛ بار سرور کمتر"
+            ],
+            [
+              "302",
+              "Found (موقت)",
+              "همه‌ی درخواست‌ها به سرویس می‌آیند؛ مناسب Analytics"
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "title": "تولید مقدار کوتاه",
+          "head": [
+            "",
+            "Hash + Collision resolution",
+            "Base62 conversion"
+          ],
+          "rows": [
+            [
+              "طول",
+              "ثابت (۷ کاراکتر از CRC32/MD5/SHA-1)",
+              "متغیر، با ID رشد می‌کند"
+            ],
+            [
+              "Unique ID",
+              "لازم نیست",
+              "لازم است (ID generator فصل ۷)"
+            ],
+            [
+              "Collision",
+              "ممکن؛ باید بررسی شود (Bloom filter)",
+              "غیرممکن"
+            ],
+            [
+              "امنیت",
+              "حدس URL بعدی سخت است",
+              "URL بعدی قابل حدس است"
+            ]
+          ]
+        },
+        {
+          "type": "flow",
+          "title": "مسیر Redirect",
+          "steps": [
+            {
+              "l": "GET /zn9edcu",
+              "s": "کاربر روی لینک کوتاه"
+            },
+            {
+              "l": "Load Balancer",
+              "s": ""
+            },
+            {
+              "l": "Web server",
+              "s": ""
+            },
+            {
+              "l": "Cache",
+              "s": "shortURL → longURL"
+            },
+            {
+              "l": "Database",
+              "s": "اگر در کش نبود"
+            },
+            {
+              "l": "301/302 → longURL",
+              "s": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "web-crawler",
+      "num": "09",
+      "title": "طراحی Web Crawler",
+      "en": "Design A Web Crawler",
+      "lead": "۱ میلیارد صفحه در ماه ≈ ۴۰۰ QPS (اوج ۸۰۰)؛ صفحه‌ی ۵۰۰KB ⇒ ۵۰۰TB در ماه، ۳۰PB در ۵ سال. ویژگی‌ها: Scalability، Robustness، Politeness، Extensibility.",
+      "blocks": [
+        {
+          "type": "flow",
+          "title": "گردش کار",
+          "loop": true,
+          "steps": [
+            {
+              "l": "Seed URLs",
+              "s": ""
+            },
+            {
+              "l": "URL Frontier",
+              "s": "صف FIFO با اولویت و Politeness"
+            },
+            {
+              "l": "HTML Downloader",
+              "s": "+ DNS Resolver، robots.txt"
+            },
+            {
+              "l": "Content Parser",
+              "s": "اعتبارسنجی HTML"
+            },
+            {
+              "l": "Content Seen?",
+              "s": "حذف تکراری با hash"
+            },
+            {
+              "l": "Link Extractor",
+              "s": ""
+            },
+            {
+              "l": "URL Filter",
+              "s": "پسوندها، blacklist"
+            },
+            {
+              "l": "URL Seen?",
+              "s": "Bloom filter / hash table"
+            },
+            {
+              "l": "URL Storage → Frontier",
+              "s": "بازگشت به ابتدای حلقه"
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "اصطلاحات",
+          "items": [
+            {
+              "t": "BFS vs DFS",
+              "fa": "پیمایش",
+              "d": "BFS ترجیح دارد چون عمق وب نامعلوم است؛ اما BFS ساده Impolite است و اولویت ندارد."
+            },
+            {
+              "t": "Politeness",
+              "fa": "ادب",
+              "d": "هر host به یک صف و یک worker نگاشت می‌شود و بین دانلودها تأخیر می‌گذارد."
+            },
+            {
+              "t": "Prioritizer",
+              "fa": "اولویت‌بندی",
+              "d": "بر اساس PageRank، ترافیک یا فرکانس به‌روزرسانی در صف‌های اولویت‌دار."
+            },
+            {
+              "t": "Freshness",
+              "fa": "تازگی",
+              "d": "صفحات مهم و پرتغییر زودتر دوباره خزیده می‌شوند."
+            },
+            {
+              "t": "robots.txt",
+              "fa": "پروتکل حذف ربات",
+              "d": "قبل از خزیدن چک و کش می‌شود."
+            },
+            {
+              "t": "Spider Trap",
+              "fa": "تله‌ی عنکبوت",
+              "d": "صفحه‌ای که حلقه‌ی بی‌نهایت می‌سازد؛ با سقف طول URL و فیلتر دستی."
+            },
+            {
+              "t": "Data Noise",
+              "fa": "نویز",
+              "d": "تبلیغات، کد و اسپم کم‌ارزش را کنار بگذار."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "notification",
+      "num": "10",
+      "title": "طراحی سیستم Notification",
+      "en": "Design A Notification System",
+      "lead": "Push موبایل، SMS و ایمیل؛ Soft real-time. فرض روزانه: ۱۰M push، ۱M SMS، ۵M ایمیل.",
+      "blocks": [
+        {
+          "type": "flow",
+          "title": "معماری بهبودیافته",
+          "steps": [
+            {
+              "l": "Service 1…N",
+              "s": "Cron، رویدادها، micro-services"
+            },
+            {
+              "l": "Notification Servers",
+              "s": "Auth، Rate limit، اعتبارسنجی"
+            },
+            {
+              "l": "Cache + DB",
+              "s": "user/device info، templates"
+            },
+            {
+              "l": "Message Queues",
+              "s": "یک صف برای هر نوع"
+            },
+            {
+              "l": "Workers",
+              "s": "retry در خطا"
+            },
+            {
+              "l": "3rd-party",
+              "s": "APNs / FCM / Twilio / SendGrid"
+            },
+            {
+              "l": "Devices",
+              "s": ""
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "ارائه‌دهندگان",
+          "head": [
+            "نوع",
+            "سرویس"
+          ],
+          "rows": [
+            [
+              "iOS push",
+              "APNs (Apple Push Notification service)"
+            ],
+            [
+              "Android push",
+              "FCM (Firebase Cloud Messaging)"
+            ],
+            [
+              "SMS",
+              "Twilio، Nexmo"
+            ],
+            [
+              "Email",
+              "Sendgrid، Mailchimp"
+            ]
+          ]
+        },
+        {
+          "type": "list",
+          "style": "check",
+          "title": "ملاحظات کلیدی",
+          "items": [
+            "Reliability: Notification log در DB برای جلوگیری از گم شدن",
+            "At-least-once: ممکن است تکراری برسد؛ با event ID حذف تکراری",
+            "Template برای قالب یکسان و کم‌خطا",
+            "Notification settings: opt-in کاربر برای هر کانال",
+            "Rate limiting برای جلوگیری از آزار کاربر",
+            "Retry mechanism و Security (appKey/appSecret)",
+            "Monitoring صف‌ها و Event tracking (open، click)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "news-feed",
+      "num": "11",
+      "title": "طراحی News Feed",
+      "en": "Design A News Feed System",
+      "lead": "دو جریان: Feed publishing (انتشار پست) و News feed building (ساخت فید). فرض: ۱۰M DAU، تا ۵۰۰۰ دوست.",
+      "blocks": [
+        {
+          "type": "flow",
+          "title": "Feed Publishing",
+          "steps": [
+            {
+              "l": "POST /v1/me/feed",
+              "s": ""
+            },
+            {
+              "l": "Post Service",
+              "s": "ذخیره در Post DB + Cache"
+            },
+            {
+              "l": "Fanout Service",
+              "s": "گرفتن friend IDs از Graph DB"
+            },
+            {
+              "l": "Message Queue",
+              "s": ""
+            },
+            {
+              "l": "Fanout Workers",
+              "s": ""
+            },
+            {
+              "l": "News Feed Cache",
+              "s": "فقط <post_id, user_id>"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "Fanout on Write در برابر Fanout on Read",
+          "head": [
+            "",
+            "Push (on write)",
+            "Pull (on read)"
+          ],
+          "rows": [
+            [
+              "زمان کار",
+              "هنگام انتشار پست",
+              "هنگام باز کردن فید"
+            ],
+            [
+              "مزیت",
+              "Real-time؛ دریافت فید سریع",
+              "هدر نرفتن منابع برای کاربران غیرفعال؛ بدون Hotkey"
+            ],
+            [
+              "عیب",
+              "Hotkey برای کاربر با دوستان زیاد؛ هدر رفتن برای غیرفعال‌ها",
+              "دریافت فید کند"
+            ],
+            [
+              "انتخاب کتاب",
+              "اکثر کاربران",
+              "سلبریتی‌ها (Hybrid)"
+            ]
+          ]
+        },
+        {
+          "type": "stack",
+          "title": "لایه‌های کش",
+          "layers": [
+            {
+              "l": "News Feed",
+              "items": [
+                "news feed IDs"
+              ]
+            },
+            {
+              "l": "Content",
+              "items": [
+                "hot cache",
+                "normal posts"
+              ]
+            },
+            {
+              "l": "Social Graph",
+              "items": [
+                "follower",
+                "following"
+              ]
+            },
+            {
+              "l": "Action",
+              "items": [
+                "liked",
+                "replied",
+                "others"
+              ]
+            },
+            {
+              "l": "Counters",
+              "items": [
+                "like counter",
+                "reply counter",
+                "others"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chat",
+      "num": "12",
+      "title": "طراحی سیستم Chat",
+      "en": "Design A Chat System",
+      "lead": "چت ۱:۱ و گروهی (تا ۱۰۰ نفر)، وضعیت آنلاین، چند دستگاه. فرض: ۵۰M DAU.",
+      "blocks": [
+        {
+          "type": "table",
+          "title": "روش ارتباط سرور ← کلاینت",
+          "head": [
+            "روش",
+            "سازوکار",
+            "عیب"
+          ],
+          "rows": [
+            [
+              "Polling",
+              "کلاینت مرتب می‌پرسد «پیام جدید؟»",
+              "اکثر پاسخ‌ها خالی؛ هدر منابع"
+            ],
+            [
+              "Long polling",
+              "اتصال باز می‌ماند تا پیام برسد یا timeout",
+              "سرور فرستنده و گیرنده ممکن است یکی نباشد؛ تشخیص قطع سخت"
+            ],
+            [
+              "WebSocket ✓",
+              "اتصال دوطرفه‌ی پایدار، شروع با HTTP upgrade",
+              "مدیریت اتصال پایدار سمت سرور"
+            ]
+          ]
+        },
+        {
+          "type": "stack",
+          "title": "اجزای سیستم",
+          "layers": [
+            {
+              "l": "Stateless (HTTP)",
+              "items": [
+                "Login/Signup",
+                "Profile",
+                "Service discovery (Zookeeper)"
+              ]
+            },
+            {
+              "l": "Stateful (WebSocket)",
+              "items": [
+                "Chat servers"
+              ]
+            },
+            {
+              "l": "Third-party",
+              "items": [
+                "Push notification"
+              ]
+            },
+            {
+              "l": "Storage",
+              "items": [
+                "KV store: HBase / Cassandra (پیام‌ها)",
+                "RDB (کاربران، تنظیمات)"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "flow",
+          "title": "جریان پیام ۱:۱",
+          "steps": [
+            {
+              "l": "User A",
+              "s": ""
+            },
+            {
+              "l": "Chat server 1",
+              "s": "دریافت message ID"
+            },
+            {
+              "l": "Message Sync Queue",
+              "s": ""
+            },
+            {
+              "l": "KV store",
+              "s": "ذخیره"
+            },
+            {
+              "l": "Chat server 2 / Push",
+              "s": "آنلاین: WebSocket، آفلاین: Push"
+            },
+            {
+              "l": "User B",
+              "s": ""
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "اصطلاحات",
+          "items": [
+            {
+              "t": "Message ID",
+              "fa": "شناسه‌ی پیام",
+              "d": "یکتا و قابل مرتب‌سازی با زمان؛ Snowflake سراسری یا Local sequence برای هر کانال."
+            },
+            {
+              "t": "cur_max_message_id",
+              "fa": "همگام‌سازی چنددستگاهی",
+              "d": "هر دستگاه آخرین ID خود را نگه می‌دارد و پیام‌های جدیدتر را می‌گیرد."
+            },
+            {
+              "t": "Message Sync Queue",
+              "fa": "صندوق گروه",
+              "d": "در گروه کوچک، پیام در صف هر عضو کپی می‌شود."
+            },
+            {
+              "t": "Presence / Heartbeat",
+              "fa": "وضعیت آنلاین",
+              "d": "کلاینت هر چند ثانیه (مثلاً ۵s) heartbeat می‌فرستد؛ اگر در x ثانیه (مثلاً ۳۰s) نرسید، آفلاین."
+            },
+            {
+              "t": "Fanout presence",
+              "fa": "پخش وضعیت",
+              "d": "Publish-subscribe برای هر جفت دوست؛ برای گروه‌های بزرگ وضعیت را on-demand بگیر."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "autocomplete",
+      "num": "13",
+      "title": "طراحی Search Autocomplete",
+      "en": "Design A Search Autocomplete System",
+      "lead": "Top-k (۵) پیشنهاد پرتکرار برای هر پیشوند در کمتر از ۱۰۰ms. فرض: ۱۰M DAU، ۱۰ جستجو در روز ⇒ ≈۲۴,۰۰۰ QPS، اوج ۴۸,۰۰۰.",
+      "blocks": [
+        {
+          "type": "flow",
+          "title": "Data Gathering Service (آفلاین)",
+          "steps": [
+            {
+              "l": "Analytics Logs",
+              "s": "query + time، append-only"
+            },
+            {
+              "l": "Aggregators",
+              "s": "مثلاً هفتگی"
+            },
+            {
+              "l": "Aggregated Data",
+              "s": "query, time, frequency"
+            },
+            {
+              "l": "Workers",
+              "s": "ساخت Trie"
+            },
+            {
+              "l": "Trie DB",
+              "s": "Document یا KV store"
+            },
+            {
+              "l": "Trie Cache",
+              "s": "snapshot هفتگی در حافظه"
+            }
+          ]
+        },
+        {
+          "type": "flow",
+          "title": "Query Service (آنلاین)",
+          "steps": [
+            {
+              "l": "User",
+              "s": "AJAX، کش مرورگر"
+            },
+            {
+              "l": "Load Balancer",
+              "s": ""
+            },
+            {
+              "l": "API Servers",
+              "s": ""
+            },
+            {
+              "l": "Trie Cache",
+              "s": "miss → Trie DB"
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "بهینه‌سازی Trie",
+          "items": [
+            {
+              "t": "Limit prefix length",
+              "fa": "محدود کردن طول پیشوند",
+              "d": "کاربر به‌ندرت عبارت خیلی طولانی تایپ می‌کند؛ یافتن پیشوند از O(p) به O(1)."
+            },
+            {
+              "t": "Cache top-k at node",
+              "fa": "کش در هر گره",
+              "d": "Top-k هر پیشوند را در همان گره ذخیره کن؛ فضا در برابر سرعت."
+            },
+            {
+              "t": "Sharding",
+              "fa": "شاردینگ",
+              "d": "بر اساس حرف اول، با Shard map manager برای توزیع نابرابر حروف."
+            },
+            {
+              "t": "Filter Layer",
+              "fa": "لایه‌ی فیلتر",
+              "d": "حذف پیشنهادهای نامناسب پیش از Trie cache."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "youtube",
+      "num": "14",
+      "title": "طراحی YouTube",
+      "en": "Design YouTube",
+      "lead": "آپلود و پخش سریع ویدیو. فرض: ۵M DAU، ۵ ویدیو در روز، ۱۰٪ آپلودکننده، ویدیوی ۳۰۰MB ⇒ ۱۵۰TB ذخیره‌سازی در روز.",
+      "blocks": [
+        {
+          "type": "flow",
+          "title": "جریان آپلود",
+          "steps": [
+            {
+              "l": "Pre-signed URL",
+              "s": "از API server"
+            },
+            {
+              "l": "Original Storage",
+              "s": "Blob"
+            },
+            {
+              "l": "Transcoding Servers",
+              "s": "DAG: split → encode → merge"
+            },
+            {
+              "l": "Transcoded Storage",
+              "s": ""
+            },
+            {
+              "l": "CDN",
+              "s": "پخش"
+            },
+            {
+              "l": "Completion Queue → Handler",
+              "s": "به‌روزرسانی Metadata DB + cache"
+            }
+          ]
+        },
+        {
+          "type": "formula",
+          "title": "هزینه‌ی CDN",
+          "lines": [
+            "5M DAU × 5 videos × 0.3 GB × $0.02/GB = $150,000 /day",
+            {
+              "n": "فقط ویدیوهای پربازدید از CDN، بقیه از سرورهای خودی"
+            },
+            {
+              "n": "کیفیت‌های کم‌بازدید را on-demand انکود کن؛ ویدیوی منطقه‌ای را جهانی پخش نکن"
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "اصطلاحات",
+          "items": [
+            {
+              "t": "Transcoding",
+              "fa": "تبدیل فرمت",
+              "d": "تبدیل به فرمت‌ها و Bitrateهای مختلف برای دستگاه و پهنای باند متفاوت."
+            },
+            {
+              "t": "Container / Codec",
+              "fa": "قالب / کدک",
+              "d": "Container: .mp4، .mov. Codec: H.264، VP9، HEVC."
+            },
+            {
+              "t": "DAG Model",
+              "fa": "گراف کارها",
+              "d": "مراحل پردازش (ویدیو، صدا، thumbnail، watermark) به‌صورت موازی یا ترتیبی."
+            },
+            {
+              "t": "Streaming Protocols",
+              "fa": "پروتکل پخش",
+              "d": "MPEG-DASH، Apple HLS، Microsoft Smooth Streaming، Adobe HDS."
+            },
+            {
+              "t": "GOP",
+              "fa": "گروه فریم‌ها",
+              "d": "تقسیم ویدیو به بخش‌های چندثانیه‌ای برای آپلود موازی و ازسرگیری."
+            },
+            {
+              "t": "Pre-signed URL",
+              "fa": "URL امضاشده",
+              "d": "اجازه‌ی آپلود مستقیم به Storage فقط برای کاربر مجاز."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "google-drive",
+      "num": "15",
+      "title": "طراحی Google Drive",
+      "en": "Design Google Drive",
+      "lead": "آپلود، دانلود، همگام‌سازی بین دستگاه‌ها، نسخه‌ها و اشتراک‌گذاری. فرض: ۱۰M DAU، ۱۰GB رایگان، فایل تا ۱۰GB، آپلود ≈ ۲۴۰ QPS (اوج ۴۸۰).",
+      "blocks": [
+        {
+          "type": "flow",
+          "title": "مسیر آپلود فایل",
+          "steps": [
+            {
+              "l": "Client",
+              "s": "تقسیم به بلاک ۴MB"
+            },
+            {
+              "l": "Block Servers",
+              "s": "Delta sync + compression + encryption"
+            },
+            {
+              "l": "Cloud Storage",
+              "s": "S3، کپی در چند منطقه"
+            },
+            {
+              "l": "API Servers",
+              "s": "به‌روزرسانی Metadata (status: uploaded)"
+            },
+            {
+              "l": "Notification Service",
+              "s": "Long polling"
+            },
+            {
+              "l": "Other clients",
+              "s": "دریافت تغییرات"
+            }
+          ]
+        },
+        {
+          "type": "terms",
+          "title": "اصطلاحات",
+          "items": [
+            {
+              "t": "Block Server",
+              "fa": "سرور بلاک",
+              "d": "فایل را به بلاک‌ها می‌شکند، هش می‌کند، فشرده و رمز می‌کند."
+            },
+            {
+              "t": "Delta Sync",
+              "fa": "همگام‌سازی تفاضلی",
+              "d": "فقط بلاک‌های تغییرکرده دوباره ارسال می‌شوند."
+            },
+            {
+              "t": "Metadata DB",
+              "fa": "پایگاه متادیتا",
+              "d": "Strong consistency لازم است ⇒ پایگاه رابطه‌ای با ACID."
+            },
+            {
+              "t": "Sync Conflict",
+              "fa": "تعارض همگام‌سازی",
+              "d": "اولین نسخه‌ی پردازش‌شده برنده است؛ دومی کپی تعارض می‌گیرد."
+            },
+            {
+              "t": "Offline Backup Queue",
+              "fa": "صف آفلاین",
+              "d": "تغییرات برای کلاینت آفلاین نگه داشته می‌شود تا برگردد."
+            },
+            {
+              "t": "Cold Storage",
+              "fa": "ذخیره‌ی سرد",
+              "d": "داده‌ی غیرفعال (مثلاً S3 Glacier) برای کاهش هزینه؛ همراه حذف تکراری بلاک‌ها و سقف نسخه‌ها."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
